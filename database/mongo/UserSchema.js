@@ -1,7 +1,5 @@
-const mongoose = require("mongoose");
-const Schema = mongoose.Schema;
-const bcrypt = require("bcrypt");
-
+import {Schema} from 'mongoose';
+import bcrypt from 'bcrypt';
 const UserSchema = new Schema({
   email: {
     type: String,
@@ -39,6 +37,11 @@ const UserSchema = new Schema({
   token: {
     type: String,
     required: false
+  },
+  role: {
+    type: Schema.Types.ObjectId,
+    ref: 'Role',
+    required: true
   }
 });
 

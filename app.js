@@ -1,11 +1,9 @@
-// const cookieSession = require("cookie-session");
-// const session = require("express-session");
 import express from 'express';
 import morgan from 'morgan';
 import * as bodyParser from 'body-parser';
 import passport from 'passport';
-import mongoose from 'mongoose';
-const Config = require('./config/config').getConfig();
+
+import mongoClient from './database/client';
 const api = require("./routes/v1");
 
 const app = express();
@@ -21,12 +19,7 @@ app.use(bodyParser.text());
 app.use(passport.initialize());
 app.use(passport.session());
 
-const mongooseOptions = {
-  useMongoClient: true
-};
-mongoose.Promise = global.Promise;
-mongoose.connect(`mongodb://${Config.db.host}/${Config.db.database}`, mongooseOptions);
-
+mongoClient();
 app.use(userLoggedIn);
 app.use("/api/v1", api);
 

@@ -1,8 +1,21 @@
 import User from "../database/mongo/User";
+import Role from "../database/mongo/Role";
 import bcrypt from "bcrypt";
-const jwt = require("jsonwebtoken");
+import * as jwt from "jsonwebtoken";
 const Config = require('../config/config').getConfig();
 
+
+const getRole = async function (userId){
+  const user = await User.findOne({_id:userId}).populate("role");
+  if (!user){
+    const userNotFoundError = new Error("User Not Found");
+    throw userNotFoundError;
+  }
+  return {
+    role: user.role.role,
+    access: user.role.accessLevel
+  };
+};
 const getUsers = async function getUsers(req, res){
   const userList = await User
     .find()
@@ -26,6 +39,7 @@ const postUser = async function postUser(req, res){
       noPasswordError.statusCode = 400;
       throw noPasswordError;
     }
+    const role = await Role.findOne({accessLevel: 0});
     const newUser = new User({
       email: req.body.email,
       username: req.body.username,
@@ -33,7 +47,8 @@ const postUser = async function postUser(req, res){
       firstName: req.body['first-name'],
       lastName: req.body['last-name'],
       birthdate: req.body.birthdate,
-      joinDate: Date.now()
+      joinDate: Date.now(),
+      role: role._id
     });
 
     try{
@@ -50,6 +65,7 @@ const postUser = async function postUser(req, res){
         throw validatorError;
       }
     }
+
     res.json({status: 200});
   } catch (error){
     return res.json({
@@ -94,7 +110,7 @@ const attemptUserAuthentication = async function attemptUserAuthentication(req, 
   try{
     console.log(req.user.token);
     if (!req.user.token){
-      const tokenGrantError = new Error(`There was an error granting a token for ${req.user.username}`)
+      const tokenGrantError = new Error(`There was an error granting a token for ${req.user.username}`);
       throw tokenGrantError;
     }
     res.json({
@@ -130,5 +146,6 @@ export{
   postUser,
   updateUser,
   attemptUserAuthentication,
-  deleteUser
+  deleteUser,
+  getRole
 };

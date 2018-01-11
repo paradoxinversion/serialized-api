@@ -1,5 +1,4 @@
-const mongoose = require("mongoose");
-const Schema = mongoose.Schema;
+import {Schema} from 'mongoose';
 
 const SerialSchema = new Schema({
   title: String,
@@ -29,4 +28,4 @@ SerialSchema.methods.createNewSerial = function(serial, authorId){
     });
 };
 
-module.exports = SerialSchema;
+export default SerialSchema;
