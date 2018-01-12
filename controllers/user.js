@@ -19,6 +19,7 @@ const getRole = async function (userId){
 const getUsers = async function getUsers(req, res){
   const userList = await User
     .find()
+    .populate("role")
     .select({
       username: 1,
       firstName: 1,

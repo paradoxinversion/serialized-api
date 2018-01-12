@@ -1,29 +1,28 @@
-const mongoose = require("mongoose");
-const Schema = mongoose.Schema;
+import {Schema} from 'mongoose';
+// FIXME: Change serial_id to parentSerial
 
 const SerialPartSchema = new Schema({
-  title: String,
-  content: String,
-  creation_date: Date,
-  author_id: String,
-  slug: String
+  title: {
+    type: String,
+    required: true
+  },
+  content: {
+    type: String,
+    required: true
+  },
+  creation_date: {
+    type: Date,
+    required: true
+  },
+  serial_id: {
+    type: Schema.Types.ObjectId,
+    ref: 'Serial',
+    required: true
+  },
+  slug: {
+    type: String,
+    required: true
+  }
 });
 
-SerialPartSchema.methods.createNewSerial = function(serial, authorId){
-  const newSerial = new SerialPartSchema({
-    title: serial.title,
-    synopsis: serial.synopsis,
-    genre: serial.genre,
-    description: serial.description,
-    nsfw: serial.nsfw,
-    creation_date: Date.now(),
-    author_id: authorId
-  });
-
-  return newSerial.save()
-    .catch(e => {
-      throw e;
-    });
-};
-
-module.exports = SerialPartSchema;
+export default SerialPartSchema;

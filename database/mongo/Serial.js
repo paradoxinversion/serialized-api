@@ -1,4 +1,3 @@
-const mongoose = require("mongoose");
-const SerialSchema = require("./SerialSchema");
-
-module.exports = mongoose.model("Serial", SerialSchema);
+import mongoose from 'mongoose';
+import SerialSchema from './SerialSchema';
+export default mongoose.model("Serial", SerialSchema);
