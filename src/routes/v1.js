@@ -1,9 +1,8 @@
+import express from 'express';
 import * as userController from '../controllers/user';
 import * as serialController from '../controllers/serial';
 import * as serialPartController from '../controllers/serialPart';
-import express from 'express';
-const authController = require('../controllers/auth');
-// const userController = require("../controller/user");
+import * as authController from '../controllers/auth';
 
 const router = express.Router();
 
@@ -15,15 +14,17 @@ router.route('/users')
 
 router.route('/users/auth')
   .post(authController.isAuthenticatedBasic, userController.attemptUserAuthentication);
-module.exports = router;
 
 router.route('/serials')
   .get(serialController.getSerials)
   .post(authController.isAuthenticatedBearer, serialController.postSerial)
-  .delete(authController.isAuthenticatedBearer, serialController.deleteSerial);
+  .delete(authController.isAuthenticatedBearer, serialController.deleteSerial)
+  .put(authController.isAuthenticatedBearer, serialController.editSerial);
 
 router.route('/serials/:serialId')
   .get(serialPartController.getSerialParts)
   .post(serialPartController.postSerialPart)
   .delete(authController.isAuthenticatedBearer, serialPartController.deleteSerialPart)
   .put(authController.isAuthenticatedBearer, serialPartController.editSerialPart);
+
+module.exports = router;

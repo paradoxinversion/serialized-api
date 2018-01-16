@@ -2,6 +2,7 @@ import User from "../database/mongo/User";
 import Role from "../database/mongo/Role";
 import bcrypt from "bcrypt";
 import * as jwt from "jsonwebtoken";
+import * as userActions from "../database/actions/user";
 const Config = require('../config/config').getConfig();
 
 
@@ -17,56 +18,12 @@ const getRole = async function (userId){
   };
 };
 const getUsers = async function getUsers(req, res){
-  const userList = await User
-    .find()
-    .populate("role")
-    .select({
-      username: 1,
-      firstName: 1,
-      lastName: 1,
-      biography: 1
-    });
-
-  res.json(userList);
+  res.json(await userActions.getAllUsers());
 };
 
 const postUser = async function postUser(req, res){
   try{
-    let hashedPassword;
-    if (req.body.password){
-      hashedPassword = await bcrypt.hash(req.body.password, 10);
-    } else{
-      const noPasswordError = new Error("No password was included in the signup request");
-      noPasswordError.statusCode = 400;
-      throw noPasswordError;
-    }
-    const role = await Role.findOne({accessLevel: 0});
-    const newUser = new User({
-      email: req.body.email,
-      username: req.body.username,
-      password: hashedPassword,
-      firstName: req.body['first-name'],
-      lastName: req.body['last-name'],
-      birthdate: req.body.birthdate,
-      joinDate: Date.now(),
-      role: role._id
-    });
-
-    try{
-      await newUser.save();
-    } catch (e){
-      // Handle validation/duplicate user errors here
-      if (e.name === "MongoError" || e.code === 11000){
-        const duplicateEmailError = new Error("User already exists with that email");
-        duplicateEmailError.statusCode = 409;
-        throw duplicateEmailError;
-      } else if (e.name === "ValidationError"){
-        const validatorError = new Error(e.message);
-        validatorError.statusCode = 400;
-        throw validatorError;
-      }
-    }
-
+    const newUser = await userActions.addNewUser(req.body);
     res.json({status: 200});
   } catch (error){
     return res.json({
@@ -81,20 +38,22 @@ const postUser = async function postUser(req, res){
 
 const updateUser = async function updateUser(req, res){
   try{
-    if (!req.body.username){
-      const noUserError = new Error("No username was included in the update request");
-      throw noUserError;
-    }
-    const valuesToUpdate = {};
-    if (req.body.firstName) valuesToUpdate.firstName = req.body.firstName;
-    if (req.body.lastName) valuesToUpdate.lastName = req.body.lastName;
-    if (req.body.biography) valuesToUpdate.biography = req.body.biography;
-    if (Object.keys(valuesToUpdate).length === 0){
-      const noUpdateError = new Error("No valid fields were included in the update request");
-      throw noUpdateError;
-    }
-    const query = {username: req.body.username};
-    const update = await User.findOneAndUpdate(query, valuesToUpdate);
+    // if (!req.body.username){
+    //   const noUserError = new Error("No username was included in the update request");
+    //   throw noUserError;
+    // }
+    // const valuesToUpdate = {};
+    // if (req.body['first-name']) valuesToUpdate.firstName = req.body['first-name'];
+    // if (req.body['last-name']) valuesToUpdate.lastName = req.body['last-name'];
+    // if (req.body.biography) valuesToUpdate.biography = req.body.biography;
+    // if (Object.keys(valuesToUpdate).length === 0){
+    //   const noUpdateError = new Error("No valid fields were included in the update request");
+    //   throw noUpdateError;
+    // }
+    // console.log(valuesToUpdate)
+    // const query = {username: req.body.username};
+    // const update = await User.findOneAndUpdate(query, valuesToUpdate);
+    const update = await userActions.updateUser(req.body);
     res.json(update);
   } catch(error){
     return res.json({
@@ -109,7 +68,6 @@ const updateUser = async function updateUser(req, res){
 
 const attemptUserAuthentication = async function attemptUserAuthentication(req, res){
   try{
-    console.log(req.user.token);
     if (!req.user.token){
       const tokenGrantError = new Error(`There was an error granting a token for ${req.user.username}`);
       throw tokenGrantError;

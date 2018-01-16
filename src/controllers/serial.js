@@ -120,9 +120,44 @@ const deleteSerial = async (req, res) => {
   }
 };
 
+const editSerial = async (req, res) => {
+  try{
+    const query = {_id: req.query.serialId};
+    const token = jwt.verify(req.user.token, Config.security.tokensecret);
+    if (!req.query.serialId){
+      const noIdError = new Error("No serial ID supplied for delete operation.");
+      throw noIdError;
+    }
+
+    const serial = Serial.findOne(query);
+    if (!serial.author_id === token.id){
+      const wrongOwnerError = new Error("User ID does not match Author ID, aborting edit.");
+      throw wrongOwnerError;
+    }
+
+    const valuesToUpdate = {};
+    if (req.body.title) valuesToUpdate.title = req.body.title;
+    if (req.body.synopsis) valuesToUpdate.synopsis = req.body.synopsis;
+    if (req.body.genre) valuesToUpdate.genre = req.body.genre;
+    if (req.body.description) valuesToUpdate.description = req.body.description;
+    const update = Serial.findOneAndUpdate(query, valuesToUpdate);
+    res.json(update);
+
+  } catch (error) {
+    return res.json({
+      status: "400",
+      error: {
+        name: error.name,
+        message: error.message
+      }
+    });
+  }
+};
+
 export {
   getSerials,
   postSerial,
   getSerialsByAuthorId,
-  deleteSerial
+  deleteSerial,
+  editSerial
 };

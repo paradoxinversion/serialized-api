@@ -45,11 +45,12 @@ const UserSchema = new Schema({
   }
 });
 
-UserSchema.methods.validatePassword = function(password){
-  return bcrypt.compare(password, this.password)
-    .catch((error) => {
-      throw error;
-    });
+UserSchema.methods.validatePassword = async function(password){
+  try{
+    return await bcrypt.compare(password, this.password);
+  } catch(error){
+    throw error;
+  }
 };
 
 export default UserSchema;
