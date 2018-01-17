@@ -1,27 +1,13 @@
 process.env.NODE_ENV = 'testing';
-import mongoose from "mongoose";
 import {expect} from "chai";
-import bcrypt from "bcrypt";
 import * as userActions from "../src/database/actions/user";
-import Role from "../src/database/mongo/Role";
 import User from "../src/database/mongo/User";
 import * as authorization from "../src/controllers/auth";
-
-const addNewUserHelper = async (email, username, password, firstName, lastName, birthdate) => {
-  const requestBody = {
-    email: email,
-    username: username,
-    password: password,
-    'first-name': firstName,
-    'last-name': lastName,
-    birthdate: birthdate
-  };
-  return await userActions.addNewUser(requestBody);
-};
-
+import * as dataHelper from './helpers/dataHelper';
+import * as dbHelpers from './helpers/databaseHelper';
 /**
  * This function is a standin for the done() function utilized by passport.
- * 
+ *
  */
 const d = (error, user) => {
   if (error) throw error;
@@ -29,55 +15,23 @@ const d = (error, user) => {
   return null;
 };
 describe('User DB Actions', function(){
-  before(function (done){
-    // Initialize the DB and invoke done once connected
-    const mongooseOptions = {
-      useMongoClient: true
-    };
-    mongoose.Promise = global.Promise;
-    mongoose.connect("mongodb://localhost/tdb", mongooseOptions);
-    const db = mongoose.connection;
-    db.on("error", console.error.bind(console, 'connection error'));
-    db.once('open', function(){
-      const roles = [
-        {role: "Reader", accessLevel: 0},
-        {role: "Author", accessLevel: 1},
-        {role: "Administrator", accessLevel: 2}
-      ];
-      Role.insertMany(roles, (error)  =>{
-        if (error) console.log(error);
-      });
-      console.log("Connected to DB");
-      done();
-    });
+  before(async function (){
+    console.log("Opening test DB for User Tests")
+    await dbHelpers.prepareTestDB();
   });
 
   describe('AddNewUser', function(){
     it('Saves a new user to the DB', async function(){
-      const newUser = await addNewUserHelper("a@a.com", "a", "aaa", "a", "a", "01/01/1999");
-      return expect(newUser.username).to.equal("a");
+      const newUser = await dataHelper.addUserHelper();
+      return expect(newUser.dbResult.username).to.equal(newUser.requestBody.username);
     });
   });
 
   describe('getAllUsers', function(){
     before('Clear previous users from collection and add new ones', async function(){
       await User.remove({});
-      await addNewUserHelper(
-        "test@test.com",
-        "test",
-        "tEsT",
-        "Testy",
-        "McTest",
-        "01/01/1999"
-      );
-      await addNewUserHelper(
-        "toot@test.com",
-        "test",
-        "TeSt",
-        "Testy",
-        "McTest",
-        "01/01/1999"
-      );
+      await dataHelper.addUserHelper();
+      await dataHelper.addUserHelper();
     });
 
     it ("Gets all users from the db", async function(){
@@ -88,21 +42,14 @@ describe('User DB Actions', function(){
   });
 
   describe('Edit User', function(){
-
+    let testUser;
     before('Clear previous users from collection and add new ones', async function(){
       await User.remove({});
-      await addNewUserHelper(
-        "test@test.com",
-        "test",
-        "testpassword",
-        "Testy",
-        "McTest",
-        "01/01/1999"
-      );
+      testUser = await dataHelper.addUserHelper();
     });
 
     it ("Modifies a user", async function(){
-      const authorizedUser = await authorization.logUserIn("test@test.com", "testpassword", d);
+      const authorizedUser = await authorization.logUserIn(testUser.requestBody.email, testUser.requestBody.password, d);
 
       const requestBody = {
         "first-name": "freddy"
@@ -112,10 +59,23 @@ describe('User DB Actions', function(){
     });
   });
 
-  after(function (done){
-    console.log("Tests Complete");
-    mongoose.connection.db.dropDatabase(function(){
-      mongoose.connection.close(done);
+  describe("Delete User", function(){
+    let testUser;
+    before('Clear previous users from collection and add new ones', async function(){
+      await User.remove({});
+      testUser = await dataHelper.addUserHelper();
     });
+
+    it("Deletes a user if the requesting user provides the matching token", async function(){
+      const authorizedUser = await authorization.logUserIn(testUser.requestBody.email, testUser.requestBody.password, d);
+      await userActions.deleteUser(authorizedUser.token);
+      const userCount = await User.count({});
+      return expect(userCount).to.equal(0);
+    });
+  });
+
+  after(async function (){
+    console.log("Closing Test DB for User Tests");
+    await dbHelpers.closeTestDBConnection();
   });
 });

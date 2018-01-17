@@ -87,13 +87,24 @@ const updateUser = async (requestBody, webToken) => {
   const query = {_id: token.id};
   const updateOptions = {
     new: true
-  }
+  };
   const update = await User.findOneAndUpdate(query, valuesToUpdate, updateOptions);
   return update;
+};
+
+const deleteUser = async (webToken) => {
+  const token = jwt.verify(webToken, Config.security.tokensecret);
+
+  //XXX: This implementation uses the token to detrmine which user to delete
+  // As such, if someone tries to delete with a randomized token that
+  // happens to match something, that thing may get delete
+  // Need to figure out how to prevent that...
+  return await User.remove({_id: token.id});
 };
 export {
   getRole,
   getAllUsers,
   addNewUser,
-  updateUser
+  updateUser,
+  deleteUser
 };

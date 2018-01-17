@@ -1,7 +1,7 @@
 import Serial from '../database/mongo/Serial';
 import SerialPart from '../database/mongo/SerialPart';
 import * as jwt from "jsonwebtoken";
-
+import * as serialActions from "../database/actions/serial";
 const Config = require('../config/config').getConfig();
 const _ = require("lodash");
 
@@ -24,12 +24,13 @@ const deleteSerialParts = async(serial) => {
 const getSerials = async (req, res) => {
 
   try{
-    let serials;
-    if (req.query.userId === undefined){
-      serials = await Serial.find();
-    } else {
-      serials = await Serial.find({author_id: req.query.userId});
-    }
+    // let serials;
+    // if (req.query.userId === undefined){
+    //   serials = await Serial.find();
+    // } else {
+    //   serials = await Serial.find({author_id: req.query.userId});
+    // }
+    const serials = await serialActions.getSerials(req.query.userId);
     res.json(serials);
   } catch (error){
     return res.json({
@@ -48,17 +49,7 @@ const getSerials = async (req, res) => {
 const postSerial = async (req, res) => {
 
   try{
-    const newSerial = new Serial({
-      title: req.body.title,
-      synopsis: req.body.synopsis,
-      genre: req.body.genre,
-      description: req.body.description,
-      nsfw: req.body.nsfw,
-      creation_date: Date.now(),
-      author_id: req.user._id,
-      slug: _.kebabCase(req.body.title)
-    });
-    await newSerial.save();
+    const newSerial = await serialActions.postSerial(req.body, req.user.token);
     res.json(newSerial);
   } catch(error){
     return res.json({
@@ -93,22 +84,9 @@ const getSerialsByAuthorId = async (req, res) => {
  * Delete a serial overview/uses bearer tokens to decide
  */
 const deleteSerial = async (req, res) => {
-
   try{
-    const token = jwt.verify(req.user.token, Config.security.tokensecret);
-    if (!req.query.serialId){
-      const noIdError = new Error("No serial ID supplied for delete operation.");
-      throw noIdError;
-    }
-    const serial = await Serial.findOne({_id: req.query.serialId});
-    if (token.id == serial.author_id){
-      await deleteSerialParts(serial);
-      const deletionResult = await Serial.remove({_id: serial._id});
-      res.json(deletionResult);
-    } else {
-      const wrongOwnerError = new Error("User ID does not match Author ID, aborting delete.");
-      throw wrongOwnerError;
-    }
+    const deletionResult = await serialActions.deleteSerial(req.query.serialId, req.user.token);
+    res.json(deletionResult);
   } catch(error){
     return res.json({
       status: "400",
@@ -122,25 +100,7 @@ const deleteSerial = async (req, res) => {
 
 const editSerial = async (req, res) => {
   try{
-    const query = {_id: req.query.serialId};
-    const token = jwt.verify(req.user.token, Config.security.tokensecret);
-    if (!req.query.serialId){
-      const noIdError = new Error("No serial ID supplied for delete operation.");
-      throw noIdError;
-    }
-
-    const serial = Serial.findOne(query);
-    if (!serial.author_id === token.id){
-      const wrongOwnerError = new Error("User ID does not match Author ID, aborting edit.");
-      throw wrongOwnerError;
-    }
-
-    const valuesToUpdate = {};
-    if (req.body.title) valuesToUpdate.title = req.body.title;
-    if (req.body.synopsis) valuesToUpdate.synopsis = req.body.synopsis;
-    if (req.body.genre) valuesToUpdate.genre = req.body.genre;
-    if (req.body.description) valuesToUpdate.description = req.body.description;
-    const update = Serial.findOneAndUpdate(query, valuesToUpdate);
+    const update = serialActions.editSerial(req.body, req.query.serialId, req.user.token);
     res.json(update);
 
   } catch (error) {
