@@ -1,7 +1,7 @@
 import faker from "faker";
 import * as userActions from "../../src/database/actions/user";
 import * as serialActions from "../../src/database/actions/serial";
-import * as _ from "lodash";
+import * as serialPartActions from "../../src/database/actions/serialPart";
 
 export const addUserHelper = async () => {
 
@@ -37,6 +37,15 @@ export const addSerialHelper = async (user) => {
   };
 };
 
-export const addSerialPartHelper = () => {
-  
-}
+export const addSerialPartHelper = (parentSerialId) => {
+  const requestBody = {
+    title: faker.random.words(),
+    content: faker.random.paragraph(),
+  };
+
+  const dbResult = serialPartActions.createSerialPart(requestBody, parentSerialId);
+  return {
+    requestBody,
+    dbResult
+  };
+};

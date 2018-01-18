@@ -1,10 +1,8 @@
 process.env.NODE_ENV = 'testing';
-import mongoose from "mongoose";
 import {expect} from "chai";
-import * as userActions from "../src/database/actions/user";
 import * as serialActions from "../src/database/actions/serial"
+import * as serialPartActions from "../src/database/actions/serialPart";
 import Serial from "../src/database/mongo/Serial";
-import User from "../src/database/mongo/User";
 import * as authorization from "../src/controllers/auth";
 import * as dbHelpers from './helpers/databaseHelper';
 import * as dataHelper from './helpers/dataHelper';
@@ -20,12 +18,10 @@ const d = (error, user) => {
 };
 describe('Serial Actions', function(){
   let authorizedUser;
-  let unauthorizedUser;
   let testSerial;
   before(async function (){
     await dbHelpers.prepareTestDB();
     const authorizedUserData = await dataHelper.addUserHelper();
-    unauthorizedUser = await dataHelper.addUserHelper();
     authorizedUser = await authorization.logUserIn(authorizedUserData.requestBody.email, authorizedUserData.requestBody.password, d);
   });
 
@@ -64,7 +60,6 @@ describe('Serial Actions', function(){
   });
 
   after(async function (){
-    console.log("Closing test DB for Serial Tests");
     await dbHelpers.closeTestDBConnection();
   });
 });

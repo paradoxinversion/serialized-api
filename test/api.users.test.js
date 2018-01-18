@@ -16,7 +16,6 @@ const d = (error, user) => {
 };
 describe('User DB Actions', function(){
   before(async function (){
-    console.log("Opening test DB for User Tests")
     await dbHelpers.prepareTestDB();
   });
 
@@ -75,7 +74,6 @@ describe('User DB Actions', function(){
   });
 
   after(async function (){
-    console.log("Closing Test DB for User Tests");
     await dbHelpers.closeTestDBConnection();
   });
 });
