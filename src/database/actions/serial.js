@@ -7,23 +7,15 @@ import * as jwt from "jsonwebtoken";
 import * as _ from "lodash";
 const Config = require('../../config/config').getConfig();
 
-export const getSerials = async (requestQueryString) => {
-  let serials;
-  if (requestQueryString.userId === undefined){
-    serials = await Serial.find();
-  } else {
-    serials = await Serial.find({author_id: requestQueryString.userId});
-  }
+export const getSerials = async () => {
+  let serials = await Serial.find();
   return serials;
 };
-
-export const postSerial = async(requestBody, webToken) => {
+export const getAuthorSerials = async(authorId) => {
+  return await Serial.find({author_id: authorId});
+};
+export const postSerial = async(requestBody, userId) => {
   try {
-    if (!webToken){
-      const noTokenError = new Error("No token was included in the post request");
-      throw noTokenError;
-    }
-    const token = jwt.verify(webToken, Config.security.tokensecret);
     const newSerial = new Serial({
       title: requestBody.title,
       synopsis: requestBody.synopsis,
@@ -31,7 +23,7 @@ export const postSerial = async(requestBody, webToken) => {
       description: requestBody.description,
       nsfw: requestBody.nsfw,
       creation_date: Date.now(),
-      author_id: token.id,
+      author_id: userId,
       slug: _.kebabCase(requestBody.title)
     });
     return await newSerial.save();
@@ -41,16 +33,15 @@ export const postSerial = async(requestBody, webToken) => {
 
 };
 
-export const editSerial = async(requestBody, serialIdQueryString, webToken) => {
+export const editSerial = async(requestBody, serialIdQueryString, userId) => {
   const query = {_id: serialIdQueryString};
-  const token = jwt.verify(webToken, Config.security.tokensecret);
   if (!serialIdQueryString){
     const noIdError = new Error("No serial ID supplied for edit operation.");
     throw noIdError;
   }
 
   const serial = await Serial.findOne(query);
-  if (!serial.author_id === token.id){
+  if (!serial.author_id === userId){
     const wrongOwnerError = new Error("User ID does not match Author ID, aborting edit.");
     throw wrongOwnerError;
   }
@@ -80,14 +71,13 @@ export const deleteSerialParts = async(serial) => {
   }
 };
 
-export const deleteSerial = async (serialIdQueryString, webToken) => {
-  const token = jwt.verify(webToken, Config.security.tokensecret);
+export const deleteSerial = async (serialIdQueryString, userId) => {
   if (!serialIdQueryString){
     const noIdError = new Error("No serial ID supplied for delete operation.");
     throw noIdError;
   }
   const serial = await Serial.findOne({_id: serialIdQueryString});
-  if (token.id != serial.author_id){
+  if (userId != serial.author_id){
     const wrongOwnerError = new Error("User ID does not match Author ID, aborting delete.");
     throw wrongOwnerError;
   }

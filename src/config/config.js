@@ -18,7 +18,11 @@ module.exports = (()=>{
         database: process.env.DB_NAME
       },
       security: {
-        tokensecret: process.env.TOKEN_SECRET
+        tokensecret: process.env.TOKEN_SECRET,
+        sessionSecret: process.env.SESSION_SECRET
+      },
+      server: {
+        port: process.env.API_PORT
       }
     };
     return config;

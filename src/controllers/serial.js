@@ -19,18 +19,20 @@ const deleteSerialParts = async(serial) => {
 };
 
 /**
- * Get a list of serials
+ * Get a list of serials. If there is a userId query, gets only serials by that user.
  */
 const getSerials = async (req, res) => {
-
   try{
-    // let serials;
-    // if (req.query.userId === undefined){
-    //   serials = await Serial.find();
-    // } else {
-    //   serials = await Serial.find({author_id: req.query.userId});
-    // }
-    const serials = await serialActions.getSerials(req.query.userId);
+    let serials;
+    if (req.query.userId){
+      serials = await serialActions.getAuthorSerials(req.query.userId);
+      if (req.session.passport && req.session.passport.user === req.query.userId){
+        serials.clientOwnsSerials = true;
+      }
+    } else {
+      serials = await serialActions.getSerials();
+      serials.clientOwnsSerials = false;
+    }
     res.json(serials);
   } catch (error){
     return res.json({
@@ -48,8 +50,9 @@ const getSerials = async (req, res) => {
  */
 const postSerial = async (req, res) => {
 
+  console.log(req.body)
   try{
-    const newSerial = await serialActions.postSerial(req.body, req.user.token);
+    const newSerial = await serialActions.postSerial(req.body, req.session.passport.user);
     res.json(newSerial);
   } catch(error){
     return res.json({
@@ -66,9 +69,9 @@ const postSerial = async (req, res) => {
  * Return a list of Serials by author id
  */
 const getSerialsByAuthorId = async (req, res) => {
-
   try{
-    res.send(req);
+    const authorSerials = await serialActions.getAuthorSerials(req.query.userId);
+    res.json(authorSerials);
   } catch (error){
     return res.json({
       status: "400",
@@ -85,7 +88,7 @@ const getSerialsByAuthorId = async (req, res) => {
  */
 const deleteSerial = async (req, res) => {
   try{
-    const deletionResult = await serialActions.deleteSerial(req.query.serialId, req.user.token);
+    const deletionResult = await serialActions.deleteSerial(req.query.serialId, req.session.passport.user);
     res.json(deletionResult);
   } catch(error){
     return res.json({
@@ -100,7 +103,7 @@ const deleteSerial = async (req, res) => {
 
 const editSerial = async (req, res) => {
   try{
-    const update = serialActions.editSerial(req.body, req.query.serialId, req.user.token);
+    const update = serialActions.editSerial(req.body, req.query.serialId, req.session.passport.user);
     res.json(update);
 
   } catch (error) {

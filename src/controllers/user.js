@@ -1,13 +1,31 @@
 
 import * as userActions from "../database/actions/user";
-
+import * as jwt from "jsonwebtoken";
+const Config = require('../config/config').getConfig();
 const getUsers = async function getUsers(req, res){
-  res.json(await userActions.getAllUsers());
+  const queryResult = await userActions.getAllUsers(req.query.user);
+  let response = {
+    userData: queryResult,
+    isQueriedUser: false
+  };
+  res.json(response);
 };
+const getUser = async function getUser(req, res){
+  const queryResult = await userActions.getUser(req.params.username);
+  let response = {
+    userData: queryResult,
+    isQueriedUser: false
+  };
 
+  if (req.session.passport && req.session.passport.user == response.userData._id){
+    console.log(response.userData._id, req.session.passport.user)
+    response.isQueriedUser = true;
+  }
+  res.json(response);
+};
 const postUser = async function postUser(req, res){
   try{
-    await userActions.addNewUser(req.body);
+    const newUser = await userActions.addNewUser(req.body);
     res.json({status: 200});
   } catch (error){
     return res.json({
@@ -22,7 +40,7 @@ const postUser = async function postUser(req, res){
 
 const updateUser = async function updateUser(req, res){
   try{
-    const update = await userActions.updateUser(req.body);
+    const update = await userActions.updateUser(req.body, req.session.passport.user);
     res.json(update);
   } catch(error){
     return res.json({
@@ -37,12 +55,8 @@ const updateUser = async function updateUser(req, res){
 
 const attemptUserAuthentication = async function attemptUserAuthentication(req, res){
   try{
-    if (!req.user.token){
-      const tokenGrantError = new Error(`There was an error granting a token for ${req.user.username}`);
-      throw tokenGrantError;
-    }
     res.json({
-      token: req.user.token
+      user: req.user
     });
   } catch(e){
     throw e;
@@ -63,10 +77,17 @@ const deleteUser = async function deleteUser(req, res){
     });
   }
 };
+
+const logOut = async function logOut(req, res){
+  req.logOut();
+  res.send("Bye bye");
+};
 export{
   getUsers,
+  getUser,
   postUser,
   updateUser,
+  deleteUser,
   attemptUserAuthentication,
-  deleteUser
+  logOut
 };

@@ -53,4 +53,5 @@ UserSchema.methods.validatePassword = async function(password){
   }
 };
 
+
 export default UserSchema;

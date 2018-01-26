@@ -3,28 +3,39 @@ import * as userController from '../controllers/user';
 import * as serialController from '../controllers/serial';
 import * as serialPartController from '../controllers/serialPart';
 import * as authController from '../controllers/auth';
+import logSession from '../middleware/logSession';
+const ensureLoggedIn = require("connect-ensure-login").ensureLoggedIn;
 
 const router = express.Router();
-
+router.use(logSession);
 router.route('/users')
-  .get(userController.getUsers)
-  .post(userController.postUser)
-  .put(authController.isAuthenticatedBearer, userController.updateUser)
-  .delete(authController.isAuthenticatedBearer, userController.deleteUser);
-
+  .get(userController.getUsers) //Get all
+  .post(userController.postUser) // Post New
+  .put(ensureLoggedIn(), userController.updateUser) // Update User
+  .delete(ensureLoggedIn(), userController.deleteUser); // Delete User
+router.route('users/logout')
+  .get(authController.checkAuthentication, userController.logOut);
 router.route('/users/auth')
-  .post(authController.isAuthenticatedBasic, userController.attemptUserAuthentication);
+  .post(authController.tryAuthenticateLocal, userController.attemptUserAuthentication) //Authenticate User
+  .get(authController.checkAuthentication);
+router.route('/users/:username')
+  .get(userController.getUser);
+
 
 router.route('/serials')
-  .get(serialController.getSerials)
-  .post(authController.isAuthenticatedBearer, serialController.postSerial)
-  .delete(authController.isAuthenticatedBearer, serialController.deleteSerial)
-  .put(authController.isAuthenticatedBearer, serialController.editSerial);
+  .get(serialController.getSerials) // Get All Serials
+  // .post(authController.isAuthenticatedBearer, serialController.postSerial)
+  .post(ensureLoggedIn(), serialController.postSerial)
+  .delete(ensureLoggedIn(), serialController.deleteSerial)
+  .put(ensureLoggedIn(), serialController.editSerial);
 
 router.route('/serials/:serialId')
   .get(serialPartController.getSerialParts)
-  .post(serialPartController.postSerialPart)
-  .delete(authController.isAuthenticatedBearer, serialPartController.deleteSerialPart)
-  .put(authController.isAuthenticatedBearer, serialPartController.editSerialPart);
+  .post(ensureLoggedIn(), serialPartController.postSerialPart)
+  .put(ensureLoggedIn(), serialPartController.editSerialPart);
+
+router.route('/serials/:serialId/:partId')
+  .get(serialPartController.getSingleSerialPart)
+  .delete(ensureLoggedIn(), serialPartController.deleteSerialPart);
 
 module.exports = router;

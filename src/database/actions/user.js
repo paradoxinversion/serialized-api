@@ -19,6 +19,7 @@ const getRole = async function (userId){
 };
 
 const getAllUsers = async () =>{
+
   const userList = await User
     .find()
     .populate("role")
@@ -32,7 +33,21 @@ const getAllUsers = async () =>{
   return userList;
 };
 
+const getUser = async(userName) =>{
+  const user = await User
+    .findOne({username:userName})
+    .populate("role")
+    .select({
+      username: 1,
+      firstName: 1,
+      lastName: 1,
+      biography: 1
+    });
+  return user;
+};
+
 const addNewUser = async (requestBody) => {
+  console.log("adding user")
   let hashedPassword;
   if (requestBody.password){
     hashedPassword = await bcrypt.hash(requestBody.password, 10);
@@ -42,12 +57,13 @@ const addNewUser = async (requestBody) => {
     throw noPasswordError;
   }
   const role = await Role.findOne({accessLevel: 0});
+  const lowercaseUsername = requestBody.username.toLowerCase();
   const newUser = new User({
     email: requestBody.email,
-    username: requestBody.username,
+    username: lowercaseUsername,
     password: hashedPassword,
-    firstName: requestBody['first-name'],
-    lastName: requestBody['last-name'],
+    firstName: requestBody.firstName,
+    lastName: requestBody.lastName,
     birthdate: requestBody.birthdate,
     joinDate: Date.now(),
     role: role._id
@@ -55,6 +71,7 @@ const addNewUser = async (requestBody) => {
 
   try{
     await newUser.save();
+    console.log(newUser);
     return newUser;
   } catch (e){
     // Handle validation/duplicate user errors here
@@ -70,21 +87,16 @@ const addNewUser = async (requestBody) => {
   }
 };
 
-const updateUser = async (requestBody, webToken) => {
-  if (!webToken){
-    const noTokenError = new Error("No token was included in the update request");
-    throw noTokenError;
-  }
-  const token = jwt.verify(webToken, Config.security.tokensecret);
+const updateUser = async (requestBody, userId) => {
   const valuesToUpdate = {};
-  if (requestBody['first-name']) valuesToUpdate.firstName = requestBody['first-name'];
-  if (requestBody['last-name']) valuesToUpdate.lastName = requestBody['last-name'];
+  if (requestBody.firstName) valuesToUpdate.firstName = requestBody.firstName;
+  if (requestBody.lastName) valuesToUpdate.lastName = requestBody.lastName;
   if (requestBody.biography) valuesToUpdate.biography = requestBody.biography;
   if (Object.keys(valuesToUpdate).length === 0){
     const noUpdateError = new Error("No valid fields were included in the update request");
     throw noUpdateError;
   }
-  const query = {_id: token.id};
+  const query = {_id: userId};
   const updateOptions = {
     new: true
   };
@@ -92,19 +104,14 @@ const updateUser = async (requestBody, webToken) => {
   return update;
 };
 
-const deleteUser = async (webToken) => {
-  const token = jwt.verify(webToken, Config.security.tokensecret);
-
-  //XXX: This implementation uses the token to detrmine which user to delete
-  // As such, if someone tries to delete with a randomized token that
-  // happens to match something, that thing may get delete
-  // Need to figure out how to prevent that...
-  return await User.remove({_id: token.id});
+const deleteUser = async (userId) => {
+  return await User.remove({_id: userId});
 };
 export {
   getRole,
   getAllUsers,
   addNewUser,
   updateUser,
-  deleteUser
+  deleteUser,
+  getUser
 };

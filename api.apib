@@ -1,17 +1,24 @@
 FORMAT: 1A
+
 HOST: http://localhost:3000/api/v1
 
 # Serialized
+
 Serialized is an API for serving and storing serial stories and parts that make them up
 
 # Group Users
-Resources related to Users
 
-## List Users[/users]
+User Resources
+
+## User Collection [/users]
+
 ### List All Users [GET]
+
 + Response 200 (application/json)
 
+
 ### Create new user [POST]
+
 Users may register new accounts
 
 + Request (application/json)
@@ -36,3 +43,21 @@ Users may register new accounts
         },
       }
     }
++ Response 200 (application/json)
+  {
+    "status": 200
+  }
+
++ Response 400 (application/json)
+
+### Delete a User [DELETE]
+
++ Response 200
+
+### Update a User [PUT]
+
+# Group Auth
+
+User Authentication
+
+### Attempt User athentication

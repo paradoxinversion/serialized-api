@@ -1,7 +1,7 @@
 import SerialPart from '../database/mongo/SerialPart';
 import Serial from '../database/mongo/Serial';
 import * as jwt from "jsonwebtoken";
-
+import * as serialPartActions from '../database/actions/serialPart';
 const Config = require('../config/config').getConfig();
 const _ = require("lodash");
 
@@ -12,9 +12,10 @@ const _ = require("lodash");
  */
 const getSerialParts = async (req, res) => {
   try{
-
+    console.log(req.params)
+    const serial = await Serial.findOne({_id: req.params.serialId})
     const serialParts = await SerialPart.find({serial_id: req.params.serialId});
-    res.json(serialParts);
+    res.json({serial, serialParts});
   } catch (error) {
     return res.json({
       status: error.statusCode,
@@ -26,19 +27,22 @@ const getSerialParts = async (req, res) => {
   }
 };
 
+const getSingleSerialPart = async (req, res) => {
+  try{
+    res.json(await serialPartActions.getSingleSerialPart(req.params.serialId, req.params.partId))
+  } catch (error) {
+    return res.json({
+      status: error.statusCode,
+      error: {
+        name: error.name,
+        message: error.message
+      }
+    });
+  }
+}
 const postSerialPart = async (req, res) => {
   try{
-    // const serial = await Serial.find({_id: req.params.serialId});
-    const newPart = new SerialPart({
-      title: req.body.title,
-      content: req.body.content,
-      creation_date: Date.now(),
-      serial_id: req.params.serialId,
-      slug: _.kebabCase(req.body.title)
-    });
-
-    await newPart.save();
-
+    const newPart = await serialPartActions.createSerialPart(req.body, req.params.serialId);
     res.json(newPart);
   } catch (error) {
     return res.json({
@@ -53,19 +57,9 @@ const postSerialPart = async (req, res) => {
 
 const deleteSerialPart = async (req, res) => {
   try{
-    const token = jwt.verify(req.user.token, Config.security.tokensecret);
-    if (!req.query.partId){
-      const noIdError = new Error("No serial part ID supplied for delete operation.");
-      throw noIdError;
-    }
-    const serialPart = await SerialPart.findOne({_id: req.query.partId}).populate('serial_id');
-    if (token.id == serialPart.serial_id.author_id){
-      const deletionResult = await SerialPart.remove({_id: req.query.partId});
-      res.json(deletionResult);
-    } else {
-      const wrongOwnerError = new Error("User ID does not match Author ID, aborting delete.");
-      throw wrongOwnerError;
-    }
+    const deletionResult = serialPartActions.deleteSerialPart(req.params.partId, req.session.passport.user)
+
+    res.json(deletionResult);
   } catch(error){
     return res.json({
       status: "400",
@@ -111,5 +105,6 @@ export {
   getSerialParts,
   postSerialPart,
   deleteSerialPart,
-  editSerialPart
+  editSerialPart,
+  getSingleSerialPart
 };

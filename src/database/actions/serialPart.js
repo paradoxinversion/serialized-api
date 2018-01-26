@@ -1,7 +1,8 @@
-import SerialPart from '../database/mongo/SerialPart';
+import Serial from '../mongo/Serial';
+import SerialPart from '../mongo/SerialPart';
 import * as jwt from "jsonwebtoken";
 
-const Config = require('../config/config').getConfig();
+const Config = require('../../config/config').getConfig();
 const _ = require("lodash");
 
 // these routes all have a query param /:serialId
@@ -17,8 +18,17 @@ const readSerialParts = async (serialId) => {
   }
 };
 
+const getSingleSerialPart = async (serialId, partId) => {
+  const parentSerial = await Serial.findOne({_id:serialId});
+  const part = await SerialPart.findOne({_id:partId});
+  return {
+    parentSerial,
+    part
+  };
+};
 const createSerialPart = async (requestBody, parentSerialId) => {
   try{
+    console.log("PARENT SERIAL::", parentSerialId);
     // const serial = await Serial.find({_id: req.params.serialId});
     const newPart = new SerialPart({
       title: requestBody.title,
@@ -35,15 +45,14 @@ const createSerialPart = async (requestBody, parentSerialId) => {
   }
 };
 
-const deleteSerialPart = async (partId, webToken) => {
+const deleteSerialPart = async (partId, userId) => {
   try{
-    const token = jwt.verify(webToken, Config.security.tokensecret);
     if (!partId){
       const noIdError = new Error("No serial part ID supplied for delete operation.");
       throw noIdError;
     }
     const serialPart = await SerialPart.findOne({_id: partId}).populate('serial_id');
-    if (token.id != serialPart.serial_id.author_id){
+    if (userId != serialPart.serial_id.author_id){
       const wrongOwnerError = new Error("User ID does not match Author ID, aborting delete.");
       throw wrongOwnerError;
     }
@@ -82,5 +91,6 @@ export {
   readSerialParts,
   createSerialPart,
   deleteSerialPart,
-  updateSerialPart
+  updateSerialPart,
+  getSingleSerialPart
 };
