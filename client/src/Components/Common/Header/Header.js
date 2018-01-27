@@ -9,8 +9,8 @@ const Header = (props) => {
       (
         <div className="navbar">
           <div className="navbar-brand">
-            <p> Serialized </p>
-            <button className="button navbar-burger nav-toggle" onClick={()=> {
+            <NavLink className="logo" to="/"> Serialized </NavLink>
+            <button className="button is-small navbar-burger nav-toggle" onClick={()=> {
               let burger = document.querySelector(".navbar-burger");
               let menu = document.querySelector(".navbar-menu")
               burger.classList.toggle("is-active");
@@ -27,7 +27,6 @@ const Header = (props) => {
               <div><NavLink className="navbar-item" to="/dashboard"> Dashboard </NavLink></div>
               <div><NavLink className="navbar-item" to="/serials"> Serials </NavLink></div>
               <div><NavLink className="navbar-item" to="/users"> Users </NavLink></div>
-
               <div><NavLink className="navbar-item" to="/auth/logout"> Log Out </NavLink></div>
             </div>
           </div>
@@ -37,8 +36,8 @@ const Header = (props) => {
       (
         <div className="navbar">
           <div className="navbar-brand">
-            <NavLink to="/"> Serialized </NavLink>
-            <button className="button navbar-burger nav-toggle" onClick={()=> {
+            <NavLink className="logo" to="/"> Serialized </NavLink>
+            <button className="button is-small navbar-burger nav-toggle" onClick={()=> {
               let burger = document.querySelector(".navbar-burger");
               let menu = document.querySelector(".navbar-menu");
               burger.classList.toggle("is-active");

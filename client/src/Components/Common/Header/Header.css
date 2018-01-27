@@ -1,0 +1,42 @@
+.active{
+  color: grey;
+  font-weight: bold;
+}
+
+.logo{
+  color: white;
+  text-decoration: none;
+  font-size: 20px;
+  font-weight: bold;
+}
+
+.navbar{
+  background-color: black;
+  color: white;
+  padding: 4px;
+}
+
+.navbar-burger{
+  background-color: black;
+  color: white;
+  border-color: white;
+  padding-bottom: 4px;
+
+}
+
+.navbar-burger:active{
+  background-color: black;
+  color: white;
+  border-color: white;
+}
+.navbar-burger:hover{
+  background-color: black;
+  color: white;
+  border-color: white;
+}
+
+.button.is-active{
+  background-color: black;
+  color: white;
+  border-color: white;
+}

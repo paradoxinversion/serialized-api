@@ -1,7 +1,8 @@
 import React from 'react';
-import queryString from 'query-string';
 import {withRouter, Link} from 'react-router-dom';
 import axios from 'axios';
+import '../../css/bulma.css';
+
 const SerialList = withRouter((props) => {
 
   if (props.serials.length > 0){
@@ -10,7 +11,7 @@ const SerialList = withRouter((props) => {
     });
     return (
       <div>
-        <p> User Serials </p>
+        <p className="subtitle"> User Serials </p>
         <ul>{serials}</ul>
       </div>
     );
@@ -71,15 +72,6 @@ class Profile extends React.Component {
     this.props.onLoad();
   }
 
-  // Client user will be null no matter what (?) when this page mounts
-  // Use this to update when the component recieves props
-  componentWillReceiveProps(nextProps){
-    // if (nextProps.clientUser !== this.props.clientUser){
-    //   this.setState({
-    //     clientUser: nextProps.clientUser
-    //   });
-    // }
-  }
   handleFormInput(event){
     const target = event.target;
     const value = target.type === 'checkbox' ? target.checked : target.value;
@@ -110,15 +102,16 @@ class Profile extends React.Component {
     this.getProfileData();
   }
 
-
   render() {
-    let editProfileLink;
-    let createSerialLink;
-    if (this.state.queriedUser._id === this.props.clientUser.id){
-      editProfileLink = <button className="button" onClick={this.handleEditButtonClick.bind(this)}> Edit Profile </button>;
-      // const newSerialLink = `/create-serial?user=${this.state.query.user}`;
+    let userActions;
+    if (this.props.clientUser && this.state.queriedUser._id === this.props.clientUser.id){
       const newSerialLink = `/serials/create`;
-      createSerialLink = <Link to={newSerialLink}> Create a new Serial </Link>;
+      userActions = (
+        <div className="level">
+          <button className="button level-item" onClick={this.handleEditButtonClick.bind(this)}> Edit Profile </button>
+          <Link className="button level-item" to={newSerialLink}> Create a new Serial </Link>
+        </div>
+      );
     }
 
     if (this.state.editMode){
@@ -129,7 +122,7 @@ class Profile extends React.Component {
           <form>
             <label> Bio <textarea name="biography" onChange={this.handleFormInput.bind(this)}></textarea></label>
           </form>
-          <button className="button" >onClick={this.handleProfileSubmit.bind(this)}> Submit </button>
+          <button className="button" onClick={this.handleProfileSubmit.bind(this)}> Submit </button>
         </div>
       );
     }else {
@@ -138,9 +131,7 @@ class Profile extends React.Component {
           <h1 className="title is-4"> {this.state.queriedUser.username} </h1>
 
           <p> {this.state.queriedUser.biography} </p>
-          {editProfileLink}
-
-          {createSerialLink}
+          {userActions}
           <SerialList queriedUser={this.state.queriedUser} serials={this.state.userSerials}/>
         </div>
       );

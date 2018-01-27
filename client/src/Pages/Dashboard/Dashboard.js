@@ -2,13 +2,14 @@ import React from 'react';
 import {withRouter, Link} from 'react-router-dom';
 import axios from 'axios';
 import store from 'store';
+import './Dashboard.css';
 const SerialList = withRouter((props) => {
   if (props.serials.length > 0){
     const serials = props.serials.map((serial) => {
       const serialuri = `/serials/${serial._id}`;
       return (
         <li key={serial._id}>
-          <Link to={serialuri}>{serial.title}</Link>
+          <Link className="serial-link" to={serialuri}>{serial.title}</Link>
           <button className="button is-danger is-small" onClick={async ()=>{
             await axios.delete(`/serials?serialId=${serial._id}`, {withCredentials: true});
             const dashboard = {

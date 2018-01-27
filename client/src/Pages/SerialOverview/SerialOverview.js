@@ -2,7 +2,8 @@ import React from 'react';
 import queryString from 'query-string';
 import {withRouter, Link} from 'react-router-dom'
 import axios from 'axios';
-import '../css/bulma.css'
+import '../../css/bulma.css';
+import './SerialOverview.css'
 
 const SerialPartList = withRouter((props) => {
   if (props.serialParts.length > 0){
@@ -11,7 +12,7 @@ const SerialPartList = withRouter((props) => {
       return (
         <li key={serialPart._id}>
           {/* <Link to={uri}>{serialPart.title}</Link> */}
-          <Link to={{
+          <Link className="serial-part-title" to={{
             pathname: uri,
             state: {testState: "heckin mad"}
           }}>{serialPart.title}</Link>
@@ -72,7 +73,14 @@ class SerialOverview extends React.Component {
   render() {
     let newPartLink;
     let editPartLink;
+    let authorControls;
     if (this.props.clientUser && this.props.clientUser.id === this.state.serial.author_id){
+      authorControls = (
+        <div className="level">
+          <Link className="button level-item" to={`/serials/${this.state.serial._id}/new`}> Create a New Part </Link>
+          <Link className="button level-item" to={`/serials/${this.state.serial._id}/edit`}> Edit Serial Details </Link>
+        </div>
+      );
       newPartLink = <Link className="button" to={`/serials/${this.state.serial._id}/new`}> Create a New Part </Link>;
       editPartLink = <Link className="button" to={`/serials/${this.state.serial._id}/edit`}> Edit Serial Details </Link>;
     }
@@ -80,9 +88,9 @@ class SerialOverview extends React.Component {
     return (
       <div>
         <h1 className="title"> {this.state.serial.title}</h1>
-        <p> {this.state.serial.synopsis} </p>
-        {newPartLink}
-        {editPartLink}
+        <h2 className="subtitle">{this.state.serial.genre}</h2>
+        <p className="genre">{this.state.serial.synopsis}</p>
+        {authorControls}
         <SerialPartList parentSerial={this.state.serial} serialParts={this.state.serialParts}/>
       </div>
     );

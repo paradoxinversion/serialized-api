@@ -7,7 +7,7 @@ const UserList = withRouter((props) => {
   console.log("USERLIST PROPS", props)
   if (props.users.length > 0){
     const users = props.users.map((user) => {
-      const uri = `/users/${user._id}`
+      const uri = `/profile/${user.username}`
       return (
         <li key={user._id}>
           {/* <Link to={uri}>{user.title}</Link> */}

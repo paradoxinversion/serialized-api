@@ -34,14 +34,15 @@ class ViewSerialPart extends React.Component {
   render() {
     const parentSerialUri = `/serials/${this.props.match.params.id}`
     let partEditLink;
-    console.log(this.state.parentSerial.author_id === this.props.clientUser.id);
     if (this.props.clientUser && this.props.clientUser.id === this.state.parentSerial.author_id){
-      partEditLink = <Link className="button" to={`/serials/${this.props.match.params.id}/${this.props.match.params.partId}/edit`}> Edit </Link>
+      partEditLink = <Link className="button level-item" to={`/serials/${this.props.match.params.id}/${this.props.match.params.partId}/edit`}> Edit </Link>
     }
     return (
       <div>
-        <Link className="button" to={parentSerialUri}>Back to {this.state.parentSerial.title}</Link>
-        {partEditLink}
+        <div className="level">
+          <Link className="button level-item" to={parentSerialUri}>Back to {this.state.parentSerial.title}</Link>
+          {partEditLink}
+        </div>
         <h1 className="title"> {this.state.serialPartData.title}</h1>
         <section className="section">
           <p> {this.state.serialPartData.content}</p>

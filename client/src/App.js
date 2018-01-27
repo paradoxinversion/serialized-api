@@ -12,19 +12,15 @@ import './App.css';
 /*
   Route Components
 */
-import Home from './Pages/Home';
+import Home from './Pages/Home/Home';
 import LogIn from './Pages/LogIn';
 import Register from './Pages/Register';
-import Profile from './Pages/Profile';
-// import CreateSerial from './Pages/CreateSerial';
-// import CreateSerialPart from './Pages/CreateSerialPart';
-// import ViewSerialPart from './Pages/ViewSerialPart';
-// import SerialOverview from './Pages/SerialOverview';
+import Profile from './Pages/Profile/Profile';
 import Serials from './Pages/Serials';
 import Authorization from './Pages/Authorization'
 import Header from './Components/Common/Header/Header';
 import Footer from './Components/Common/Footer/Footer';
-import Dashboard from './Pages/Dashboard';
+import Dashboard from './Pages/Dashboard/Dashboard';
 import UserDirectory from './Pages/UserDirectory'
 import store from 'store';
 
@@ -134,7 +130,11 @@ class App extends Component {
                     setUser={this.setUser}
                     onSignIn={this.setAuthStatus.bind(this)}
                     user={this.state.user} />} />
-
+              <Route
+                exact path="/users"
+                authStatus={this.state.isAuthenticated}
+                clientUser={this.state.user}
+                component={UserDirectory} />
               <Route
                 path="/profile/:username"
                 render={ () =>
@@ -155,11 +155,7 @@ class App extends Component {
                 clientUser={this.state.user}
                 component={Dashboard} />
 
-              <PrivateRoute
-                path="/users"
-                authStatus={this.state.isAuthenticated}
-                clientUser={this.state.user}
-                component={UserDirectory} />
+
             </div>
           </div>
           <Footer />

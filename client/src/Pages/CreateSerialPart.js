@@ -64,7 +64,7 @@ class CreateSerialPart extends React.Component {
         <h1> New Serial Part</h1>
         <form onSubmit={this.handleSubmit}>
           <label className="label">Title: <input className="input" name="title" type="text" onChange={this.handleFormInput}/> </label>
-          <label className="label">Content: <input className="textarea" name="content" type="text" onChange={this.handleFormInput}/> </label>
+          <label className="label">Content: <textarea className="textarea" name="content" type="text" onChange={this.handleFormInput}/> </label>
           <input className="button is-primary" type="submit" value="Submit" onClick={this.handleSerialPartSubmit.bind(this)} />
         </form>
       </div>

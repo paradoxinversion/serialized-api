@@ -10,7 +10,7 @@ import {
 import CreateSerial from './CreateSerial';
 import CreateSerialPart from './CreateSerialPart';
 import ViewSerialPart from './ViewSerialPart';
-import SerialOverview from './SerialOverview';
+import SerialOverview from './SerialOverview/SerialOverview';
 import EditSerial from './EditSerial';
 import EditSerialPart from './EditSerialPart';
 import SerialDirectory from './SerialDirectory';
