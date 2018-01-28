@@ -1,6 +1,6 @@
 import React from 'react';
 import {withRouter, Link} from 'react-router-dom';
-import '../css/bulma.css';
+import '../../../css/bulma.css';
 class Register extends React.Component {
   constructor(props) {
     super(props);

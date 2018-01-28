@@ -5,8 +5,8 @@ import {
   Redirect,
   withRouter
 } from 'react-router-dom';
-import LogIn from './LogIn';
-import Register from './Register';
+import LogIn from '../LogIn/LogIn';
+import Register from '../Register/Register';
 import axios from 'axios';
 const Authorization = (props) => {
   return (

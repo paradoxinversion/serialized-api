@@ -1,7 +1,7 @@
 import React from 'react';
 import {  NavLink, withRouter, Redirect, Link } from 'react-router-dom';
 import axios from 'axios';
-import '../css/bulma.css'
+import '../../../css/bulma.css'
 
 const SerialList = withRouter((props) => {
   if (props.serials.length > 0){

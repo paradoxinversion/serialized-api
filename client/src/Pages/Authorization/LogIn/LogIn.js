@@ -1,7 +1,7 @@
 import React from 'react';
 import {withRouter, Link} from 'react-router-dom';
 import axios from 'axios';
-import '../css/bulma.css';
+import '../../../css/bulma.css';
 class LogIn extends React.Component {
   constructor(props) {
     super(props);

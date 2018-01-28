@@ -7,13 +7,13 @@ import {
   Link,
   Switch
 } from 'react-router-dom';
-import CreateSerial from './CreateSerial';
-import CreateSerialPart from './CreateSerialPart';
-import ViewSerialPart from './ViewSerialPart';
-import SerialOverview from './SerialOverview/SerialOverview';
-import EditSerial from './EditSerial';
-import EditSerialPart from './EditSerialPart';
-import SerialDirectory from './SerialDirectory';
+import CreateSerial from '../CreateSerial/CreateSerial';
+import CreateSerialPart from '../CreateSerialPart/CreateSerialPart';
+import ViewSerialPart from '../ViewSerialPart/ViewSerialPart';
+import SerialOverview from '../SerialOverview/SerialOverview';
+import EditSerial from '../EditSerial/EditSerial';
+import EditSerialPart from '../EditSerialPart/EditSerialPart';
+import SerialDirectory from '../SerialDirectory/SerialDirectory';
 const BrowseSerials = () => {
   return (
     <div>

@@ -13,15 +13,13 @@ import './App.css';
   Route Components
 */
 import Home from './Pages/Home/Home';
-import LogIn from './Pages/LogIn';
-import Register from './Pages/Register';
-import Profile from './Pages/Profile/Profile';
-import Serials from './Pages/Serials';
-import Authorization from './Pages/Authorization'
+import Profile from './Pages/Profile/Profile/Profile';
+import Serials from './Pages/Serials/Serials/Serials';
+import Authorization from './Pages/Authorization/Authorization/Authorization';
 import Header from './Components/Common/Header/Header';
 import Footer from './Components/Common/Footer/Footer';
 import Dashboard from './Pages/Dashboard/Dashboard';
-import UserDirectory from './Pages/UserDirectory'
+import UserDirectory from './Pages/UserDirectory/UserDirectory';
 import store from 'store';
 
 const PrivateRoute = ({ component: Component, authStatus, clientUser,  ...rest }) => (
