@@ -71,7 +71,7 @@ class EditSerial extends React.Component {
       <div>
         <h1> Edit Serial </h1>
         <form onSubmit={this.handleSubmit}>
-          <label >Title: <input name="title" type="text" value={this.state.title} onChange={this.handleFormInput} required/> </label>
+          <label >Title: <input name="title" type="text" onChange={this.handleFormInput} required/> </label>
           <label >Synopsis: <input name="synopsis" type="text" onChange={this.handleFormInput} required/> </label>
           <label >Genre: <input name="genre" type="text" onChange={this.handleFormInput} required/> </label>
           <label >NSFW: <input name="nsfw" type="checkbox" onChange={this.handleFormInput} required/> </label>
