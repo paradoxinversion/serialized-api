@@ -1,7 +1,7 @@
-import React from 'react';
-import queryString from 'query-string';
-import {withRouter} from 'react-router-dom';
-import axios from 'axios';
+import React from "react";
+import queryString from "query-string";
+import {withRouter} from "react-router-dom";
+import axios from "axios";
 
 class CreateSerialPart extends React.Component {
   constructor(props) {
@@ -9,8 +9,8 @@ class CreateSerialPart extends React.Component {
     this.state = {
       query: queryString.parse(props.location.search),
       parentSerial: {},
-      title: '',
-      content: ''
+      title: "",
+      content: ""
     };
     this.handleFormInput = this.handleFormInput.bind(this);
 
@@ -23,14 +23,12 @@ class CreateSerialPart extends React.Component {
     });
   }
 
-  componentDidMount(){
-  }
   componentWillMount(){
     this.getSerialData();
   }
   handleFormInput(event){
     const target = event.target;
-    const value = target.type === 'checkbox' ? target.checked : target.value;
+    const value = target.type === "checkbox" ? target.checked : target.value;
     const name = target.name;
     this.setState({
       [name]: value
@@ -49,7 +47,7 @@ class CreateSerialPart extends React.Component {
     const configuration = {
       withCredentials: true
     };
-    const partSubmissionResult = await axios.post(uri, data, configuration);
+    await axios.post(uri, data, configuration);
     const serial = {
       pathname: `/serials/${this.state.parentSerial.serial._id}`
     };

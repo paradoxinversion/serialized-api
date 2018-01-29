@@ -1,4 +1,4 @@
-import React from 'react';
+import React from "react";
 
 import {
   Route,
@@ -6,14 +6,14 @@ import {
   Redirect,
   Link,
   Switch
-} from 'react-router-dom';
-import CreateSerial from '../CreateSerial/CreateSerial';
-import CreateSerialPart from '../CreateSerialPart/CreateSerialPart';
-import ViewSerialPart from '../ViewSerialPart/ViewSerialPart';
-import SerialOverview from '../SerialOverview/SerialOverview';
-import EditSerial from '../EditSerial/EditSerial';
-import EditSerialPart from '../EditSerialPart/EditSerialPart';
-import SerialDirectory from '../SerialDirectory/SerialDirectory';
+} from "react-router-dom";
+import CreateSerial from "../CreateSerial/CreateSerial";
+import CreateSerialPart from "../CreateSerialPart/CreateSerialPart";
+import ViewSerialPart from "../ViewSerialPart/ViewSerialPart";
+import SerialOverview from "../SerialOverview/SerialOverview";
+import EditSerial from "../EditSerial/EditSerial";
+import EditSerialPart from "../EditSerialPart/EditSerialPart";
+import SerialDirectory from "../SerialDirectory/SerialDirectory";
 const BrowseSerials = () => {
   return (
     <div>
@@ -29,29 +29,14 @@ const PrivateRoute = ({ component: Component, authStatus, clientUser,  ...rest }
       <Component {...props} clientUser={clientUser} />
     ) : (
       <Redirect to={{
-        pathname: '/auth/login',
+        pathname: "/auth/login",
         state: { from: props.location }
       }}/>
     )
   )}/>
 );
 
-const PrivateEditRoute = ({ component: Component, authStatus, clientUser, ...rest }) => (
-  <Route {...rest} render={ (props) => (
-    authStatus ? (
-      <Component {...props} clientUser={clientUser} />
-    ) : (
-      <Redirect to={{
-        pathname: '/auth/login',
-        state: { from: props.location }
-      }}/>
-    )
-  )}/>
-);
 class Serials extends React.Component {
-  constructor(props){
-    super(props);
-  }
   render(){
     return (
       <div>

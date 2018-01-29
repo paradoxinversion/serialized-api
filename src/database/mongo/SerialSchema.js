@@ -1,4 +1,4 @@
-import {Schema} from 'mongoose';
+import {Schema} from "mongoose";
 
 const SerialSchema = new Schema({
   title: {
@@ -13,10 +13,6 @@ const SerialSchema = new Schema({
     type: String,
     required: true
   },
-  description: {
-    type: String,
-    required: true
-  },
   nsfw: {
     type: Boolean,
     required: true
@@ -27,7 +23,7 @@ const SerialSchema = new Schema({
   },
   author_id: {
     type: Schema.Types.ObjectId,
-    ref: 'User',
+    ref: "User",
     required: true
   },
   slug: {
@@ -36,7 +32,7 @@ const SerialSchema = new Schema({
   },
   serialParts: [{
     type: Schema.Types.ObjectId,
-    ref: 'SerialPart',
+    ref: "SerialPart",
     required: false
   }]
 });

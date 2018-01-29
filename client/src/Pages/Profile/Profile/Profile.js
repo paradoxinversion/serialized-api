@@ -1,7 +1,7 @@
-import React from 'react';
-import {withRouter, Link} from 'react-router-dom';
-import axios from 'axios';
-import '../../../css/bulma.css';
+import React from "react";
+import {withRouter, Link} from "react-router-dom";
+import axios from "axios";
+import "../../../css/bulma.css";
 
 const SerialList = withRouter((props) => {
 
@@ -74,7 +74,7 @@ class Profile extends React.Component {
 
   handleFormInput(event){
     const target = event.target;
-    const value = target.type === 'checkbox' ? target.checked : target.value;
+    const value = target.type === "checkbox" ? target.checked : target.value;
     const name = target.name;
     this.setState({
       [name]: value

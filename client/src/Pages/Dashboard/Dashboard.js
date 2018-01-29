@@ -1,8 +1,7 @@
-import React from 'react';
-import {withRouter, Link} from 'react-router-dom';
-import axios from 'axios';
-import store from 'store';
-import './Dashboard.css';
+import React from "react";
+import {withRouter, Link} from "react-router-dom";
+import axios from "axios";
+import "./Dashboard.css";
 const SerialList = withRouter((props) => {
   if (props.serials.length > 0){
     const serials = props.serials.map((serial) => {
@@ -13,7 +12,7 @@ const SerialList = withRouter((props) => {
           <button className="button is-danger is-small" onClick={async ()=>{
             await axios.delete(`/serials?serialId=${serial._id}`, {withCredentials: true});
             const dashboard = {
-              pathname: '/dashboard'
+              pathname: "/dashboard"
             };
             props.history.push(dashboard);
           }}> Delete </button>

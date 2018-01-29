@@ -1,4 +1,4 @@
-import {Schema} from 'mongoose';
+import {Schema} from "mongoose";
 // FIXME: Change serial_id to parentSerial
 
 const SerialPartSchema = new Schema({
@@ -16,7 +16,7 @@ const SerialPartSchema = new Schema({
   },
   serial_id: {
     type: Schema.Types.ObjectId,
-    ref: 'Serial',
+    ref: "Serial",
     required: true
   },
   slug: {

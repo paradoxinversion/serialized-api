@@ -1,7 +1,7 @@
-import React from 'react';
-import {withRouter, Link} from 'react-router-dom';
-import axios from 'axios';
-import '../../../css/bulma.css';
+import React from "react";
+import {withRouter, Link} from "react-router-dom";
+import axios from "axios";
+import "../../../css/bulma.css";
 class LogIn extends React.Component {
   constructor(props) {
     super(props);
@@ -13,7 +13,7 @@ class LogIn extends React.Component {
   }
   handleFormInput(event){
     const target = event.target;
-    const value = target.type === 'checkbox' ? target.checked : target.value;
+    const value = target.type === "checkbox" ? target.checked : target.value;
     const name = target.name;
     this.setState({
       [name]: value
@@ -33,7 +33,7 @@ class LogIn extends React.Component {
       this.props.setUser(loginResponse.data.user);
       this.props.onSignIn(true);
       const dashboard = {
-        pathname: '/dashboard'
+        pathname: "/dashboard"
       };
       this.props.history.push(dashboard);
     } catch (e){

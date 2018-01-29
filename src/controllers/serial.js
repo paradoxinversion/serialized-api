@@ -1,22 +1,5 @@
-import Serial from '../database/mongo/Serial';
-import SerialPart from '../database/mongo/SerialPart';
-import * as jwt from "jsonwebtoken";
+import SerialPart from "../database/mongo/SerialPart";
 import * as serialActions from "../database/actions/serial";
-const Config = require('../config/config').getConfig();
-const _ = require("lodash");
-
-/**
- * Deletes all parts associated with a serial
- * This should be called when a serial is deleted for proper cleanup
- */
-const deleteSerialParts = async(serial) => {
-  try {
-    const removalResult = await SerialPart.remove({serial_id: serial._id});
-    return removalResult;
-  } catch (error){
-    throw error;
-  }
-};
 
 /**
  * Get a list of serials. If there is a userId query, gets only serials by that user.
@@ -49,8 +32,6 @@ const getSerials = async (req, res) => {
  * Post a new serial
  */
 const postSerial = async (req, res) => {
-
-  console.log(req.body)
   try{
     const newSerial = await serialActions.postSerial(req.body, req.session.passport.user);
     res.json(newSerial);
@@ -84,7 +65,7 @@ const getSerialsByAuthorId = async (req, res) => {
 };
 
 /**
- * Delete a serial overview/uses bearer tokens to decide
+ *
  */
 const deleteSerial = async (req, res) => {
   try{

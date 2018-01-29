@@ -1,15 +1,14 @@
-import React from 'react';
-import {  NavLink, withRouter, Redirect, Link } from 'react-router-dom';
-import axios from 'axios';
-import '../../../css/bulma.css'
+import React from "react";
+import {  withRouter, Link } from "react-router-dom";
+import axios from "axios";
+import "../../../css/bulma.css";
 
 const SerialList = withRouter((props) => {
   if (props.serials.length > 0){
     const serials = props.serials.map((serial) => {
-      const uri = `/serials/${serial._id}`
+      const uri = `/serials/${serial._id}`;
       return (
         <li key={serial._id}>
-          {/* <Link to={uri}>{serial.title}</Link> */}
           <Link to={{
             pathname: uri
           }}>{serial.title}</Link>
@@ -33,7 +32,7 @@ class SerialDirectory extends React.Component{
     super(props);
     this.state = {
       serials: {}
-    }
+    };
   }
 
   async getUserSerialData(){
@@ -43,7 +42,6 @@ class SerialDirectory extends React.Component{
       };
       const uri = `/serials`;
       const serialData = await axios.get(uri, requestConfiguration);
-      console.log(serialData);
       this.setState({
         serials: serialData.data
       });
@@ -61,7 +59,7 @@ class SerialDirectory extends React.Component{
         <h1 className="title">Directory</h1>
         <SerialList serials={this.state.serials} />
       </div>
-    )
+    );
   }
 }
 

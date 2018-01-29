@@ -1,9 +1,9 @@
-import React from 'react';
+import React from "react";
 class ProfileEdit extends React.Component {
   constructor(props) {
     super(props);
     this.state ={
-      user: ''
+      user: ""
     };
   }
   componentDidMount(){

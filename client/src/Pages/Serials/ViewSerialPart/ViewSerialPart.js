@@ -26,7 +26,6 @@ class ViewSerialPart extends React.Component {
     })
   }
 
-
   componentWillMount(){
     this.getSerialPartData();
   }

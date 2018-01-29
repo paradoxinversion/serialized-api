@@ -1,8 +1,6 @@
-import SerialPart from '../database/mongo/SerialPart';
-import Serial from '../database/mongo/Serial';
-import * as jwt from "jsonwebtoken";
-import * as serialPartActions from '../database/actions/serialPart';
-const Config = require('../config/config').getConfig();
+import SerialPart from "../database/mongo/SerialPart";
+import Serial from "../database/mongo/Serial";
+import * as serialPartActions from "../database/actions/serialPart";
 const _ = require("lodash");
 
 // these routes all have a query param /:serialId
@@ -12,8 +10,7 @@ const _ = require("lodash");
  */
 const getSerialParts = async (req, res) => {
   try{
-    console.log(req.params)
-    const serial = await Serial.findOne({_id: req.params.serialId})
+    const serial = await Serial.findOne({_id: req.params.serialId});
     const serialParts = await SerialPart.find({serial_id: req.params.serialId});
     res.json({serial, serialParts});
   } catch (error) {
@@ -29,7 +26,7 @@ const getSerialParts = async (req, res) => {
 
 const getSingleSerialPart = async (req, res) => {
   try{
-    res.json(await serialPartActions.getSingleSerialPart(req.params.serialId, req.params.partId))
+    res.json(await serialPartActions.getSingleSerialPart(req.params.serialId, req.params.partId));
   } catch (error) {
     return res.json({
       status: error.statusCode,
@@ -39,7 +36,7 @@ const getSingleSerialPart = async (req, res) => {
       }
     });
   }
-}
+};
 const postSerialPart = async (req, res) => {
   try{
     const newPart = await serialPartActions.createSerialPart(req.body, req.params.serialId);
@@ -57,8 +54,7 @@ const postSerialPart = async (req, res) => {
 
 const deleteSerialPart = async (req, res) => {
   try{
-    const deletionResult = serialPartActions.deleteSerialPart(req.params.partId, req.session.passport.user)
-
+    const deletionResult = serialPartActions.deleteSerialPart(req.params.partId, req.session.passport.user);
     res.json(deletionResult);
   } catch(error){
     return res.json({

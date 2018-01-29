@@ -1,14 +1,13 @@
-import React from 'react';
-import queryString from 'query-string';
-import {withRouter, Link} from 'react-router-dom'
-import axios from 'axios';
-import '../../../css/bulma.css';
-import './SerialOverview.css'
+import React from "react";
+import {withRouter, Link} from "react-router-dom";
+import axios from "axios";
+import "../../../css/bulma.css";
+import "./SerialOverview.css";
 
 const SerialPartList = withRouter((props) => {
   if (props.serialParts.length > 0){
     const serials = props.serialParts.map((serialPart) => {
-      const uri = `/serials/${props.parentSerial._id}/${serialPart._id}`
+      const uri = `/serials/${props.parentSerial._id}/${serialPart._id}`;
       return (
         <li key={serialPart._id}>
           {/* <Link to={uri}>{serialPart.title}</Link> */}
@@ -20,7 +19,7 @@ const SerialPartList = withRouter((props) => {
           <button className="button is-small is-danger" onClick={async ()=>{
             await axios.delete(`/serials/${props.parentSerial._id}/${serialPart._id}`, {withCredentials: true});
             const dashboard = {
-              pathname: '/dashboard'
+              pathname: "/dashboard"
             };
             props.history.push(dashboard);
           }}> Delete </button>
@@ -46,14 +45,13 @@ class SerialOverview extends React.Component {
       serial: {},
       serialParts: []
     };
-    console.log(props.location);
   }
 
   getSerialPartData(){
     const uri = `/serials/${this.state.query}`;
     fetch(uri,{
-      mode: 'cors',
-      credentials: 'include'
+      mode: "cors",
+      credentials: "include"
     })
       .then(res => res.json())
       .then(result => {
@@ -63,16 +61,12 @@ class SerialOverview extends React.Component {
         });
       });
   }
-  componentDidMount(){
-    console.log(this.props.location.state)
-  }
+
   componentWillMount(){
     this.getSerialPartData();
   }
 
   render() {
-    let newPartLink;
-    let editPartLink;
     let authorControls;
     if (this.props.clientUser && this.props.clientUser.id === this.state.serial.author_id){
       authorControls = (
@@ -81,8 +75,6 @@ class SerialOverview extends React.Component {
           <Link className="button level-item" to={`/serials/${this.state.serial._id}/edit`}> Edit Serial Details </Link>
         </div>
       );
-      newPartLink = <Link className="button" to={`/serials/${this.state.serial._id}/new`}> Create a New Part </Link>;
-      editPartLink = <Link className="button" to={`/serials/${this.state.serial._id}/edit`}> Edit Serial Details </Link>;
     }
 
     return (

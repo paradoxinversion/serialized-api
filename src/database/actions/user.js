@@ -1,11 +1,12 @@
-'use strict';
-
 import User from "../mongo/User";
 import Role from "../mongo/Role";
 import bcrypt from "bcrypt";
-import * as jwt from "jsonwebtoken";
-const Config = require('../../config/config').getConfig();
 
+/**
+ * This function returns a user's role
+ * @param {ObjectId} userId The id of the user who's role to get
+ * @returns {Object} an object containing the user's role name and access level
+ */
 const getRole = async function (userId){
   const user = await User.findOne({_id:userId}).populate("role");
   if (!user){
@@ -18,6 +19,10 @@ const getRole = async function (userId){
   };
 };
 
+/**
+ * This function returns all users from the database
+ * @returns {Array} an array of users
+ */
 const getAllUsers = async () =>{
 
   const userList = await User
@@ -33,6 +38,11 @@ const getAllUsers = async () =>{
   return userList;
 };
 
+/**
+ * This function returns a specific user from the database
+ * @param {string} userName the username of the user to find
+ * @returns {Object} an object containing the user searched for (or null)
+ */
 const getUser = async(userName) =>{
   const user = await User
     .findOne({username:userName})
@@ -46,8 +56,12 @@ const getUser = async(userName) =>{
   return user;
 };
 
+/**
+ * This function posts a new user to the database
+ * @param {Object} requestBody The request from the client with all information for a new user
+ * @returns {Object} an object containing the user searched for (or null)
+ */
 const addNewUser = async (requestBody) => {
-  console.log("adding user")
   let hashedPassword;
   if (requestBody.password){
     hashedPassword = await bcrypt.hash(requestBody.password, 10);
@@ -71,7 +85,6 @@ const addNewUser = async (requestBody) => {
 
   try{
     await newUser.save();
-    console.log(newUser);
     return newUser;
   } catch (e){
     // Handle validation/duplicate user errors here
@@ -87,6 +100,12 @@ const addNewUser = async (requestBody) => {
   }
 };
 
+/**
+ * This function updates a user
+ * @param {Object} requestBody The request from the client with all information for a new user
+ * @param {Object} userId The id of the user to update
+ * @returns {Object} an object containing the updated user information
+ */
 const updateUser = async (requestBody, userId) => {
   const valuesToUpdate = {};
   if (requestBody.firstName) valuesToUpdate.firstName = requestBody.firstName;
@@ -104,6 +123,11 @@ const updateUser = async (requestBody, userId) => {
   return update;
 };
 
+/**
+ * This function deletes a user from the Database
+ * @param {Object} userId The id of the user to delete
+ * @returns {Object} an object containing the deleted user information
+ */
 const deleteUser = async (userId) => {
   return await User.remove({_id: userId});
 };

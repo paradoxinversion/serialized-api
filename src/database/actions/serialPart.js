@@ -1,14 +1,13 @@
-import Serial from '../mongo/Serial';
-import SerialPart from '../mongo/SerialPart';
-import * as jwt from "jsonwebtoken";
-
-const Config = require('../../config/config').getConfig();
-const _ = require("lodash");
+import * as _ from "lodash";
+import Serial from "../mongo/Serial";
+import SerialPart from "../mongo/SerialPart";
 
 // these routes all have a query param /:serialId
 
 /**
- * Return all parts in a serial
+ * This function returns all parts of a serial belong to serialId
+ * @param {ObjectId} serialId The id of the parent serial.
+ * @returns {array} an array of serial parts
  */
 const readSerialParts = async (serialId) => {
   try{
@@ -18,6 +17,12 @@ const readSerialParts = async (serialId) => {
   }
 };
 
+/**
+ * This function returns a single serial part in a parent serial
+ * @param {ObjectId} serialId The id of the parent serial.
+ * @param {ObjectId} partId The id of the serial part to be viewed.
+ * @returns {Object} The serial part
+ */
 const getSingleSerialPart = async (serialId, partId) => {
   const parentSerial = await Serial.findOne({_id:serialId});
   const part = await SerialPart.findOne({_id:partId});
@@ -26,9 +31,15 @@ const getSingleSerialPart = async (serialId, partId) => {
     part
   };
 };
+
+/**
+ * This function adds a new serial to the database and returns it
+ * @param {Object} requestBody The request body from the client machine
+ * @param {ObjectId} parentSerialId The serial to which this part should be added
+ * @returns {Object} a JSON object representing the serial part
+ */
 const createSerialPart = async (requestBody, parentSerialId) => {
   try{
-    console.log("PARENT SERIAL::", parentSerialId);
     // const serial = await Serial.find({_id: req.params.serialId});
     const newPart = new SerialPart({
       title: requestBody.title,
@@ -45,13 +56,18 @@ const createSerialPart = async (requestBody, parentSerialId) => {
   }
 };
 
+/**
+ * This function deletes a single part of a serial
+ * @param {Object} partId The id of the part to delete
+ * @param {ObjectId} userId The requesting user's ID
+ */
 const deleteSerialPart = async (partId, userId) => {
   try{
     if (!partId){
       const noIdError = new Error("No serial part ID supplied for delete operation.");
       throw noIdError;
     }
-    const serialPart = await SerialPart.findOne({_id: partId}).populate('serial_id');
+    const serialPart = await SerialPart.findOne({_id: partId}).populate("serial_id");
     if (userId != serialPart.serial_id.author_id){
       const wrongOwnerError = new Error("User ID does not match Author ID, aborting delete.");
       throw wrongOwnerError;
@@ -62,7 +78,12 @@ const deleteSerialPart = async (partId, userId) => {
     throw error;
   }
 };
-
+/**
+ * This function updates a serial part and returns the updated entry
+ * @param {Object} requestBody The request body from the client machine
+ * @param {ObjectId} partId The id of the serial part ot be edited
+ * @returns {Object} a JSON object representing the serial part
+ */
 const updateSerialPart = async (requestBody, partId) => {
   try{
     if (!partId){

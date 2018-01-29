@@ -1,5 +1,5 @@
-import {Schema} from 'mongoose';
-import bcrypt from 'bcrypt';
+import {Schema} from "mongoose";
+import bcrypt from "bcrypt";
 const UserSchema = new Schema({
   email: {
     type: String,
@@ -40,7 +40,7 @@ const UserSchema = new Schema({
   },
   role: {
     type: Schema.Types.ObjectId,
-    ref: 'Role',
+    ref: "Role",
     required: true
   }
 });

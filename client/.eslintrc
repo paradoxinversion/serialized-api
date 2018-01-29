@@ -16,6 +16,7 @@
   },
   "rules": {
     "indent": ["error", 2],
-    "semi": ["error", "always"]
+    "semi": ["error", "always"],
+    "quotes": ["error", "double", {avoidEscape: true, allowTemplateLiterals: true}]
   }
 }

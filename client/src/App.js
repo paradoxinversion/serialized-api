@@ -1,26 +1,25 @@
-import React, { Component } from 'react';
+import React, { Component } from "react";
 import {
   BrowserRouter as Router,
   Route,
   Redirect
-} from 'react-router-dom';
-import axios from 'axios';
-import './css/bulma.css';
-import './App.css';
-
+} from "react-router-dom";
+import axios from "axios";
+import "./css/bulma.css";
+import "./App.css";
 
 /*
   Route Components
 */
-import Home from './Pages/Home/Home';
-import Profile from './Pages/Profile/Profile/Profile';
-import Serials from './Pages/Serials/Serials/Serials';
-import Authorization from './Pages/Authorization/Authorization/Authorization';
-import Header from './Components/Common/Header/Header';
-import Footer from './Components/Common/Footer/Footer';
-import Dashboard from './Pages/Dashboard/Dashboard';
-import UserDirectory from './Pages/UserDirectory/UserDirectory';
-import store from 'store';
+import Home from "./Pages/Home/Home";
+import Profile from "./Pages/Profile/Profile/Profile";
+import Serials from "./Pages/Serials/Serials/Serials";
+import Authorization from "./Pages/Authorization/Authorization/Authorization";
+import Header from "./Components/Common/Header/Header";
+import Footer from "./Components/Common/Footer/Footer";
+import Dashboard from "./Pages/Dashboard/Dashboard";
+import UserDirectory from "./Pages/UserDirectory/UserDirectory";
+import store from "store";
 
 const PrivateRoute = ({ component: Component, authStatus, clientUser,  ...rest }) => (
   <Route {...rest} render={ (props) => (
@@ -28,12 +27,12 @@ const PrivateRoute = ({ component: Component, authStatus, clientUser,  ...rest }
       <Component {...props} clientUser={clientUser} />
     ) : (
       <Redirect to={{
-        pathname: '/auth/login',
+        pathname: "/auth/login",
         state: { from: props.location }
       }}/>
     )
   )}/>
-)
+);
 
 class App extends Component {
   constructor(props) {
@@ -64,9 +63,9 @@ class App extends Component {
       username: user.username,
       id: user._id
     };
-    store.set('client', {user: clientUser});
+    store.set("client", {user: clientUser});
     this.setState({
-      user: store.get('client').user
+      user: store.get("client").user
     });
   }
 
@@ -74,11 +73,11 @@ class App extends Component {
     Get the user in the store
   **/
   getUser(){
-    return store.get('client');
+    return store.get("client");
   }
 
   clearUser(){
-    store.remove('client');
+    store.remove("client");
     this.setState({
       user: null,
       isAuthenticated: false
@@ -92,7 +91,7 @@ class App extends Component {
 
   // Check if a user is in the store. If not, check if the server has a session
   async checkAuthentication() {
-    if (store.get('client')){
+    if (store.get("client")){
       this.setAuthStatus(true);
     } else {
       const uri = `/users/auth`;

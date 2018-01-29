@@ -1,26 +1,38 @@
-"use strict";
-
-import Serial from '../mongo/Serial';
-import SerialPart from '../mongo/SerialPart';
-
-import * as jwt from "jsonwebtoken";
 import * as _ from "lodash";
-const Config = require('../../config/config').getConfig();
+import Serial from "../mongo/Serial";
+import SerialPart from "../mongo/SerialPart";
 
+/**
+ * This function gets all serials in the database
+ * @returns {Array} all serials in the database
+ */
 export const getSerials = async () => {
   let serials = await Serial.find();
   return serials;
 };
+
+/**
+ * This function gets all serials by a single author
+ * @param {Object} requestBody The client request
+ * @param {string} authorId The id of the Author who's Serials to find
+ * @returns {Object} the new serial entry
+ */
 export const getAuthorSerials = async(authorId) => {
   return await Serial.find({author_id: authorId});
 };
+
+/**
+ * This function posts a new serial to the database
+ * @param {Object} requestBody The client request
+ * @param {string} userId The id of the user making the request
+ * @returns {Object} the new serial entry
+ */
 export const postSerial = async(requestBody, userId) => {
   try {
     const newSerial = new Serial({
       title: requestBody.title,
       synopsis: requestBody.synopsis,
       genre: requestBody.genre,
-      description: requestBody.description,
       nsfw: requestBody.nsfw,
       creation_date: Date.now(),
       author_id: userId,
@@ -30,9 +42,14 @@ export const postSerial = async(requestBody, userId) => {
   } catch (error){
     throw error;
   }
-
 };
 
+/**
+ * This function edits a serial's metadata
+ * @param {Object} requestBody The client request
+ * @param {string} serialIdQueryString the id of the serial to be edited
+ * @param {string} userId The id of the user making the request
+ */
 export const editSerial = async(requestBody, serialIdQueryString, userId) => {
   const query = {_id: serialIdQueryString};
   if (!serialIdQueryString){
@@ -50,17 +67,16 @@ export const editSerial = async(requestBody, serialIdQueryString, userId) => {
   if (requestBody.title) valuesToUpdate.title = requestBody.title;
   if (requestBody.synopsis) valuesToUpdate.synopsis = requestBody.synopsis;
   if (requestBody.genre) valuesToUpdate.genre = requestBody.genre;
-  if (requestBody.description) valuesToUpdate.description = requestBody.description;
-  // console.log(valuesToUpdate);
   const updateOptions = {
     new: true
   };
-  return await  Serial.findOneAndUpdate(query, valuesToUpdate, updateOptions);
+  return await Serial.findOneAndUpdate(query, valuesToUpdate, updateOptions);
 };
 
 /**
- * Deletes all parts associated with a serial
- * This should be called when a serial is deleted for proper cleanup
+ * This function deletes all parts associated with a serial. This should be
+ * called when a serial is deleted for proper cleanup
+ * @param {Object} serial the serial who's parts to delete
  */
 export const deleteSerialParts = async(serial) => {
   try {
@@ -71,6 +87,11 @@ export const deleteSerialParts = async(serial) => {
   }
 };
 
+/**
+ * This function deletes a serial and all associated parts
+ * @param {string} serialIdQueryString the serial id to delete
+* @param {string} userId the id of the requesting user
+ */
 export const deleteSerial = async (serialIdQueryString, userId) => {
   if (!serialIdQueryString){
     const noIdError = new Error("No serial ID supplied for delete operation.");
