@@ -6,7 +6,6 @@ import {
 import LogIn from "../LogIn/LogIn";
 import Register from "../Register/Register";
 import LogOut from "../LogOut/LogOut";
-// import axios from "axios";
 const Authorization = (props) => {
   return (
     <div>

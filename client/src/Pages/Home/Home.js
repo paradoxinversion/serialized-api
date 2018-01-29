@@ -1,23 +1,6 @@
 import React from "react";
 import heroImage from "./writing.jpg";
 class Home extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      users: {}
-    };
-
-    this.getUsers = this.getUsers.bind(this);
-  }
-  componentDidMount(){
-  }
-  getUsers(){
-    fetch("/users")
-      .then((res) => res.json())
-      .then((users) => {
-        this.setState({users});
-      });
-  }
   render() {
     return (
       <div>

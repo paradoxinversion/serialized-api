@@ -1,13 +1,15 @@
 import React from "react";
 import {withRouter, Link} from "react-router-dom";
 import axios from "axios";
+import InputField from "../../../Components/Common/Forms/FormComponents/InputField/InputField";
 import "../../../css/bulma.css";
 class LogIn extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
+      email: "",
+      password: ""
     };
-    console.log(props);
     this.handleSubmit = this.handleSubmit.bind(this);
     this.handleFormInput = this.handleFormInput.bind(this);
   }
@@ -47,7 +49,7 @@ class LogIn extends React.Component {
         <h1 className="title"> Log In </h1>
         <h2 className="subtitle"> Please enter your login information </h2>
         <form onSubmit={this.handleSubmit}>
-          <label className="label">Email: <input className="input" name="email" type="email" placeholder="Email" onChange={this.handleFormInput}/> </label>
+          <InputField name="email" title="Email" inputType="email" content={this.state.email} controlFunc={this.handleFormInput} placeholder="you@website.com" />
           <label className="label">Password: <input className="input" name="password" type="password" placeholder="Password" onChange={this.handleFormInput}/> </label>
           <input className="button" type="submit" value="Submit" />
         </form>
