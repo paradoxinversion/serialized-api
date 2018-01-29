@@ -5,7 +5,7 @@ class LogOut extends React.Component {
     super(props);
   }
   componentWillMount(){
-    axios.get("/users/logout");
+    axios.get("/users/auth/logout");
     this.props.clearUser();
   }
 

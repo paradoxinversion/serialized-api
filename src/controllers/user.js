@@ -79,6 +79,7 @@ const deleteUser = async function deleteUser(req, res){
 };
 
 const logOut = async function logOut(req, res){
+  console.log("Logging out");
   req.logOut();
   res.send("Bye bye");
 };
