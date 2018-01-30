@@ -1,15 +1,17 @@
 import React from "react";
 import {withRouter} from "react-router-dom";
 import axios from "axios";
-
+import {
+  InputField
+} from "../../../Components/Common/Forms/FormComponents";
 class EditSerial extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      title: props.title,
-      synopsis: props.synopsis,
-      genre: props.genre,
-      nsfw: props.nsfw
+      title: "",
+      synopsis: "",
+      genre: "",
+      nsfw: false
     };
     this.handleFormInput = this.handleFormInput.bind(this);
     axios.get(`/serials/${props.match.params.id}`)
@@ -71,9 +73,9 @@ class EditSerial extends React.Component {
       <div>
         <h1> Edit Serial </h1>
         <form onSubmit={this.handleSubmit}>
-          <label >Title: <input name="title" type="text" onChange={this.handleFormInput} required/> </label>
-          <label >Synopsis: <input name="synopsis" type="text" onChange={this.handleFormInput} required/> </label>
-          <label >Genre: <input name="genre" type="text" onChange={this.handleFormInput} required/> </label>
+          <InputField inputType="text" title="Title" name="title" controlFunc={this.handleFormInput} content={this.state.title} isRequired={true} />
+          <InputField inputType="text" title="Synopsis" name="synopsis" controlFunc={this.handleFormInput} content={this.state.synopsis} isRequired={true} />
+          <InputField inputType="text" title="Genre" name="genre" controlFunc={this.handleFormInput} content={this.state.genre} isRequired={true} />
           <label >NSFW: <input name="nsfw" type="checkbox" onChange={this.handleFormInput} required/> </label>
           <input type="submit" value="Submit" onClick={this.handleSerialSubmit.bind(this)} />
         </form>

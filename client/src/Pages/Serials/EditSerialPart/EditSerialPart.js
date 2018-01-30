@@ -1,13 +1,15 @@
 import React from "react";
 import {withRouter} from "react-router-dom";
 import axios from "axios";
-
+import {
+  InputField
+} from "../../../Components/Common/Forms/FormComponents";
 class EditSerial extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      // title: props.title,
-      // content: props.content
+      title: "",
+      content: ""
     };
     this.handleFormInput = this.handleFormInput.bind(this);
   }
@@ -61,8 +63,8 @@ class EditSerial extends React.Component {
       <div>
         <h1> Edit Serial </h1>
         <form onSubmit={this.handleSubmit}>
-          <label >Title: <input name="title" type="text" onChange={this.handleFormInput} required/> </label>
-          <label >Content: <input name="content" type="text" onChange={this.handleFormInput} required/> </label>
+          <InputField inputType="text" title="Title" name="title" controlFunc={this.handleFormInput} content={this.state.title} isRequired={true} />
+          <InputField inputType="text" title="Content" name="title" controlFunc={this.handleFormInput} content={this.state.content} isRequired={true} />
           <input type="submit" value="Submit" onClick={this.handleSerialSubmit.bind(this)} />
         </form>
       </div>

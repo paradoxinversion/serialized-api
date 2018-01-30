@@ -11,6 +11,7 @@ const InputField = (props) => (
       value={props.content}
       onChange={props.controlFunc}
       placeholder={props.placeholder}
+      required={props.isRequired}
     />
   </div>
 );
@@ -21,7 +22,8 @@ InputField.propTypes ={
   name: PropTypes.string.isRequired,
   controlFunc: PropTypes.func.isRequired,
   content: PropTypes.oneOfType([ PropTypes.string, PropTypes.number]).isRequired,
-  placeholder: PropTypes.string
+  placeholder: PropTypes.string,
+  isRequired: PropTypes.bool
 };
 
 export default InputField;

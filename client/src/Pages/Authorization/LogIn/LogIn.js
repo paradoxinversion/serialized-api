@@ -1,7 +1,9 @@
 import React from "react";
 import {withRouter, Link} from "react-router-dom";
 import axios from "axios";
-import InputField from "../../../Components/Common/Forms/FormComponents/InputField/InputField";
+import {
+  InputField
+} from "../../../Components/Common/Forms/FormComponents";
 import "../../../css/bulma.css";
 class LogIn extends React.Component {
   constructor(props) {
@@ -50,7 +52,7 @@ class LogIn extends React.Component {
         <h2 className="subtitle"> Please enter your login information </h2>
         <form onSubmit={this.handleSubmit}>
           <InputField name="email" title="Email" inputType="email" content={this.state.email} controlFunc={this.handleFormInput} placeholder="you@website.com" />
-          <label className="label">Password: <input className="input" name="password" type="password" placeholder="Password" onChange={this.handleFormInput}/> </label>
+          <InputField name="password" title="Password" inputType="password" content={this.state.password} controlFunc={this.handleFormInput} />
           <input className="button" type="submit" value="Submit" />
         </form>
         <p> Need to <Link to="/auth/register">Register</Link> instead?</p>
