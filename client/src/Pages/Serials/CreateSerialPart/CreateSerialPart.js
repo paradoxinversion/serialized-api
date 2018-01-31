@@ -2,7 +2,11 @@ import React from "react";
 import queryString from "query-string";
 import {withRouter} from "react-router-dom";
 import axios from "axios";
-
+import QuillDeltaToHtmlConverter from "quill-delta-to-html";
+import {
+  InputField,
+  QuillContainer
+} from "../../../Components/Common/Forms/FormComponents";
 class CreateSerialPart extends React.Component {
   constructor(props) {
     super(props);
@@ -13,7 +17,7 @@ class CreateSerialPart extends React.Component {
       content: ""
     };
     this.handleFormInput = this.handleFormInput.bind(this);
-
+    this.handleQuillInput = this.handleQuillInput.bind(this);
   }
 
   async getSerialData(){
@@ -35,7 +39,11 @@ class CreateSerialPart extends React.Component {
 
     });
   }
-
+  handleQuillInput(quillContent){
+    this.setState({
+      content: quillContent
+    });
+  }
 
   async handleSerialPartSubmit(event){
     event.preventDefault();
@@ -57,12 +65,15 @@ class CreateSerialPart extends React.Component {
 
 
   render() {
+    const toolbarOptions = [ [{ "indent": "-1"}, { "indent": "+1" }],["bold", "italic", "underline", "strike"]];
+
     return (
       <div>
         <h1> New Serial Part</h1>
         <form onSubmit={this.handleSubmit}>
-          <label className="label">Title: <input className="input" name="title" type="text" onChange={this.handleFormInput}/> </label>
-          <label className="label">Content: <textarea className="textarea" name="content" type="text" onChange={this.handleFormInput}/> </label>
+          <InputField inputType="text" title="Title" name="title" controlFunc={this.handleFormInput} content={this.state.title} isRequired={true} />
+          {/* <InputField inputType="text" title="Content" name="title" controlFunc={this.handleFormInput} content={this.state.content} isRequired={true} /> */}
+          <QuillContainer toolbarOptions={toolbarOptions} textChanged={this.handleQuillInput}/>
           <input className="button is-primary" type="submit" value="Submit" onClick={this.handleSerialPartSubmit.bind(this)} />
         </form>
       </div>

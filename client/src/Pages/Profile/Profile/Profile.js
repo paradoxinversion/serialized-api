@@ -1,6 +1,8 @@
 import React from "react";
 import {withRouter, Link} from "react-router-dom";
 import axios from "axios";
+import ProfileEdit from "../ProfileEdit/ProfileEdit";
+import HTMLMarkupContainer from "../../../Components/Containers/HTMLMarkupContainer/HTMLMarkupContainer"
 import "../../../css/bulma.css";
 
 const SerialList = withRouter((props) => {
@@ -23,14 +25,18 @@ class Profile extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      queriedUser: {},
+      queriedUser: {
+        biography: ""
+      },
       isProfileOwner: false,
       editMode: false,
       userSerials: []
     };
+    this.handleCancelEdit = this.handleCancelEdit.bind(this);
+    this.handleQuillInput = this.handleQuillInput.bind(this);
+    this.handleProfileSubmit = this.handleProfileSubmit.bind(this);
   }
 
-  // Get profile data of the queried user
   async getProfileData (){
     try{
       const requestConfiguration = {
@@ -63,27 +69,35 @@ class Profile extends React.Component {
     }
 
   }
-  componentDidMount(){
 
-
-  }
   componentWillMount(){
     this.getProfileData();
     this.props.onLoad();
   }
 
-  handleFormInput(event){
-    const target = event.target;
-    const value = target.type === "checkbox" ? target.checked : target.value;
-    const name = target.name;
+  // handleFormInput(event){
+  //   const target = event.target;
+  //   const value = target.type === "checkbox" ? target.checked : target.value;
+  //   const name = target.name;
+  //   this.setState({
+  //     [name]: value
+  //
+  //   });
+  // }
+  handleQuillInput(quillContent){
     this.setState({
-      [name]: value
-
+      biography: quillContent
     });
   }
   handleEditButtonClick(){
     this.setState({
       editMode: true
+    });
+  }
+
+  handleCancelEdit(){
+    this.setState({
+      editMode: false
     });
   }
 
@@ -113,24 +127,16 @@ class Profile extends React.Component {
         </div>
       );
     }
-
     if (this.state.editMode){
       return (
-        <div>
-          <h1> Profile Edit</h1>
-          <h1> {this.props.clientUser.username} </h1>
-          <form>
-            <label> Bio <textarea name="biography" onChange={this.handleFormInput.bind(this)}></textarea></label>
-          </form>
-          <button className="button" onClick={this.handleProfileSubmit.bind(this)}> Submit </button>
-        </div>
+        <ProfileEdit textChanged={this.handleQuillInput} handleSubmit={this.handleProfileSubmit} handleCancel={this.handleCancelEdit}/>
       );
     }else {
       return (
         <div className="container is-fluid">
           <h1 className="title is-4"> {this.state.queriedUser.username} </h1>
-
-          <p> {this.state.queriedUser.biography} </p>
+          {/* <p> {this.state.queriedUser.biography} </p> */}
+          <HTMLMarkupContainer content={this.state.queriedUser.biography} />
           {userActions}
           <SerialList queriedUser={this.state.queriedUser} serials={this.state.userSerials}/>
         </div>

@@ -2,7 +2,8 @@ import React from "react";
 import {withRouter} from "react-router-dom";
 import axios from "axios";
 import {
-  InputField
+  InputField,
+  CheckBox
 } from "../../../Components/Common/Forms/FormComponents";
 class EditSerial extends React.Component {
   constructor(props) {
@@ -76,7 +77,7 @@ class EditSerial extends React.Component {
           <InputField inputType="text" title="Title" name="title" controlFunc={this.handleFormInput} content={this.state.title} isRequired={true} />
           <InputField inputType="text" title="Synopsis" name="synopsis" controlFunc={this.handleFormInput} content={this.state.synopsis} isRequired={true} />
           <InputField inputType="text" title="Genre" name="genre" controlFunc={this.handleFormInput} content={this.state.genre} isRequired={true} />
-          <label >NSFW: <input name="nsfw" type="checkbox" onChange={this.handleFormInput} required/> </label>
+          <CheckBox title="NSFW" name="nsfw" controlFunc={this.handleFormInput} checked={this.state.nsfw} />
           <input type="submit" value="Submit" onClick={this.handleSerialSubmit.bind(this)} />
         </form>
       </div>
