@@ -7,8 +7,8 @@ import "../../../css/bulma.css";
 class ViewSerialPart extends React.Component {
   constructor(props) {
     super(props);
+    console.log(props)
     this.state = {
-      query: props.match.params.id,
       parentSerial: {},
       serialPartData: {
         content: ""

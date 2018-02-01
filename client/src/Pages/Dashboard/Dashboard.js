@@ -1,6 +1,7 @@
 import React from "react";
 import {withRouter, Link} from "react-router-dom";
 import axios from "axios";
+// import SerialList from "../../Components/Common/SerialList/SerialList";
 import "./Dashboard.css";
 const SerialList = withRouter((props) => {
   if (props.serials.length > 0){
@@ -33,14 +34,18 @@ const SerialList = withRouter((props) => {
 class Dashboard extends React.Component {
   constructor(props) {
     super(props);
+    console.log(this.props)
     this.state = {
       userSerials: []
     };
 
   }
+  async componentDidMount(){
+    await this.props.checkAuthentication();
 
-  componentWillMount(){
-    this.getUserSerialData();
+  }
+  async componentWillMount(){
+    await this.getUserSerialData();
   }
 
   async getUserSerialData(){
@@ -63,7 +68,7 @@ class Dashboard extends React.Component {
       <div>
         <h1 className="title is-4"> Welcome back, {this.props.clientUser.username} </h1>
         <div className="level">
-          <Link className="button level-item" to={`/profile/${this.props.clientUser.username}`}> Profile </Link>
+          <Link className="button level-item" to={`/users/${this.props.clientUser.username}`}> Profile </Link>
         </div>
         <SerialList onDelete={this.getUserSerialData} history={this.props.history} serials={this.state.userSerials}/>
       </div>

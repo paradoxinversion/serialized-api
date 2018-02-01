@@ -32,6 +32,10 @@ class QuillContainer extends React.Component {
       quill
     });
   }
+
+  componentWillUnmount(){
+    this.state.quill.off("text-change");
+  }
   convertQuillDelta(){
     const deltaOps = this.state.contents.ops;
     const c = {};
@@ -45,9 +49,7 @@ class QuillContainer extends React.Component {
   render(){
     return (
       <div>
-        <h1> Quill Container </h1>
         <div id="editor"></div>
-        <button> Submit </button>
       </div>
     );
   }

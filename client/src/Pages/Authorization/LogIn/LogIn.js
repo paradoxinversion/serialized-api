@@ -34,8 +34,9 @@ class LogIn extends React.Component {
         password: this.state.password
       };
       const loginResponse = await axios.post(uri, data);
-      this.props.setUser(loginResponse.data.user);
-      this.props.onSignIn(true);
+      // this.props.setUser(loginResponse.data.user);
+      // this.props.onSignIn(true);
+      await this.props.onSignIn();
       const dashboard = {
         pathname: "/dashboard"
       };

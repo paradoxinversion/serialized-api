@@ -2,13 +2,14 @@ import React from "react";
 import queryString from "query-string";
 import {withRouter} from "react-router-dom";
 import axios from "axios";
-import QuillDeltaToHtmlConverter from "quill-delta-to-html";
 import {
   InputField,
   QuillContainer
 } from "../../../Components/Common/Forms/FormComponents";
+
 class CreateSerialPart extends React.Component {
   constructor(props) {
+    console.log(props)
     super(props);
     this.state = {
       query: queryString.parse(props.location.search),

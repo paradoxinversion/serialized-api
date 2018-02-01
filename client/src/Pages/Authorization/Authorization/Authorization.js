@@ -15,14 +15,16 @@ const Authorization = (props) => {
           render={()=>
             <LogIn
               setUser={props.setUser}
-              onSignIn={props.onSignIn} />} />
+              // onSignIn={props.onSignIn}
+              onSignIn={props.onSignIn} 
+            />} />
 
         <Route
           exact path={`${props.match.url}/register`}
           render={()=> <Register />} />
 
-        <Route exact
-          path={`${props.match.url}/logout`}
+        <Route
+          exact path={`${props.match.url}/logout`}
           render={() =>
             <LogOut
               clearUser={props.clearUser} /> }/>

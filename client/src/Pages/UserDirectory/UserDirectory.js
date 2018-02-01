@@ -6,7 +6,7 @@ import "../../css/bulma.css";
 const UserList = withRouter((props) => {
   if (props.users.length > 0){
     const users = props.users.map((user) => {
-      const uri = `/profile/${user.username}`;
+      const uri = `/users/${user.username}`;
       return (
         <li key={user._id}>
           <Link to={{

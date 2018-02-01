@@ -2,25 +2,10 @@ import React from "react";
 import {withRouter, Link} from "react-router-dom";
 import axios from "axios";
 import ProfileEdit from "../ProfileEdit/ProfileEdit";
-import HTMLMarkupContainer from "../../../Components/Containers/HTMLMarkupContainer/HTMLMarkupContainer"
+import HTMLMarkupContainer from "../../../Components/Containers/HTMLMarkupContainer/HTMLMarkupContainer";
+import SerialList from "../../../Components/Common/SerialList/SerialList";
 import "../../../css/bulma.css";
 
-const SerialList = withRouter((props) => {
-
-  if (props.serials.length > 0){
-    const serials = props.serials.map((serial) => {
-      return <li key={serial._id}><Link to={`/serials/${serial._id}`}>{serial.title}</Link></li>;
-    });
-    return (
-      <div>
-        <p className="subtitle"> User Serials </p>
-        <ul>{serials}</ul>
-      </div>
-    );
-  } else{
-    return <p> {props.match.params.username} hasn&apos;t written any serials yet. </p>;
-  }
-});
 class Profile extends React.Component {
   constructor(props) {
     super(props);
@@ -72,7 +57,6 @@ class Profile extends React.Component {
 
   componentWillMount(){
     this.getProfileData();
-    this.props.onLoad();
   }
 
   // handleFormInput(event){
@@ -135,10 +119,9 @@ class Profile extends React.Component {
       return (
         <div className="container is-fluid">
           <h1 className="title is-4"> {this.state.queriedUser.username} </h1>
-          {/* <p> {this.state.queriedUser.biography} </p> */}
           <HTMLMarkupContainer content={this.state.queriedUser.biography} />
           {userActions}
-          <SerialList queriedUser={this.state.queriedUser} serials={this.state.userSerials}/>
+          <SerialList emptyListMessage={`${this.props.match.params.username} hasn't written any serials yet.`} serials={this.state.userSerials}/>
         </div>
       );
     }

@@ -12,8 +12,8 @@ const SerialPartList = withRouter((props) => {
         <li key={serialPart._id}>
           {/* <Link to={uri}>{serialPart.title}</Link> */}
           <Link className="serial-part-title" to={{
-            pathname: uri,
-            state: {testState: "heckin mad"}
+            pathname: uri
+
           }}>{serialPart.title}</Link>
 
           <button className="button is-small is-danger" onClick={async ()=>{
@@ -40,26 +40,25 @@ const SerialPartList = withRouter((props) => {
 class SerialOverview extends React.Component {
   constructor(props) {
     super(props);
+    console.log(props)
+
     this.state = {
-      query: props.match.params.id,
       serial: {},
       serialParts: []
     };
+    this.getSerialPartData = this.getSerialPartData.bind(this);
   }
 
-  getSerialPartData(){
-    const uri = `/serials/${this.state.query}`;
-    fetch(uri,{
-      mode: "cors",
-      credentials: "include"
-    })
-      .then(res => res.json())
-      .then(result => {
-        this.setState({
-          serial: result.serial,
-          serialParts: result.serialParts
-        });
-      });
+  async getSerialPartData(){
+    const uri = `/serials/${this.props.match.params.id}`;
+    const config = {
+      withCredentials: true
+    }
+    const result = await axios.get(uri, config);
+    this.setState({
+      serial: result.data.serial,
+      serialParts: result.data.serialParts
+    });
   }
 
   componentWillMount(){

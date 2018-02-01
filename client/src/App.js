@@ -2,7 +2,8 @@ import React, { Component } from "react";
 import {
   BrowserRouter as Router,
   Route,
-  Redirect
+  Redirect,
+  Switch
 } from "react-router-dom";
 import axios from "axios";
 import "./css/bulma.css";
@@ -19,12 +20,13 @@ import Header from "./Components/Common/Header/Header";
 import Footer from "./Components/Common/Footer/Footer";
 import Dashboard from "./Pages/Dashboard/Dashboard";
 import UserDirectory from "./Pages/UserDirectory/UserDirectory";
+import NotFound from "./Pages/NotFound/NotFound";
 import store from "store";
 
-const PrivateRoute = ({ component: Component, authStatus, clientUser,  ...rest }) => (
+const PrivateRoute = ({ component: Component, authStatus, clientUser, checkAuthentication,  ...rest }) => (
   <Route {...rest} render={ (props) => (
     authStatus ? (
-      <Component {...props} clientUser={clientUser} />
+      <Component {...props} clientUser={clientUser} checkAuthentication={checkAuthentication} />
     ) : (
       <Redirect to={{
         pathname: "/auth/login",
@@ -33,6 +35,7 @@ const PrivateRoute = ({ component: Component, authStatus, clientUser,  ...rest }
     )
   )}/>
 );
+
 
 class App extends Component {
   constructor(props) {
@@ -45,14 +48,6 @@ class App extends Component {
       user: null,
       isAuthenticated: false
     };
-
-    // Check our store and make sure the returned object has > 0 keys
-    if (this.getUser() && Object.keys(this.getUser()).length > 0){
-      this.state.user = this.getUser().user;
-      this.state.isAuthenticated = true;
-    }else {
-      this.state.isAuthenticated = false;
-    }
   }
 
   /**
@@ -88,23 +83,30 @@ class App extends Component {
       isAuthenticated: authenticationResponse
     });
   }
-
+  async componentWillMount(){
+    await this.checkAuthentication();
+  }
   // Check if a user is in the store. If not, check if the server has a session
   async checkAuthentication() {
-    if (store.get("client")){
-      this.setAuthStatus(true);
-    } else {
-      const uri = `/users/auth`;
-      const configuration = {
-        withCredentials: true
-      };
-      const authenticationCheckResponse = await axios.get(uri, configuration);
+    // Call the server with the client's credentials
+    const uri = "/users/auth";
+    const result = await axios.get(uri, {withCredentials: true});
+    // If the server has a session, set authentication to true
+    if (result.data.isAuthenticated){
+      console.log("User is authenticated in the server")
+      this.setState({
+        isAuthenticated: true,
+        user: result.data.user
+      });
+    } else{
+      console.log("User is not authenticated in the server")
 
-      this.setAuthStatus(authenticationCheckResponse.data.isAuthenticated);
-      if (this.state.isAuthenticated){
-        this.setUser(authenticationCheckResponse.data.user);
-      }
+      this.setState({
+        isAuthenticated: false,
+        user: null
+      });
     }
+    // otherwise, make sure authentication is false
   }
 
   render() {
@@ -115,43 +117,47 @@ class App extends Component {
           <div className="main-wrapper">
             <Header authStatus={this.state.isAuthenticated} clientUser={this.state.user}/>
             <div className="container is-fluid">
-              <Route
-                exact path="/"
-                component={Home}/>
+              <Switch>
 
-              <Route
-                path="/auth"
-                render={() =>
-                  <Authorization
-                    clearUser={this.clearUser}
-                    setUser={this.setUser}
-                    onSignIn={this.setAuthStatus.bind(this)}
-                    user={this.state.user} />} />
-              <Route
-                exact path="/users"
-                authStatus={this.state.isAuthenticated}
-                clientUser={this.state.user}
-                component={UserDirectory} />
-              <Route
-                path="/profile/:username"
-                render={ () =>
-                  <Profile
-                    onLoad={this.checkAuthentication}
-                    clientUser={this.state.user}/>} />
+                <Route
+                  exact path="/"
+                  component={Home}/>
 
-              <Route
-                path="/serials"
-                render={()=>
-                  <Serials
-                    authStatus={this.state.isAuthenticated}
-                    clientUser={this.state.user}/> } />
+                <Route
+                  path="/auth"
+                  render={() =>
+                    <Authorization
+                      clearUser={this.clearUser}
+                      setUser={this.setUser}
+                      onSignIn={this.checkAuthentication}
+                      user={this.state.user} />} />
+                <Route
+                  path="/users/:username"
+                  render={ () =>
+                    <Profile
+                      clientUser={this.state.user}/>} />
+                <Route
+                  path="/users"
+                  authStatus={this.state.isAuthenticated}
+                  clientUser={this.state.user}
+                  component={UserDirectory} />
 
-              <PrivateRoute
-                path="/dashboard"
-                authStatus={this.state.isAuthenticated}
-                clientUser={this.state.user}
-                component={Dashboard} />
+                <Route
+                  path="/serials"
+                  render={()=>
+                    <Serials
+                      authStatus={this.state.isAuthenticated}
+                      clientUser={this.state.user}/> } />
 
+                <PrivateRoute
+                  path="/dashboard"
+                  checkAuthentication={this.checkAuthentication}
+                  authStatus={this.state.isAuthenticated}
+                  clientUser={this.state.user}
+                  component={Dashboard} />
+
+                <Route component={NotFound} />
+              </Switch>
 
             </div>
           </div>

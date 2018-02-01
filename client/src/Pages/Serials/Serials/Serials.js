@@ -14,14 +14,7 @@ import SerialOverview from "../SerialOverview/SerialOverview";
 import EditSerial from "../EditSerial/EditSerial";
 import EditSerialPart from "../EditSerialPart/EditSerialPart";
 import SerialDirectory from "../SerialDirectory/SerialDirectory";
-const BrowseSerials = () => {
-  return (
-    <div>
-      <h1> Browse Serials </h1>
-      <Link to='/serials/create'> Create a Serial </Link>
-    </div>
-  );
-};
+import NotFound from "../../NotFound/NotFound";
 
 const PrivateRoute = ({ component: Component, authStatus, clientUser,  ...rest }) => (
   <Route {...rest} render={ (props) => (
@@ -37,57 +30,59 @@ const PrivateRoute = ({ component: Component, authStatus, clientUser,  ...rest }
 );
 
 class Serials extends React.Component {
+  constructor(props){
+    super(props);
+  }
   render(){
+    console.log(this.props)
     return (
       <div>
         <div>
           <Switch>
             <Route
-              exact path={`${this.props.match.url}/`}
+              exact path={`${this.props.match.path}/`}
               component={SerialDirectory} />
-            <Route
-              path={`${this.props.match.url}/browse`}
-              render={()=>
-                <BrowseSerials />} />
 
             <PrivateRoute
-              path={`${this.props.match.url}/create`}
+              path={`${this.props.match.path}/create`}
               authStatus={this.props.authStatus}
               clientUser={this.props.clientUser}
               component={CreateSerial} />
 
-            <Route
-              exact path={`${this.props.match.url}/:id`}
+            {/* <Route
+              path={`${this.props.match.path}/:id`}
               render={()=>
-                <SerialOverview clientUser={this.props.clientUser}/>} />
-          </Switch>
-
-          <Switch>
+                <Serial authStatus={this.props.authStatus} clientUser={this.props.clientUser}/>} /> */}
             <PrivateRoute
-              exact path={`${this.props.match.url}/:id/:partId/edit`}
+              path={`${this.props.match.url}/:id/:partId/edit`}
               authStatus={this.props.authStatus}
               clientUser={this.props.clientUser}
               component={EditSerialPart} />
-
             <PrivateRoute
-              path={`${this.props.match.url}/:id/new`}
-              authStatus={this.props.authStatus}
-              clientUser={this.props.clientUser}
-              component={CreateSerialPart} />
-
-            <PrivateRoute
-              path={`${this.props.match.url}/:id/edit`}
+              path={`${this.props.match.path}/:id/edit`}
               authStatus={this.props.authStatus}
               clientUser={this.props.clientUser}
               component={EditSerial} />
 
+            <PrivateRoute
+              path={`${this.props.match.path}/:id/new`}
+              authStatus={this.props.authStatus}
+              clientUser={this.props.clientUser}
+              component={CreateSerialPart} />
             <Route
-              path={`${this.props.match.url}/:id/:partId`}
+              path={`${this.props.match.path}/:id/:partId`}
               component={()=>
-                <ViewSerialPart clientUser={this.props.clientUser}/>} />
+                <ViewSerialPart serialId={this.props.match.params.id} clientUser={this.props.clientUser}/>} />
+
+            <Route
+              path={`${this.props.match.path}/:id`}
+              render={()=>
+                <SerialOverview clientUser={this.props.clientUser}/>} />
 
 
 
+
+            <Route component={NotFound} />
           </Switch>
 
         </div>

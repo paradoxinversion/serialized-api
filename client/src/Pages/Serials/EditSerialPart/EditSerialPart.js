@@ -2,7 +2,8 @@ import React from "react";
 import {withRouter} from "react-router-dom";
 import axios from "axios";
 import {
-  InputField
+  InputField,
+  QuillContainer
 } from "../../../Components/Common/Forms/FormComponents";
 class EditSerial extends React.Component {
   constructor(props) {
@@ -12,6 +13,7 @@ class EditSerial extends React.Component {
       content: ""
     };
     this.handleFormInput = this.handleFormInput.bind(this);
+    this.handleQuillInput = this.handleQuillInput.bind(this);
   }
 
   componentWillMount(){
@@ -39,6 +41,11 @@ class EditSerial extends React.Component {
       serialPartData: serialPartData.data.part
     });
   }
+  handleQuillInput(quillContent){
+    this.setState({
+      content: quillContent
+    });
+  }
 
   async handleSerialSubmit(event){
     event.preventDefault();
@@ -59,12 +66,16 @@ class EditSerial extends React.Component {
 
 
   render() {
+    const toolbarOptions = [ [{ "indent": "-1"}, { "indent": "+1" }],["bold", "italic", "underline", "strike"]];
+
     return (
       <div>
         <h1> Edit Serial </h1>
         <form onSubmit={this.handleSubmit}>
           <InputField inputType="text" title="Title" name="title" controlFunc={this.handleFormInput} content={this.state.title} isRequired={true} />
-          <InputField inputType="text" title="Content" name="title" controlFunc={this.handleFormInput} content={this.state.content} isRequired={true} />
+          {/* <InputField inputType="text" title="Content" name="content" controlFunc={this.handleFormInput} content={this.state.content} isRequired={true} /> */}
+          <QuillContainer toolbarOptions={toolbarOptions} textChanged={this.handleQuillInput}/>
+
           <input type="submit" value="Submit" onClick={this.handleSerialSubmit.bind(this)} />
         </form>
       </div>
