@@ -3,7 +3,7 @@ import {
   Link,
   withRouter
 } from "react-router-dom";
-
+import SerialEntryContainer from "../../Containers/SerialEntryContainer/SerialEntryContainer";
 const SerialList = withRouter((props) => {
   if (props.serials.length > 0){
     const serials = props.serials.map((serial) => {
