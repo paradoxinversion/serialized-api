@@ -1,5 +1,6 @@
 import React from "react";
 import axios from "axios";
+import PropTypes from "prop-types";
 class LogOut extends React.Component {
   constructor(props){
     super(props);
@@ -18,4 +19,8 @@ class LogOut extends React.Component {
   }
 }
 
+
+LogOut.propTypes = {
+  clearUser: PropTypes.func.isRequired
+};
 export default LogOut;

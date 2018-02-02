@@ -1,6 +1,9 @@
 @import "../sass/utilities/initial-variables";
 @import "../sass/utilities/functions";
+$pink: #ffb3b3;
+$primary: $black;
 
-$primary: $pink;
-
+$section-padding: 1rem;
+$section-padding-medium: 1rem;
+$section-padding-large: 1rem;
 @import "../bulma";

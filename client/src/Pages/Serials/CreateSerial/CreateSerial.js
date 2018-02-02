@@ -1,10 +1,12 @@
 import React from "react";
-import {withRouter} from "react-router-dom";
+import PropTypes from "prop-types";
+import { withRouter } from "react-router-dom";
 import axios from "axios";
 import {
   InputField,
   CheckBox
 } from "../../../Components/Common/Forms/FormComponents";
+
 class CreateSerial extends React.Component {
   constructor(props) {
     super(props);
@@ -46,7 +48,6 @@ class CreateSerial extends React.Component {
     this.props.history.push(profile);
   }
 
-
   render() {
     return (
       <div>
@@ -63,5 +64,10 @@ class CreateSerial extends React.Component {
     );
   }
 }
+
+CreateSerial.propTypes = {
+  clientUser: PropTypes.object.isRequired,
+  history: PropTypes.object.isRequired
+};
 
 export default withRouter(CreateSerial);

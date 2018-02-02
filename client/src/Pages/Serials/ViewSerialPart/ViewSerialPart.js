@@ -1,5 +1,9 @@
 import React from "react";
-import {withRouter, Link} from "react-router-dom";
+import PropTypes from "prop-types";
+import {
+  withRouter,
+  Link
+} from "react-router-dom";
 import axios from "axios";
 import HTMLMarkupContainer from "../../../Components/Containers/HTMLMarkupContainer/HTMLMarkupContainer";
 import "../../../css/bulma.css";
@@ -7,7 +11,6 @@ import "../../../css/bulma.css";
 class ViewSerialPart extends React.Component {
   constructor(props) {
     super(props);
-    console.log(props)
     this.state = {
       parentSerial: {},
       serialPartData: {
@@ -51,5 +54,10 @@ class ViewSerialPart extends React.Component {
     );
   }
 }
+
+ViewSerialPart.propTypes = {
+  match: PropTypes.object.isRequired,
+  clientUser: PropTypes.object
+};
 
 export default withRouter(ViewSerialPart);

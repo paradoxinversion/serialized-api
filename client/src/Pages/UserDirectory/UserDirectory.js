@@ -1,5 +1,8 @@
 import React from "react";
-import { withRouter, Link } from "react-router-dom";
+import {
+  withRouter,
+  Link
+} from "react-router-dom";
 import axios from "axios";
 import "../../css/bulma.css";
 
@@ -46,7 +49,7 @@ class UserDirectory extends React.Component{
         users: userData.data.userData
       });
     } catch (e){
-      console.log("Something went wrong: \n ", e);
+      console.error("Something went wrong: \n ", e);
     }
   }
 

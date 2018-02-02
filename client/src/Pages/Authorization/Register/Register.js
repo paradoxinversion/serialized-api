@@ -1,9 +1,16 @@
 import React from "react";
-import {withRouter, Link} from "react-router-dom";
+import PropTypes from "prop-types";
+
+import {
+  withRouter,
+  Link
+} from "react-router-dom";
+
 import {
   InputField,
   DatePicker
 } from "../../../Components/Common/Forms/FormComponents";
+
 import "../../../css/bulma.css";
 class Register extends React.Component {
   constructor(props) {
@@ -76,5 +83,9 @@ class Register extends React.Component {
     );
   }
 }
+
+Register.propTypes = {
+  history: PropTypes.object.isRequired
+};
 
 export default withRouter(Register);

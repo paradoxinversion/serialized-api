@@ -1,6 +1,6 @@
 import React from "react";
-import queryString from "query-string";
-import {withRouter} from "react-router-dom";
+import PropTypes from "prop-types";
+import { withRouter } from "react-router-dom";
 import axios from "axios";
 import {
   InputField,
@@ -9,10 +9,8 @@ import {
 
 class CreateSerialPart extends React.Component {
   constructor(props) {
-    console.log(props)
     super(props);
     this.state = {
-      query: queryString.parse(props.location.search),
       parentSerial: {},
       title: "",
       content: ""
@@ -64,7 +62,6 @@ class CreateSerialPart extends React.Component {
 
   }
 
-
   render() {
     const toolbarOptions = [ [{ "indent": "-1"}, { "indent": "+1" }],["bold", "italic", "underline", "strike"]];
 
@@ -73,7 +70,6 @@ class CreateSerialPart extends React.Component {
         <h1> New Serial Part</h1>
         <form onSubmit={this.handleSubmit}>
           <InputField inputType="text" title="Title" name="title" controlFunc={this.handleFormInput} content={this.state.title} isRequired={true} />
-          {/* <InputField inputType="text" title="Content" name="title" controlFunc={this.handleFormInput} content={this.state.content} isRequired={true} /> */}
           <QuillContainer toolbarOptions={toolbarOptions} textChanged={this.handleQuillInput}/>
           <input className="button is-primary" type="submit" value="Submit" onClick={this.handleSerialPartSubmit.bind(this)} />
         </form>
@@ -82,5 +78,10 @@ class CreateSerialPart extends React.Component {
     );
   }
 }
+
+CreateSerialPart.propTypes = {
+  history: PropTypes.object.isRequired,
+  match: PropTypes.object.isRequired
+};
 
 export default withRouter(CreateSerialPart);

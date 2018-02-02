@@ -1,10 +1,14 @@
 import React from "react";
-import {withRouter, Link} from "react-router-dom";
+import {
+  withRouter,
+  Link
+} from "react-router-dom";
 import axios from "axios";
+import PropTypes from "prop-types";
 import {
   InputField
 } from "../../../Components/Common/Forms/FormComponents";
-import "../../../css/bulma.css";
+import "../../../css/bulma-custom.css";
 class LogIn extends React.Component {
   constructor(props) {
     super(props);
@@ -33,16 +37,14 @@ class LogIn extends React.Component {
         email: this.state.email,
         password: this.state.password
       };
-      const loginResponse = await axios.post(uri, data);
-      // this.props.setUser(loginResponse.data.user);
-      // this.props.onSignIn(true);
+      await axios.post(uri, data);
       await this.props.onSignIn();
       const dashboard = {
         pathname: "/dashboard"
       };
       this.props.history.push(dashboard);
     } catch (e){
-      console.log("Something went wrong: \n ", e);
+      console.error("Something went wrong: \n ", e);
     }
   }
 
@@ -54,12 +56,17 @@ class LogIn extends React.Component {
         <form onSubmit={this.handleSubmit}>
           <InputField name="email" title="Email" inputType="email" content={this.state.email} controlFunc={this.handleFormInput} placeholder="you@website.com" />
           <InputField name="password" title="Password" inputType="password" content={this.state.password} controlFunc={this.handleFormInput} />
-          <input className="button" type="submit" value="Submit" />
+          <input className="button is-primary2" type="submit" value="Submit" />
         </form>
         <p> Need to <Link to="/auth/register">Register</Link> instead?</p>
       </div>
     );
   }
 }
+
+LogIn.propTypes = {
+  onSignIn: PropTypes.func.isRequired,
+  history: PropTypes.object.isRequired
+};
 
 export default withRouter(LogIn);

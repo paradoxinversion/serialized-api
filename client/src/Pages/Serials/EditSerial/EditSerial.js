@@ -1,4 +1,5 @@
 import React from "react";
+import PropTypes from "prop-types";
 import {withRouter} from "react-router-dom";
 import axios from "axios";
 import {
@@ -68,7 +69,6 @@ class EditSerial extends React.Component {
     this.props.history.push(profile);
   }
 
-
   render() {
     return (
       <div>
@@ -85,5 +85,11 @@ class EditSerial extends React.Component {
     );
   }
 }
+
+EditSerial.propTypes = {
+  clientUser: PropTypes.object.isRequired,
+  history: PropTypes.object.isRequired,
+  match: PropTypes.object.isRequired
+};
 
 export default withRouter(EditSerial);

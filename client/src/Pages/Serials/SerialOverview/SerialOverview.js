@@ -1,5 +1,9 @@
 import React from "react";
-import {withRouter, Link} from "react-router-dom";
+import PropTypes from "prop-types";
+import {
+  withRouter,
+  Link
+} from "react-router-dom";
 import axios from "axios";
 import "../../../css/bulma.css";
 import "./SerialOverview.css";
@@ -40,8 +44,6 @@ const SerialPartList = withRouter((props) => {
 class SerialOverview extends React.Component {
   constructor(props) {
     super(props);
-    console.log(props)
-
     this.state = {
       serial: {},
       serialParts: []
@@ -53,7 +55,7 @@ class SerialOverview extends React.Component {
     const uri = `/serials/${this.props.match.params.id}`;
     const config = {
       withCredentials: true
-    }
+    };
     const result = await axios.get(uri, config);
     this.setState({
       serial: result.data.serial,
@@ -87,5 +89,10 @@ class SerialOverview extends React.Component {
     );
   }
 }
+
+SerialOverview.propTypes = {
+  clientUser: PropTypes.object,
+  match: PropTypes.object.isRequired
+};
 
 export default withRouter(SerialOverview);

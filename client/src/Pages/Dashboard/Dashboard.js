@@ -1,5 +1,10 @@
 import React from "react";
-import {withRouter, Link} from "react-router-dom";
+import PropTypes from "prop-types";
+import {
+  withRouter,
+  Link
+} from "react-router-dom";
+
 import axios from "axios";
 // import SerialList from "../../Components/Common/SerialList/SerialList";
 import "./Dashboard.css";
@@ -34,7 +39,7 @@ const SerialList = withRouter((props) => {
 class Dashboard extends React.Component {
   constructor(props) {
     super(props);
-    console.log(this.props)
+    // console.log(this.props)
     this.state = {
       userSerials: []
     };
@@ -75,5 +80,11 @@ class Dashboard extends React.Component {
     );
   }
 }
+
+Dashboard.propTypes = {
+  checkAuthentication: PropTypes.func.isRequired,
+  clientUser: PropTypes.object.isRequred,
+  history: PropTypes.object.isRequired
+};
 
 export default Dashboard;

@@ -7,7 +7,7 @@
     "test": "mocha --reporter spec --require babel-register --require babel-polyfill",
     "server": "nodemon ./src/app.js --exec babel-node",
     "client": "node start-client.js",
-    "start": "concurrently \"npm run server\" \"npm run client\""
+    "start": "concurrently \"mongod\" \"npm run server\" \"npm run client\""
   },
   "keywords": [],
   "author": "Jedai Saboteur",

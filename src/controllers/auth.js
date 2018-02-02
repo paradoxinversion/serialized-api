@@ -37,7 +37,6 @@ passport.deserializeUser(function(id, done) {
 });
 
 export const checkAuthentication = async (req, res) => {
-  // console.log("Authentication Check::", req.session.passport.user);
   if (req.session.passport && req.session.passport.user){
     const user = await User.findOne({_id: req.session.passport.user});
     return res.json({isAuthenticated: true, user});
@@ -45,4 +44,4 @@ export const checkAuthentication = async (req, res) => {
   res.json({isAuthenticated: false, user:null});
 };
 
-export const tryAuthenticateLocal = passport.authenticate('local-login');
+export const tryAuthenticateLocal = passport.authenticate("local-login");

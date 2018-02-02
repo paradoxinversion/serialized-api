@@ -1,7 +1,5 @@
-
 import * as userActions from "../database/actions/user";
-import * as jwt from "jsonwebtoken";
-const Config = require('../config/config').getConfig();
+
 const getUsers = async function getUsers(req, res){
   const queryResult = await userActions.getAllUsers(req.query.user);
   let response = {
@@ -10,6 +8,7 @@ const getUsers = async function getUsers(req, res){
   };
   res.json(response);
 };
+
 const getUser = async function getUser(req, res){
   const queryResult = await userActions.getUser(req.params.username);
   let response = {
@@ -18,7 +17,6 @@ const getUser = async function getUser(req, res){
   };
 
   if (req.session.passport && req.session.passport.user == response.userData._id){
-    console.log(response.userData._id, req.session.passport.user)
     response.isQueriedUser = true;
   }
   res.json(response);
@@ -79,7 +77,6 @@ const deleteUser = async function deleteUser(req, res){
 };
 
 const logOut = async function logOut(req, res){
-  console.log("Logging out");
   req.logOut();
   res.send("Bye bye");
 };

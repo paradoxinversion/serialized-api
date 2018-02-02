@@ -1,10 +1,9 @@
 import React from "react";
-
+import PropTypes from "prop-types";
 import {
   Route,
   withRouter,
   Redirect,
-  Link,
   Switch
 } from "react-router-dom";
 import CreateSerial from "../CreateSerial/CreateSerial";
@@ -29,12 +28,19 @@ const PrivateRoute = ({ component: Component, authStatus, clientUser,  ...rest }
   )}/>
 );
 
+PrivateRoute.propTypes = {
+  authStatus: PropTypes.bool.isRequired,
+  clientUser: PropTypes.object,
+  match: PropTypes.object,
+  component: PropTypes.func.isRequired,
+  location: PropTypes.object
+};
+
 class Serials extends React.Component {
   constructor(props){
     super(props);
   }
   render(){
-    console.log(this.props)
     return (
       <div>
         <div>
@@ -49,12 +55,8 @@ class Serials extends React.Component {
               clientUser={this.props.clientUser}
               component={CreateSerial} />
 
-            {/* <Route
-              path={`${this.props.match.path}/:id`}
-              render={()=>
-                <Serial authStatus={this.props.authStatus} clientUser={this.props.clientUser}/>} /> */}
             <PrivateRoute
-              path={`${this.props.match.url}/:id/:partId/edit`}
+              path={`${this.props.match.path}/:id/:partId/edit`}
               authStatus={this.props.authStatus}
               clientUser={this.props.clientUser}
               component={EditSerialPart} />
@@ -79,9 +81,6 @@ class Serials extends React.Component {
               render={()=>
                 <SerialOverview clientUser={this.props.clientUser}/>} />
 
-
-
-
             <Route component={NotFound} />
           </Switch>
 
@@ -90,4 +89,11 @@ class Serials extends React.Component {
     );
   }
 }
+
+Serials.propTypes = {
+  authStatus: PropTypes.bool.isRequired,
+  clientUser: PropTypes.object,
+  match: PropTypes.object.isRequired
+};
+
 export default withRouter(Serials);

@@ -5,9 +5,9 @@ const HTMLMarkupContainer = (props) => {
   const html = {__html: props.content};
   const partContainer = <div dangerouslySetInnerHTML={html} />;
   return (
-    <section className="section">
+    <div>
       {partContainer}
-    </section>
+    </div>
   );
 };
 

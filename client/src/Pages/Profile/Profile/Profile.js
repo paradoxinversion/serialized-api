@@ -1,5 +1,9 @@
 import React from "react";
-import {withRouter, Link} from "react-router-dom";
+import PropTypes from "prop-types";
+import {
+  withRouter,
+  Link
+} from "react-router-dom";
 import axios from "axios";
 import ProfileEdit from "../ProfileEdit/ProfileEdit";
 import HTMLMarkupContainer from "../../../Components/Containers/HTMLMarkupContainer/HTMLMarkupContainer";
@@ -33,9 +37,9 @@ class Profile extends React.Component {
         queriedUser: response.data.userData,
         isProfileOwner: response.data.isQueriedUser
       });
-      this.getUserSerialData();
+      await this.getUserSerialData();
     } catch (e){
-      console.log("Something went wrong: \n ", e);
+      console.error("Something went wrong: \n ", e);
     }
   }
 
@@ -50,29 +54,21 @@ class Profile extends React.Component {
         userSerials: serialData.data
       });
     } catch (e){
-      console.log("Something went wrong: \n ", e);
+      console.error("Something went wrong: \n ", e);
     }
 
   }
 
-  componentWillMount(){
-    this.getProfileData();
+  async componentWillMount(){
+    await this.getProfileData();
   }
 
-  // handleFormInput(event){
-  //   const target = event.target;
-  //   const value = target.type === "checkbox" ? target.checked : target.value;
-  //   const name = target.name;
-  //   this.setState({
-  //     [name]: value
-  //
-  //   });
-  // }
   handleQuillInput(quillContent){
     this.setState({
       biography: quillContent
     });
   }
+  
   handleEditButtonClick(){
     this.setState({
       editMode: true
@@ -127,5 +123,10 @@ class Profile extends React.Component {
     }
   }
 }
+
+Profile.propTypes = {
+  clientUser: PropTypes.object,
+  match: PropTypes.object.isRequired
+};
 
 export default withRouter(Profile);

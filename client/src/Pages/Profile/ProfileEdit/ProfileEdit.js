@@ -1,4 +1,5 @@
 import React from "react";
+import PropTypes from "prop-types";
 import {QuillContainer} from "../../../Components/Common/Forms/FormComponents";
 class ProfileEdit extends React.Component {
   constructor(props) {
@@ -14,7 +15,7 @@ class ProfileEdit extends React.Component {
     this.setState({
       biography: quillContent
     });
-    this.props.textChanged(quillContent)
+    this.props.textChanged(quillContent);
   }
   render() {
     return (
@@ -27,5 +28,9 @@ class ProfileEdit extends React.Component {
     );
   }
 }
-
+ProfileEdit.propTypes = {
+  textChanged: PropTypes.func.isRequired,
+  handleSubmit: PropTypes.func.isRequired,
+  handleCancel: PropTypes.func.isRequired
+};
 export default ProfileEdit;

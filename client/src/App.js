@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import PropTypes from "prop-types";
 import {
   BrowserRouter as Router,
   Route,
@@ -36,6 +37,13 @@ const PrivateRoute = ({ component: Component, authStatus, clientUser, checkAuthe
   )}/>
 );
 
+PrivateRoute.propTypes = {
+  authStatus: PropTypes.bool.isRequired,
+  clientUser: PropTypes.object,
+  checkAuthentication: PropTypes.func.isRequired,
+  component: PropTypes.func,
+  location: PropTypes.object
+};
 
 class App extends Component {
   constructor(props) {
@@ -86,12 +94,10 @@ class App extends Component {
   async componentWillMount(){
     await this.checkAuthentication();
   }
-  // Check if a user is in the store. If not, check if the server has a session
+
   async checkAuthentication() {
-    // Call the server with the client's credentials
     const uri = "/users/auth";
     const result = await axios.get(uri, {withCredentials: true});
-    // If the server has a session, set authentication to true
     if (result.data.isAuthenticated){
       console.log("User is authenticated in the server")
       this.setState({
