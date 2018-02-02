@@ -1,7 +1,8 @@
-import React from 'react';
-import {  NavLink } from 'react-router-dom';
-import '../../../css/bulma.css'
-import './Header.css'
+import React from "react";
+import PropTypes from "prop-types";
+import { NavLink } from "react-router-dom";
+import "../../../css/bulma.css";
+import "./Header.css";
 
 const Header = (props) => {
   return (
@@ -12,7 +13,7 @@ const Header = (props) => {
             <NavLink className="logo" to="/"> Serialized </NavLink>
             <button className="button is-small navbar-burger nav-toggle" onClick={()=> {
               let burger = document.querySelector(".navbar-burger");
-              let menu = document.querySelector(".navbar-menu")
+              let menu = document.querySelector(".navbar-menu");
               burger.classList.toggle("is-active");
               menu.classList.toggle("is-active");
             }}>
@@ -63,5 +64,9 @@ const Header = (props) => {
   );
 };
 
+Header.propTypes = {
+  authStatus: PropTypes.bool.isRequired,
+  clientUser: PropTypes.object
+};
 
 export default Header;

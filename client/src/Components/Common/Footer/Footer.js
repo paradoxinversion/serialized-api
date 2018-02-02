@@ -1,6 +1,6 @@
-import React from 'react';
-import '../../../css/bulma.css'
-import './Footer.css'
+import React from "react";
+import "../../../css/bulma.css";
+import "./Footer.css";
 const Footer = () => {
   return (
     <div className="footer">
