@@ -6,6 +6,7 @@ import {
 } from "react-router-dom";
 import axios from "axios";
 import HTMLMarkupContainer from "../../../Components/Containers/HTMLMarkupContainer/HTMLMarkupContainer";
+import SerialStepper from "../../../Components/SerialStepper/SerialStepper";
 import "../../../css/bulma.css";
 
 class ViewSerialPart extends React.Component {
@@ -33,6 +34,7 @@ class ViewSerialPart extends React.Component {
 
   componentWillMount(){
     this.getSerialPartData();
+    // this.props.getSerialData(this.props.match.params.id);
   }
 
   render() {
@@ -43,13 +45,14 @@ class ViewSerialPart extends React.Component {
     }
 
     return (
-      <div>
+      <div className="container">
         <div className="level">
           <Link className="button level-item" to={parentSerialUri}>Back to {this.state.parentSerial.title}</Link>
           {partEditLink}
         </div>
         <h1 className="title"> {this.state.serialPartData.title}</h1>
         <HTMLMarkupContainer content={this.state.serialPartData.content} />
+        <SerialStepper />
       </div>
     );
   }

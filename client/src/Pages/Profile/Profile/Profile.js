@@ -68,7 +68,7 @@ class Profile extends React.Component {
       biography: quillContent
     });
   }
-  
+
   handleEditButtonClick(){
     this.setState({
       editMode: true
@@ -98,14 +98,18 @@ class Profile extends React.Component {
 
   render() {
     let userActions;
-    if (this.props.clientUser && this.state.queriedUser._id === this.props.clientUser.id){
+    let editProfile;
+    let createSerial;
+    if (this.props.clientUser && this.state.queriedUser._id === this.props.clientUser._id){
       const newSerialLink = `/serials/create`;
-      userActions = (
-        <div className="level">
-          <button className="button level-item" onClick={this.handleEditButtonClick.bind(this)}> Edit Profile </button>
-          <Link className="button level-item" to={newSerialLink}> Create a new Serial </Link>
-        </div>
-      );
+      editProfile = <button className="button level-item is-pulled-right" onClick={this.handleEditButtonClick.bind(this)}> Edit Profile </button>;
+      createSerial = <Link className="button level-item" to={newSerialLink}> Create a new Serial </Link>;
+      // userActions = (
+      //   <div className="level is-mobile">
+      //     <button className="button level-item" onClick={this.handleEditButtonClick.bind(this)}> Edit Profile </button>
+      //     <Link className="button level-item" to={newSerialLink}> Create a new Serial </Link>
+      //   </div>
+      // );
     }
     if (this.state.editMode){
       return (
@@ -113,10 +117,14 @@ class Profile extends React.Component {
       );
     }else {
       return (
-        <div className="container is-fluid">
+        <div>
           <h1 className="title is-4"> {this.state.queriedUser.username} </h1>
           <HTMLMarkupContainer content={this.state.queriedUser.biography} />
-          {userActions}
+          <div className="is-clearfix">
+            {editProfile}
+          </div>
+          <hr className="horizontal-rule" />
+          {createSerial}
           <SerialList emptyListMessage={`${this.props.match.params.username} hasn't written any serials yet.`} serials={this.state.userSerials}/>
         </div>
       );

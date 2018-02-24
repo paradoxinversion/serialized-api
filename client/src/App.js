@@ -48,14 +48,18 @@ PrivateRoute.propTypes = {
 class App extends Component {
   constructor(props) {
     super(props);
+    this.state = {
+      user: null,
+      currentSerial: null,
+      currentSerialPart: null,
+      isAuthenticated: false
+    };
     this.setUser = this.setUser.bind(this);
     this.checkAuthentication = this.checkAuthentication.bind(this);
     this.getUser = this.getUser.bind(this);
     this.clearUser = this.clearUser.bind(this);
-    this.state = {
-      user: null,
-      isAuthenticated: false
-    };
+
+    this.setSerial = this.setSerial.bind(this);
   }
 
   /**
@@ -114,7 +118,11 @@ class App extends Component {
     }
     // otherwise, make sure authentication is false
   }
-
+  setSerial(currentSerial){
+    this.setState({
+      currentSerial
+    });
+  }
   render() {
     return (
       <Router>
@@ -124,7 +132,6 @@ class App extends Component {
             <Header authStatus={this.state.isAuthenticated} clientUser={this.state.user}/>
             <div className="container is-fluid">
               <Switch>
-
                 <Route
                   exact path="/"
                   component={Home}/>
@@ -153,7 +160,8 @@ class App extends Component {
                   render={()=>
                     <Serials
                       authStatus={this.state.isAuthenticated}
-                      clientUser={this.state.user}/> } />
+                      clientUser={this.state.user}
+                      setSerial={this.setSerial}/> } />
 
                 <PrivateRoute
                   path="/dashboard"

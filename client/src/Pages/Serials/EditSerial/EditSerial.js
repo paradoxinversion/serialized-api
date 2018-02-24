@@ -64,7 +64,7 @@ class EditSerial extends React.Component {
     };
     await axios.put(uri, data, configuration);
     const profile = {
-      pathname: `/profile/${this.props.clientUser.username}`
+      pathname: `/users/${this.props.clientUser.username}`
     };
     this.props.history.push(profile);
   }

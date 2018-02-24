@@ -3,10 +3,10 @@ import PropTypes from "prop-types";
 import {
   withRouter
 } from "react-router-dom";
-import "./SerialEntryContainer.css";
-const SerialEntryContainer = (props) => {
+import "./OwnedSerialEntryContainer.css";
+const OwnedSerialEntryContainer = (props) => {
   return (
-    <div className="entry-container">
+    <div>
       <h2>{props.serial.title}</h2>
       <p>{props.serial.synopsis}</p>
       <div className="level is-mobile">
@@ -16,8 +16,9 @@ const SerialEntryContainer = (props) => {
               pathname: props.serialUri
             };
             props.history.push(location);
-          }}>Read it</button>
-          <button className="button is-disabled level-item">Subscribe</button>
+          }}>Go To Serial</button>
+          <button className="button level-item"> Add a Part </button>
+          <button className="button is-danger level-item">Delete</button>
         </div>
 
       </div>
@@ -25,10 +26,10 @@ const SerialEntryContainer = (props) => {
   );
 };
 
-SerialEntryContainer.propTypes = {
+OwnedSerialEntryContainer.propTypes = {
   serial: PropTypes.object.isRequired,
   serialUri: PropTypes.string.isRequired,
   history: PropTypes.object.isRequired
 };
 
-export default withRouter(SerialEntryContainer);
+export default withRouter(OwnedSerialEntryContainer);

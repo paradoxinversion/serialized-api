@@ -7,9 +7,6 @@ import "../../../css/bulma.css";
 class SerialDirectory extends React.Component{
   constructor(props){
     super(props);
-    this.state = {
-      serials: {}
-    };
   }
 
   async getUserSerialData(){
@@ -28,16 +25,27 @@ class SerialDirectory extends React.Component{
   }
 
   async componentWillMount(){
-    await this.getUserSerialData();
+    // await this.getUserSerialData();
+    await this.props.lookupSerials();
   }
   render () {
+    let list;
+    if (this.props.serials){
+      list = (
+        <SerialList
+          emptyListMessage="No one has written any serials yet."
+          serials={this.props.serials} />
+      );
+    }else{
+      list = (
+        <p> Getting Serials... </p>
+      );
+    }
     return (
       <div>
         <h1 className="title">Directory</h1>
-        <Link to='/serials/create'> Create a Serial </Link>
-        <SerialList
-          emptyListMessage="No one has written any serials yet."
-          serials={this.state.serials} />
+        <Link className="button is-primary" to='/serials/create'> Create a Serial </Link>
+        {list}
       </div>
     );
   }

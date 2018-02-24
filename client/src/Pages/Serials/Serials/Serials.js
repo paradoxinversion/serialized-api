@@ -6,6 +6,7 @@ import {
   Redirect,
   Switch
 } from "react-router-dom";
+import axios from "axios";
 import CreateSerial from "../CreateSerial/CreateSerial";
 import CreateSerialPart from "../CreateSerialPart/CreateSerialPart";
 import ViewSerialPart from "../ViewSerialPart/ViewSerialPart";
@@ -39,6 +40,56 @@ PrivateRoute.propTypes = {
 class Serials extends React.Component {
   constructor(props){
     super(props);
+    this.state = {
+      serialDirectoryLookup: null,
+      currentSerial: null,
+      serialParts: null,
+      currentPart: null
+    };
+    this.getUserSerialData = this.getUserSerialData.bind(this);
+    this.getSerialAndPartData = this.getSerialAndPartData.bind(this);
+  }
+
+  async getUserSerialData(){
+    try{
+      const requestConfiguration = {
+        withCredentials: true
+      };
+      const uri = `/serials`;
+      const serialData = await axios.get(uri, requestConfiguration);
+      this.setState({
+        serialDirectoryLookup: serialData.data
+      });
+    } catch (e){
+      console.error("Something went wrong: \n ", e);
+    }
+  }
+
+  async getSerialAndPartData(serialId){
+    const uri = `/serials/${serialId}`;
+    const config = {
+      withCredentials: true
+    };
+    const result = await axios.get(uri, config);
+    console.log(result.data.serial);
+    this.setState({
+      currentSerial: result.data.serial,
+      serialParts: result.data.serialParts
+    });
+
+    this.props.setSerial(result.data.serial);
+  }
+
+  async getSerialPartData(serialId, partId){
+    const uri = `/serials/${serialId}/${partId}`;
+    const configuration = {
+      withCredentials: true
+    };
+    const serialPartData = await axios.get(uri, configuration);
+    this.setState({
+      currentSerial: serialPartData.data.parentSerial,
+      currentPart: serialPartData.data.part
+    });
   }
   render(){
     return (
@@ -47,7 +98,10 @@ class Serials extends React.Component {
           <Switch>
             <Route
               exact path={`${this.props.match.path}/`}
-              component={SerialDirectory} />
+              render={() =>
+                <SerialDirectory
+                  lookupSerials={this.getUserSerialData}
+                  serials={this.state.serialDirectoryLookup} />} />
 
             <PrivateRoute
               path={`${this.props.match.path}/create`}
@@ -60,6 +114,7 @@ class Serials extends React.Component {
               authStatus={this.props.authStatus}
               clientUser={this.props.clientUser}
               component={EditSerialPart} />
+
             <PrivateRoute
               path={`${this.props.match.path}/:id/edit`}
               authStatus={this.props.authStatus}
@@ -70,6 +125,7 @@ class Serials extends React.Component {
               path={`${this.props.match.path}/:id/new`}
               authStatus={this.props.authStatus}
               clientUser={this.props.clientUser}
+              derp="tesdt"
               component={CreateSerialPart} />
             <Route
               path={`${this.props.match.path}/:id/:partId`}
@@ -79,7 +135,11 @@ class Serials extends React.Component {
             <Route
               path={`${this.props.match.path}/:id`}
               render={()=>
-                <SerialOverview clientUser={this.props.clientUser}/>} />
+                <SerialOverview
+                  getSerialData={this.getSerialAndPartData}
+                  serial={this.state.currentSerial}
+                  serialParts={this.state.serialParts}
+                  clientUser={this.props.clientUser}/>} />
 
             <Route component={NotFound} />
           </Switch>

@@ -10,7 +10,7 @@ const _ = require("lodash");
  */
 const getSerialParts = async (req, res) => {
   try{
-    const serial = await Serial.findOne({_id: req.params.serialId});
+    const serial = await Serial.findOne({_id: req.params.serialId}).populate("author_id");
     const serialParts = await SerialPart.find({serial_id: req.params.serialId});
     res.json({serial, serialParts});
   } catch (error) {

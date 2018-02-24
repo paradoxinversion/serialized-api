@@ -43,7 +43,7 @@ class CreateSerial extends React.Component {
     };
     await axios.post(uri, data, configuration);
     const profile = {
-      pathname: `/profile/${this.props.clientUser.username}`
+      pathname: `/users/${this.props.clientUser.username}`
     };
     this.props.history.push(profile);
   }
