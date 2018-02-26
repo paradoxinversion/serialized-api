@@ -1,7 +1,8 @@
 import React from "react";
 import PropTypes from "prop-types";
 import {
-  withRouter
+  withRouter,
+  Link
 } from "react-router-dom";
 import "./OwnedSerialEntryContainer.css";
 const OwnedSerialEntryContainer = (props) => {
@@ -17,8 +18,11 @@ const OwnedSerialEntryContainer = (props) => {
             };
             props.history.push(location);
           }}>Go To Serial</button>
-          <button className="button level-item"> Add a Part </button>
-          <button className="button is-danger level-item">Delete</button>
+          {/* <button className="button level-item"> Add a Part </button> */}
+          <Link className="button level-item" to={`/serials/${props.serial._id}/new`}> Create a New Part </Link>
+          <button onClick={()=>{
+            props.onSerialDeleted(props.serial._id)
+          }} className="button is-danger level-item">Delete</button>
         </div>
 
       </div>

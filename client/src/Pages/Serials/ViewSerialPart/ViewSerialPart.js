@@ -4,63 +4,65 @@ import {
   withRouter,
   Link
 } from "react-router-dom";
-import axios from "axios";
 import HTMLMarkupContainer from "../../../Components/Containers/HTMLMarkupContainer/HTMLMarkupContainer";
 import SerialStepper from "../../../Components/SerialStepper/SerialStepper";
+import axios from "axios";
 import "../../../css/bulma.css";
 
 class ViewSerialPart extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      parentSerial: {},
-      serialPartData: {
-        content: ""
-      }
+      part: null
     };
   }
 
-  async getSerialPartData(){
+  async componentWillMount(){
+    if (this.props.currentSerial == null || this.props.currentSerial._id !== this.props.match.params.id){
+      await this.props.getSerialData(this.props.match.params.id);
+    }
+    await this.getSerialPart();
+  }
+
+  async getSerialPart(){
     const uri = `/serials/${this.props.match.params.id}/${this.props.match.params.partId}`;
     const configuration = {
       withCredentials: true
     };
     const serialPartData = await axios.get(uri, configuration);
     this.setState({
-      parentSerial: serialPartData.data.parentSerial,
-      serialPartData: serialPartData.data.part
+      part: serialPartData.data.part
     });
   }
 
-  componentWillMount(){
-    this.getSerialPartData();
-    // this.props.getSerialData(this.props.match.params.id);
-  }
-
   render() {
-    const parentSerialUri = `/serials/${this.props.match.params.id}`;
-    let partEditLink;
-    if (this.props.clientUser && this.props.clientUser.id === this.state.parentSerial.author_id){
-      partEditLink = <Link className="button level-item" to={`/serials/${this.props.match.params.id}/${this.props.match.params.partId}/edit`}> Edit </Link>;
-    }
-
-    return (
-      <div className="container">
-        <div className="level">
-          <Link className="button level-item" to={parentSerialUri}>Back to {this.state.parentSerial.title}</Link>
-          {partEditLink}
+    if (this.state.part){
+      const parentSerialUri = `/serials/${this.props.currentSerial._id}`;
+      let partEditLink;
+      if (this.props.clientUser && this.props.clientUser._id === this.props.currentSerial.author_id._id){
+        partEditLink = <Link className="button level-item" to={`/serials/${this.props.currentSerial._id}/${this.state.part._id}/edit`}> Edit </Link>;
+      }
+      return (
+        <div className="container">
+          <div className="level">
+            <Link className="button level-item" to={parentSerialUri}>Back to {this.props.currentSerial.title}</Link>
+            {partEditLink}
+          </div>
+          <h1 className="title"> {this.state.part.title}</h1>
+          <HTMLMarkupContainer content={this.state.part.content} />
+          <SerialStepper />
         </div>
-        <h1 className="title"> {this.state.serialPartData.title}</h1>
-        <HTMLMarkupContainer content={this.state.serialPartData.content} />
-        <SerialStepper />
-      </div>
-    );
+      );
+    } else{
+      return null;
+    }
   }
 }
 
 ViewSerialPart.propTypes = {
   match: PropTypes.object.isRequired,
-  clientUser: PropTypes.object
+  clientUser: PropTypes.object,
+  currentSerial: PropTypes.object
 };
 
 export default withRouter(ViewSerialPart);

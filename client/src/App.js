@@ -1,9 +1,7 @@
 import React, { Component } from "react";
-import PropTypes from "prop-types";
 import {
   BrowserRouter as Router,
   Route,
-  Redirect,
   Switch
 } from "react-router-dom";
 import axios from "axios";
@@ -21,29 +19,9 @@ import Header from "./Components/Common/Header/Header";
 import Footer from "./Components/Common/Footer/Footer";
 import Dashboard from "./Pages/Dashboard/Dashboard";
 import UserDirectory from "./Pages/UserDirectory/UserDirectory";
+import PrivateRoute from "./Components/PrivateRoute/PrivateRoute";
 import NotFound from "./Pages/NotFound/NotFound";
 import store from "store";
-
-const PrivateRoute = ({ component: Component, authStatus, clientUser, checkAuthentication,  ...rest }) => (
-  <Route {...rest} render={ (props) => (
-    authStatus ? (
-      <Component {...props} clientUser={clientUser} checkAuthentication={checkAuthentication} />
-    ) : (
-      <Redirect to={{
-        pathname: "/auth/login",
-        state: { from: props.location }
-      }}/>
-    )
-  )}/>
-);
-
-PrivateRoute.propTypes = {
-  authStatus: PropTypes.bool.isRequired,
-  clientUser: PropTypes.object,
-  checkAuthentication: PropTypes.func.isRequired,
-  component: PropTypes.func,
-  location: PropTypes.object
-};
 
 class App extends Component {
   constructor(props) {
@@ -51,7 +29,7 @@ class App extends Component {
     this.state = {
       user: null,
       currentSerial: null,
-      currentSerialPart: null,
+      serialParts: null,
       isAuthenticated: false
     };
     this.setUser = this.setUser.bind(this);
@@ -60,6 +38,8 @@ class App extends Component {
     this.clearUser = this.clearUser.bind(this);
 
     this.setSerial = this.setSerial.bind(this);
+    this.getSerialAndPartData = this.getSerialAndPartData.bind(this);
+
   }
 
   /**
@@ -103,14 +83,11 @@ class App extends Component {
     const uri = "/users/auth";
     const result = await axios.get(uri, {withCredentials: true});
     if (result.data.isAuthenticated){
-      console.log("User is authenticated in the server")
       this.setState({
         isAuthenticated: true,
         user: result.data.user
       });
     } else{
-      console.log("User is not authenticated in the server")
-
       this.setState({
         isAuthenticated: false,
         user: null
@@ -118,11 +95,24 @@ class App extends Component {
     }
     // otherwise, make sure authentication is false
   }
-  setSerial(currentSerial){
+
+  setSerial(currentSerial, serialParts){
     this.setState({
-      currentSerial
+      currentSerial,
+      serialParts
     });
   }
+
+  async getSerialAndPartData(serialId){
+    const uri = `/serials/${serialId}`;
+    const config = {
+      withCredentials: true
+    };
+    const result = await axios.get(uri, config);
+    this.setSerial(result.data.serial, result.data.serialParts);
+    console.log(result);
+  }
+
   render() {
     return (
       <Router>
@@ -161,7 +151,13 @@ class App extends Component {
                     <Serials
                       authStatus={this.state.isAuthenticated}
                       clientUser={this.state.user}
-                      setSerial={this.setSerial}/> } />
+                      setSerial={this.setSerial}
+                      getSerialData={this.getSerialAndPartData}
+                      setCurrentPart={this.setCurrentSerialPart}
+                      currentSerial={this.state.currentSerial}
+                      serialParts={this.state.serialParts}
+                      currentSerialPart={this.state.currentSerialPart}
+                      clearCurrentPart={this.clearCurrentSerialPart}/> } />
 
                 <PrivateRoute
                   path="/dashboard"

@@ -10,15 +10,12 @@ class EditSerialPart extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
+      part: null,
       title: "",
       content: ""
     };
     this.handleFormInput = this.handleFormInput.bind(this);
     this.handleQuillInput = this.handleQuillInput.bind(this);
-  }
-
-  componentWillMount(){
-    this.getSerialPartData();
   }
 
   handleFormInput(event){
@@ -27,21 +24,36 @@ class EditSerialPart extends React.Component {
     const name = target.name;
     this.setState({
       [name]: value
-
     });
   }
+  async componentWillMount(){
+    if (this.props.currentSerial == null || this.props.currentSerial._id !== this.props.match.params.id){
+      await this.props.getSerialData(this.props.match.params.id);
+    }
+    await this.getSerialPart();
+  }
 
-  async getSerialPartData(){
+  async getSerialPart(){
     const uri = `/serials/${this.props.match.params.id}/${this.props.match.params.partId}`;
     const configuration = {
       withCredentials: true
     };
     const serialPartData = await axios.get(uri, configuration);
     this.setState({
-      parentSerial: serialPartData.data.parentSerial,
-      serialPartData: serialPartData.data.part
+      part: serialPartData.data.part
     });
   }
+  // async getSerialPartData(){
+  //   const uri = `/serials/${this.props.currentSerial._id}/${this.props.match.params.partId}`;
+  //   const configuration = {
+  //     withCredentials: true
+  //   };
+  //   const serialPartData = await axios.get(uri, configuration);
+  //   this.setState({
+  //     parentSerial: serialPartData.data.parentSerial,
+  //     serialPartData: serialPartData.data.part
+  //   });
+  // }
   handleQuillInput(quillContent){
     this.setState({
       content: quillContent
@@ -50,7 +62,7 @@ class EditSerialPart extends React.Component {
 
   async handleSerialSubmit(event){
     event.preventDefault();
-    const uri = `/serials/${this.props.match.params.id}/?partId=${this.props.match.params.partId}`;
+    const uri = `/serials/${this.props.currentSerial._id}/?partId=${this.props.match.params.partId}`;
     const data = {
       title: this.state.title,
       content: this.state.content,
@@ -60,7 +72,7 @@ class EditSerialPart extends React.Component {
     };
     await axios.put(uri, data, configuration);
     const parentSerial = {
-      pathname: `/serials/${this.props.match.params.id}`
+      pathname: `/serials/${this.props.currentSerial._id}`
     };
     this.props.history.push(parentSerial);
   }
@@ -72,7 +84,7 @@ class EditSerialPart extends React.Component {
         <h1> Edit Serial </h1>
         <form onSubmit={this.handleSubmit}>
           <InputField inputType="text" title="Title" name="title" controlFunc={this.handleFormInput} content={this.state.title} isRequired={true} />
-          <QuillContainer toolbarOptions={toolbarOptions} textChanged={this.handleQuillInput}/>
+          <QuillContainer value={this.state.content} toolbarOptions={toolbarOptions} textChanged={this.handleQuillInput}/>
           <input type="submit" value="Submit" onClick={this.handleSerialSubmit.bind(this)} />
         </form>
       </div>

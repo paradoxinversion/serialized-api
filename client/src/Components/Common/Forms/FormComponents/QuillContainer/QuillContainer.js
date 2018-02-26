@@ -8,7 +8,7 @@ class QuillContainer extends React.Component {
   constructor(props){
     super(props);
     this.state = {
-      contents: null
+      rawContents: null
     };
     this.handleUserInput = this.handleUserInput.bind(this);
     this.convertQuillDelta = this.convertQuillDelta.bind(this);
@@ -23,8 +23,9 @@ class QuillContainer extends React.Component {
 
     quill.on("text-change", () => {
       this.setState({
-        contents: quill.getContents()
+        rawContents: quill.getContents()
       });
+
       this.convertQuillDelta();
     });
 
@@ -37,7 +38,7 @@ class QuillContainer extends React.Component {
     this.state.quill.off("text-change");
   }
   convertQuillDelta(){
-    const deltaOps = this.state.contents.ops;
+    const deltaOps = this.state.rawContents.ops;
     const c = {};
     const converter = new QuillDeltaToHtmlConverter(deltaOps, c);
     const html = converter.convert();

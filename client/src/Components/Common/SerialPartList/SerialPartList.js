@@ -10,11 +10,6 @@ const SerialPartList = withRouter((props) => {
       const uri = `/serials/${props.parentSerial._id}/${serialPart._id}`;
       return (
         <li key={serialPart._id}>
-          {/* <Link to={uri}>{serialPart.title}</Link> */}
-          {/* <Link className="serial-part-title" to={{
-            pathname: uri
-
-          }}>{serialPart.title}</Link> */}
           <SerialPartEntryContainer serialPart={serialPart} serialPartUri={uri} />
         </li>
       );

@@ -10,22 +10,14 @@ class EditSerial extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      title: "",
-      synopsis: "",
-      genre: "",
-      nsfw: false
+      title: props.currentSerial.title,
+      synopsis: props.currentSerial.synpopsis,
+      genre: props.currentSerial.genre,
+      nsfw: props.currentSerial.nsfw
     };
     this.handleFormInput = this.handleFormInput.bind(this);
-    axios.get(`/serials/${props.match.params.id}`)
-      .then((serialData) => {
-        this.state.title = serialData.data.serial.title;
-        this.state.synopsis = serialData.data.serial.synopsis;
-        this.state.genre = serialData.data.serial.genre;
-      });
   }
-  componentWillMount(){
-    this.getSerialData();
-  }
+
   handleFormInput(event){
     const target = event.target;
     const value = target.type === "checkbox" ? target.checked : target.value;
@@ -34,20 +26,6 @@ class EditSerial extends React.Component {
       [name]: value
 
     });
-  }
-
-  getSerialData(){
-    const uri = `/serials/${this.props.match.params.id}`;
-    fetch(uri,{
-      mode: "cors",
-      credentials: "include"
-    })
-      .then(res => res.json())
-      .then(result => {
-        this.setState({
-          serial: result.serial,
-        });
-      });
   }
 
   async handleSerialSubmit(event){

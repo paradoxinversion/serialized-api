@@ -11,23 +11,16 @@ class CreateSerialPart extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      parentSerial: {},
       title: "",
       content: ""
     };
     this.handleFormInput = this.handleFormInput.bind(this);
     this.handleQuillInput = this.handleQuillInput.bind(this);
   }
-
-  async getSerialData(){
-    const parentSerial = await axios.get(`/serials/${this.props.match.params.id}`);
-    this.setState({
-      parentSerial: parentSerial.data
-    });
-  }
-
-  componentWillMount(){
-    this.getSerialData();
+  async componentWillMount(){
+    if (this.props.currentSerial === null || this.props.currentSerial._id !== this.props.match.params.id){
+      await this.props.getSerialData(this.props.match.params.id);
+    }
   }
   handleFormInput(event){
     const target = event.target;
@@ -38,6 +31,7 @@ class CreateSerialPart extends React.Component {
 
     });
   }
+
   handleQuillInput(quillContent){
     this.setState({
       content: quillContent
@@ -46,7 +40,7 @@ class CreateSerialPart extends React.Component {
 
   async handleSerialPartSubmit(event){
     event.preventDefault();
-    const uri = `/serials/${this.state.parentSerial.serial._id}`;
+    const uri = `/serials/${this.props.currentSerial._id}`;
     const data ={
       title: this.state.title,
       content: this.state.content
@@ -56,7 +50,7 @@ class CreateSerialPart extends React.Component {
     };
     await axios.post(uri, data, configuration);
     const serial = {
-      pathname: `/serials/${this.state.parentSerial.serial._id}`
+      pathname: `/serials/${this.props.currentSerial._id}`
     };
     this.props.history.push(serial);
 
@@ -81,7 +75,8 @@ class CreateSerialPart extends React.Component {
 
 CreateSerialPart.propTypes = {
   history: PropTypes.object.isRequired,
-  match: PropTypes.object.isRequired
+  match: PropTypes.object.isRequired,
+  currentSerial: PropTypes.object.isRequired
 };
 
 export default withRouter(CreateSerialPart);
