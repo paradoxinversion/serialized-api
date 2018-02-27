@@ -97,19 +97,12 @@ class Profile extends React.Component {
   }
 
   render() {
-    let userActions;
     let editProfile;
     let createSerial;
     if (this.props.clientUser && this.state.queriedUser._id === this.props.clientUser._id){
       const newSerialLink = `/serials/create`;
       editProfile = <button className="button level-item is-pulled-right" onClick={this.handleEditButtonClick.bind(this)}> Edit Profile </button>;
       createSerial = <Link className="button level-item" to={newSerialLink}> Create a new Serial </Link>;
-      // userActions = (
-      //   <div className="level is-mobile">
-      //     <button className="button level-item" onClick={this.handleEditButtonClick.bind(this)}> Edit Profile </button>
-      //     <Link className="button level-item" to={newSerialLink}> Create a new Serial </Link>
-      //   </div>
-      // );
     }
     if (this.state.editMode){
       return (
@@ -125,7 +118,12 @@ class Profile extends React.Component {
           </div>
           <hr className="horizontal-rule" />
           {createSerial}
-          <SerialList emptyListMessage={`${this.props.match.params.username} hasn't written any serials yet.`} serials={this.state.userSerials}/>
+          <SerialList
+            clientUser={this.props.clientUser}
+            emptyListMessage={`${this.props.match.params.username} hasn't written any serials yet.`}
+            serials={this.state.userSerials}
+
+          />
         </div>
       );
     }

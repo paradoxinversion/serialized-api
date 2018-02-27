@@ -40,20 +40,13 @@ class EditSerialPart extends React.Component {
     };
     const serialPartData = await axios.get(uri, configuration);
     this.setState({
-      part: serialPartData.data.part
+      part: serialPartData.data.part,
+      title: serialPartData.data.part.title,
+      content: serialPartData.data.part.content
     });
+
   }
-  // async getSerialPartData(){
-  //   const uri = `/serials/${this.props.currentSerial._id}/${this.props.match.params.partId}`;
-  //   const configuration = {
-  //     withCredentials: true
-  //   };
-  //   const serialPartData = await axios.get(uri, configuration);
-  //   this.setState({
-  //     parentSerial: serialPartData.data.parentSerial,
-  //     serialPartData: serialPartData.data.part
-  //   });
-  // }
+
   handleQuillInput(quillContent){
     this.setState({
       content: quillContent

@@ -11,10 +11,6 @@ import "./SerialOverview.css";
 class SerialOverview extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {
-      serial: {},
-      serialParts: []
-    };
   }
 
   async componentDidMount(){
@@ -46,7 +42,7 @@ class SerialOverview extends React.Component {
           <p>{this.props.currentSerial.synopsis}</p>
           {authorControls}
           <hr className="horizontal-rule" />
-          <SerialPartList parentSerial={this.props.currentSerial} serialParts={this.props.serialParts}/>
+          <SerialPartList getSerialData={this.props.getSerialData} clientUser={this.props.clientUser} currentSerial={this.props.currentSerial} serialParts={this.props.serialParts}/>
         </div>
       );
     } else {

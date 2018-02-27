@@ -50,7 +50,7 @@ class ViewSerialPart extends React.Component {
           </div>
           <h1 className="title"> {this.state.part.title}</h1>
           <HTMLMarkupContainer content={this.state.part.content} />
-          <SerialStepper />
+          <SerialStepper parts={this.props.serialParts}/>
         </div>
       );
     } else{
