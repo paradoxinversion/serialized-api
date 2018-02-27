@@ -22,6 +22,10 @@ const SerialPartSchema = new Schema({
   slug: {
     type: String,
     required: true
+  },
+  part_number:{
+    type: Number,
+    required: true
   }
 });
 

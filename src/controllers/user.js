@@ -6,6 +6,7 @@ const getUsers = async function getUsers(req, res){
     userData: queryResult,
     isQueriedUser: false
   };
+  console.log("Get Users::", response);
   res.json(response);
 };
 
@@ -19,12 +20,17 @@ const getUser = async function getUser(req, res){
   if (req.session.passport && req.session.passport.user == response.userData._id){
     response.isQueriedUser = true;
   }
+  console.log("Get (single) User::", response);
   res.json(response);
 };
 const postUser = async function postUser(req, res){
   try{
     const newUser = await userActions.addNewUser(req.body);
-    res.json({status: 200});
+    const response = {
+      status: 200
+    }
+    console.log("Post User::", response);
+    res.json(response);
   } catch (error){
     return res.json({
       status: error.statusCode,
@@ -39,6 +45,7 @@ const postUser = async function postUser(req, res){
 const updateUser = async function updateUser(req, res){
   try{
     const update = await userActions.updateUser(req.body, req.session.passport.user);
+    console.log("Update User::", update);
     res.json(update);
   } catch(error){
     return res.json({
@@ -53,9 +60,11 @@ const updateUser = async function updateUser(req, res){
 
 const attemptUserAuthentication = async function attemptUserAuthentication(req, res){
   try{
-    res.json({
-      user: req.user
-    });
+    const authenticatedUser = {
+      user:req.user
+    };
+    console.log("Attempt Authentication::", authenticatedUser);
+    res.json(authenticatedUser);
   } catch(e){
     throw e;
   }
@@ -63,7 +72,8 @@ const attemptUserAuthentication = async function attemptUserAuthentication(req, 
 
 const deleteUser = async function deleteUser(req, res){
   try{
-    const deletionResult = userActions.deleteUser(req.user.token);
+    const deletionResult = userActions.deleteUser(req.user._id);
+    console.log("Delete User::", deletionResult);
     res.send(deletionResult);
   } catch(error){
     return res.json({

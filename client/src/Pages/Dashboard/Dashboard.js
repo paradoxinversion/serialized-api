@@ -20,12 +20,18 @@ class Dashboard extends React.Component {
   }
 
   render() {
+    let createSerial;
+
+    const newSerialLink = `/serials/create`;
+    createSerial = <Link className="button level-item" to={newSerialLink}> Create a new Serial </Link>;
+
     return (
       <div>
         <h1 className="title is-4"> Welcome back, {this.props.clientUser.username} </h1>
         <div className="level">
           <Link className="button level-item" to={`/users/${this.props.clientUser.username}`}> Profile </Link>
         </div>
+        {createSerial}
         <OwnedSerialList
           clientUser={this.props.clientUser}
           emptyListMessage="You have not written any serials" />

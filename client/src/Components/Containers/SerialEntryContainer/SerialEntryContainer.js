@@ -11,6 +11,7 @@ const SerialEntryContainer = (props) => {
     authorOptions = (
       <div>
         <button onClick={()=>{
+          props.onSerialDeleted(props.serial._id);
         }} className="button is-danger level-item">Delete</button>
       </div>
     );
@@ -35,7 +36,8 @@ const SerialEntryContainer = (props) => {
 SerialEntryContainer.propTypes = {
   serial: PropTypes.object.isRequired,
   serialUri: PropTypes.string.isRequired,
-  history: PropTypes.object.isRequired
+  clientUser: PropTypes.object,
+  onSerialDeleted: PropTypes.func
 };
 
 export default SerialEntryContainer;

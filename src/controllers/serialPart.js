@@ -11,8 +11,10 @@ const _ = require("lodash");
 const getSerialParts = async (req, res) => {
   try{
     const serial = await Serial.findOne({_id: req.params.serialId}).populate("author_id");
-    const serialParts = await SerialPart.find({serial_id: req.params.serialId});
-    res.json({serial, serialParts});
+    const serialParts = await SerialPart.find({serial_id: req.params.serialId}).sort({part_number: 1});
+    const response = {serial, serialParts};
+    console.log("Get Serial Parts::", response);
+    res.json(response);
   } catch (error) {
     return res.json({
       status: error.statusCode,
@@ -26,7 +28,9 @@ const getSerialParts = async (req, res) => {
 
 const getSingleSerialPart = async (req, res) => {
   try{
-    res.json(await serialPartActions.getSingleSerialPart(req.params.serialId, req.params.partId));
+    const serialPart = await serialPartActions.getSingleSerialPart(req.params.partId);
+    console.log("Get serial part", serialPart);
+    res.json(serialPart);
   } catch (error) {
     return res.json({
       status: error.statusCode,
@@ -40,6 +44,7 @@ const getSingleSerialPart = async (req, res) => {
 const postSerialPart = async (req, res) => {
   try{
     const newPart = await serialPartActions.createSerialPart(req.body, req.params.serialId);
+    console.log("Post Serial Part::", newPart);
     res.json(newPart);
   } catch (error) {
     return res.json({
@@ -55,6 +60,7 @@ const postSerialPart = async (req, res) => {
 const deleteSerialPart = async (req, res) => {
   try{
     const deletionResult = serialPartActions.deleteSerialPart(req.params.partId, req.session.passport.user);
+    console.log("Delete Serial Part::", deletionResult);
     res.json(deletionResult);
   } catch(error){
     return res.json({
@@ -85,6 +91,7 @@ const editSerialPart = async (req, res) => {
     }
     const query = {_id:req.query.partId};
     const update = await SerialPart.findOneAndUpdate(query, valuesToUpdate);
+    console.log("Edit Serial Part", update);
     res.json(update);
   } catch (error){
     return res.json({
@@ -97,10 +104,22 @@ const editSerialPart = async (req, res) => {
   }
 };
 
+const updateSerialPartNumber = async (req, res) => {
+  try {
+    console.log("PARAMS", req.params, req.body.moveUp, req.session.passport.user )
+    const response = await serialPartActions.updateSerialPartNumber(req.params.partId, req.body.moveUp, req.session.passport.user);
+    console.log("Update Serial Part Number::", response);
+    res.json(response);
+  } catch (e){
+    console.log(e);
+    throw e;
+  }
+}
 export {
   getSerialParts,
   postSerialPart,
   deleteSerialPart,
   editSerialPart,
-  getSingleSerialPart
+  getSingleSerialPart,
+  updateSerialPartNumber
 };

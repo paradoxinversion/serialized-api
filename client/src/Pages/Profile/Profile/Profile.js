@@ -24,6 +24,7 @@ class Profile extends React.Component {
     this.handleCancelEdit = this.handleCancelEdit.bind(this);
     this.handleQuillInput = this.handleQuillInput.bind(this);
     this.handleProfileSubmit = this.handleProfileSubmit.bind(this);
+    this.getProfileData = this.getProfileData.bind(this);
   }
 
   async getProfileData (){
@@ -45,6 +46,7 @@ class Profile extends React.Component {
 
   async getUserSerialData(){
     try{
+
       const requestConfiguration = {
         withCredentials: true
       };
@@ -122,7 +124,7 @@ class Profile extends React.Component {
             clientUser={this.props.clientUser}
             emptyListMessage={`${this.props.match.params.username} hasn't written any serials yet.`}
             serials={this.state.userSerials}
-
+            getProfileData={this.getProfileData}
           />
         </div>
       );

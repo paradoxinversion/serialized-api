@@ -11,7 +11,7 @@ import SerialPart from "../mongo/SerialPart";
  */
 const readSerialParts = async (serialId) => {
   try{
-    return await SerialPart.find({serial_id: serialId});
+    return await SerialPart.find({serial_id: serialId}).sort({part_number: 1});
   } catch (error) {
     throw error;
   }
@@ -23,11 +23,9 @@ const readSerialParts = async (serialId) => {
  * @param {ObjectId} partId The id of the serial part to be viewed.
  * @returns {Object} The serial part
  */
-const getSingleSerialPart = async (serialId, partId) => {
-  const parentSerial = await Serial.findOne({_id:serialId});
-  const part = await SerialPart.findOne({_id:partId});
+const getSingleSerialPart = async (partId) => {
+  const part = await SerialPart.findOne({_id:partId}).populate("serial_id");
   return {
-    parentSerial,
     part
   };
 };
@@ -40,13 +38,16 @@ const getSingleSerialPart = async (serialId, partId) => {
  */
 const createSerialPart = async (requestBody, parentSerialId) => {
   try{
+    const serialParts = await readSerialParts(parentSerialId);
+    console.log(serialParts);
     // const serial = await Serial.find({_id: req.params.serialId});
     const newPart = new SerialPart({
       title: requestBody.title,
       content: requestBody.content,
       creation_date: Date.now(),
       serial_id: parentSerialId,
-      slug: _.kebabCase(requestBody.title)
+      slug: _.kebabCase(requestBody.title),
+      part_number: serialParts.length
     });
 
     await newPart.save();
@@ -107,11 +108,62 @@ const updateSerialPart = async (requestBody, partId) => {
     throw error;
   }
 };
+const updateSerialPartNumber = async(serialPartId, moveUp, userId) => {
+  try {
+    const result = {
 
+    }
+    const serialPartA = await getSingleSerialPart(serialPartId);
+    console.log("SerialPartA::", serialPartA);
+
+    if (serialPartA.part.serial_id.author_id != userId){
+      const notAuthorizedError = new Error("Not authorized to switch these parts");
+      throw notAuthorizedError;
+    }
+    const oldIndexA = serialPartA.part.part_number;
+    const serialParts = await readSerialParts(serialPartA.part.serial_id._id);
+    if (serialParts.length > 0){
+      let serialPartB;
+      let oldIndexB;
+      if (moveUp){
+        if (serialPartA.part.part_number < serialParts.length){
+          serialPartB = serialParts[serialPartA.part.part_number+1];
+          oldIndexB = serialPartB.part_number;
+          serialPartA.part.part_number = serialPartB.part_number;
+          result.resultA = await serialPartA.part.save();
+          serialPartB.part_number = oldIndexA;
+          result.resultB = await serialPartB.save();
+          
+        } else {
+          const maxIndexError = new Error("Serial Part is already at the highest index");
+          throw maxIndexError;
+        }
+      } else {
+        if (serialPartA.part.part_number > 0){
+          serialPartB = serialParts[serialPartA.part.part_number-1];
+          oldIndexB = serialPartB.part_number;
+          serialPartA.part.part_number = serialPartB.part_number;
+          result.resultA = await serialPartA.part.save();
+          serialPartB.part_number = oldIndexA;
+          result.resultB = await serialPartB.save();
+        } else {
+          const minIndexError = new Error("Serial Part is already at the lowest index");
+          throw minIndexError;
+        }
+      }
+
+    }
+    return result;
+  } catch (e){
+    console.log(e);
+    throw e;
+  }
+};
 export {
   readSerialParts,
   createSerialPart,
   deleteSerialPart,
   updateSerialPart,
-  getSingleSerialPart
+  getSingleSerialPart,
+  updateSerialPartNumber
 };

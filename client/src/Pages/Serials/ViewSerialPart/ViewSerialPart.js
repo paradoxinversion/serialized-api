@@ -49,8 +49,9 @@ class ViewSerialPart extends React.Component {
             {partEditLink}
           </div>
           <h1 className="title"> {this.state.part.title}</h1>
+          <p>{`Part ${(this.state.part.part_number+1)}`} of {`${this.props.serialParts.length} in ${this.props.currentSerial.title}`}</p>
           <HTMLMarkupContainer content={this.state.part.content} />
-          <SerialStepper parts={this.props.serialParts}/>
+          <SerialStepper currentSerial={this.props.currentSerial} currentPart={this.state.part} serialParts={this.props.serialParts}/>
         </div>
       );
     } else{

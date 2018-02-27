@@ -25,7 +25,6 @@ router.route("/users/:username")
 
 router.route("/serials")
   .get(serialController.getSerials) // Get All Serials
-  // .post(authController.isAuthenticatedBearer, serialController.postSerial)
   .post(ensureLoggedIn(), serialController.postSerial)
   .delete(ensureLoggedIn(), serialController.deleteSerial)
   .put(ensureLoggedIn(), serialController.editSerial);
@@ -37,6 +36,7 @@ router.route("/serials/:serialId")
 
 router.route("/serials/:serialId/:partId")
   .get(serialPartController.getSingleSerialPart)
-  .delete(ensureLoggedIn(), serialPartController.deleteSerialPart);
+  .delete(ensureLoggedIn(), serialPartController.deleteSerialPart)
+  .put(ensureLoggedIn(), serialPartController.updateSerialPartNumber);
 
 module.exports = router;

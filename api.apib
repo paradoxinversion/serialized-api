@@ -13,51 +13,16 @@ User Resources
 ## User Collection [/users]
 
 ### List All Users [GET]
-
 + Response 200 (application/json)
-
-
-### Create new user [POST]
-
-Users may register new accounts
-
-+ Request (application/json)
   + Schema
     {
       "type": "object",
       "properties": {
-        "email": {
-          "type": "string"
-        },
-        "username": {
-          "type": "string"
-        },
-        "first-name": {
-          "type": "string"
-        },
-        "last-name": {
-          "type": "string"
-        },
-        "birthdate": {
-          "type": "date"
-        },
+        "userData": {
+          "type": "array"
+          "items": [{
+            "_id": "string"
+          }]
+        }
       }
     }
-+ Response 200 (application/json)
-  {
-    "status": 200
-  }
-
-+ Response 400 (application/json)
-
-### Delete a User [DELETE]
-
-+ Response 200
-
-### Update a User [PUT]
-
-# Group Auth
-
-User Authentication
-
-### Attempt User athentication

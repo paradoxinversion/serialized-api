@@ -6,15 +6,35 @@ import {
 } from "react-router-dom";
 const SerialEntryContainer = (props) => {
   let authorOptions = null;
+  let moveUp = null;
+  let moveDown = null;
   if (props.currentSerial){
 
-    if (props.clientUser && props.clientUser._id == props.currentSerial.author_id._id){
+    if (props.clientUser && props.clientUser._id === props.currentSerial.author_id._id){
+      if (props.serialPart.part_number > 0){
+        moveDown = (
+          <button onClick={()=>{
+            props.onPartMoved(props.serialPart._id, false)
+          }} className="button">Move Down</button>
+        )
+      }
+      if (props.serialPart.part_number < props.serialParts.length-1){
+        moveUp = (
+          <button onClick={()=>{
+            props.onPartMoved(props.serialPart._id, true)
+          }} className="button">Move Up</button>
+        );
+      }
+
       authorOptions = (
         <div>
           <Link to={`/serials/${props.currentSerial._id}/${props.serialPart._id}/edit`}>Edit</Link>
           <button onClick={()=>{
             props.onSerialPartDeleted(props.currentSerial._id, props.serialPart._id)
           }} className="button">Delete Part</button>
+          {moveUp}
+          {moveDown}
+
         </div>
       )
     }

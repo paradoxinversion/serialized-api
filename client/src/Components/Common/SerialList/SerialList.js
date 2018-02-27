@@ -1,9 +1,7 @@
 import React from "react";
 import PropTypes from "prop-types";
 import axios from "axios";
-import {
-  withRouter
-} from "react-router-dom";
+
 import SerialEntryContainer from "../../Containers/SerialEntryContainer/SerialEntryContainer";
 class SerialList extends React.Component {
   constructor(props){
@@ -11,12 +9,12 @@ class SerialList extends React.Component {
     this.deleteSerial = this.deleteSerial.bind(this);
   }
   async deleteSerial(serialId){
-    const deletionResult = await axios.delete(`/serials?serialId=${serialId}`, {
+    await axios.delete(`/serials?serialId=${serialId}`, {
       withCredentials: true
     });
-    console.log("deletion", deletionResult);
-    await this.getUserSerialData();
+    await this.props.getProfileData();
   }
+  
   render(){
     if (this.props.serials &&  this.props.serials.length > 0){
       const serials = this.props.serials.map((serial) => {
