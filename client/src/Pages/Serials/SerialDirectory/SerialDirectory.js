@@ -34,7 +34,8 @@ class SerialDirectory extends React.Component{
       list = (
         <SerialList
           emptyListMessage="No one has written any serials yet."
-          serials={this.props.serials} />
+          serials={this.props.serials}
+          toggleSerialSubscription={this.props.toggleSerialSubscription}/>
       );
     }else{
       list = (

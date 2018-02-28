@@ -16,16 +16,13 @@ class SerialPartList extends React.Component {
     const deletionResult = await axios.delete(`/serials/${serialId}/${partId}`, {
       withCredentials: true
     });
-    console.log("deletion", deletionResult);
     await this.props.getSerialData(serialId);
   }
   async movePart(partId, up){
     const payload = {
       moveUp: up
     }
-    console.log(this.props.currentSerial._id);
     const movementResult = await axios.put(`/serials/${this.props.currentSerial._id}/${partId}`, payload, {withCredentials: true});
-    console.log(movementResult);
     await this.props.getSerialData(this.props.currentSerial._id);
   }
   render(){

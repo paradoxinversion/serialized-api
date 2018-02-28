@@ -1,7 +1,7 @@
 import * as _ from "lodash";
 import Serial from "../mongo/Serial";
 import SerialPart from "../mongo/SerialPart";
-
+import Subscription from "../mongo/Subscription";
 /**
  * This function gets all serials in the database
  * @returns {Array} all serials in the database
@@ -105,4 +105,34 @@ export const deleteSerial = async (serialIdQueryString, userId) => {
   await deleteSerialParts(serial);
   const deletionResult = await Serial.remove({_id: serial._id});
   return deletionResult;
+};
+
+export const subscribeToSerial = async(serialId, userId) => {
+  // check if the user already is subbed
+  let userSubscription = await Subscription.findOne({subscriber: userId}).where("subscribed_object").eq(serialId);
+  let result = {
+  }
+  if (userSubscription === null){
+    userSubscription = new Subscription({
+      subscriber: userId,
+      subscribed_object: serialId
+    });
+    await userSubscription.save();
+    result.subscription = userSubscription;
+  } else{
+    userSubscription = await Subscription.remove({_id: userSubscription._id});
+    result.subscription = null;
+  }
+  return result;
+};
+
+export const getSerialSubscriptions = async(serialId) => {
+  return await Subscription.find({subscribed_object: serialId});
+};
+
+export const checkForUserSubscription = async(serialId, userId) => {
+  const subscription = await Subscription.findOne({subscribed_object: serialId}).where("subscriber").eq(userId);
+  const result = subscription;
+  console.log("Sub Check Result::", result);
+  return result;
 };

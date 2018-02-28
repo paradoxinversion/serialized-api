@@ -25,6 +25,7 @@ class Serials extends React.Component {
     };
     this.getUserSerialData = this.getUserSerialData.bind(this);
   }
+
   async getUserSerialData(){
     try{
       const requestConfiguration = {
@@ -50,7 +51,8 @@ class Serials extends React.Component {
               render={() =>
                 <SerialDirectory
                   lookupSerials={this.getUserSerialData}
-                  serials={this.state.serialDirectoryLookup} />} />
+                  serials={this.state.serialDirectoryLookup}
+                  currentSerial={this.props.currentSerial} />} />
 
             <PrivateRoute
               path={`${this.props.match.path}/create`}

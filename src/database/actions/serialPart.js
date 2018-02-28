@@ -79,6 +79,7 @@ const deleteSerialPart = async (partId, userId) => {
     throw error;
   }
 };
+
 /**
  * This function updates a serial part and returns the updated entry
  * @param {Object} requestBody The request body from the client machine
@@ -108,6 +109,7 @@ const updateSerialPart = async (requestBody, partId) => {
     throw error;
   }
 };
+
 const updateSerialPartNumber = async(serialPartId, moveUp, userId) => {
   try {
     const result = {
@@ -133,7 +135,7 @@ const updateSerialPartNumber = async(serialPartId, moveUp, userId) => {
           result.resultA = await serialPartA.part.save();
           serialPartB.part_number = oldIndexA;
           result.resultB = await serialPartB.save();
-          
+
         } else {
           const maxIndexError = new Error("Serial Part is already at the highest index");
           throw maxIndexError;
@@ -159,6 +161,7 @@ const updateSerialPartNumber = async(serialPartId, moveUp, userId) => {
     throw e;
   }
 };
+
 export {
   readSerialParts,
   createSerialPart,

@@ -4,7 +4,7 @@ import * as serialActions from "../database/actions/serial";
 /**
  * Get a list of serials. If there is a userId query, gets only serials by that user.
  */
-const getSerials = async (req, res) => {
+export const getSerials = async (req, res) => {
   try{
     let serials;
     if (req.query.userId){
@@ -16,7 +16,6 @@ const getSerials = async (req, res) => {
       serials = await serialActions.getSerials();
       serials.clientOwnsSerials = false;
     }
-    console.log("Get Serials::", serials);
     res.json(serials);
   } catch (error){
     return res.json({
@@ -32,10 +31,9 @@ const getSerials = async (req, res) => {
 /**
  * Post a new serial
  */
-const postSerial = async (req, res) => {
+export const postSerial = async (req, res) => {
   try{
     const newSerial = await serialActions.postSerial(req.body, req.session.passport.user);
-    console.log("Post Serial::", newSerial);
     res.json(newSerial);
   } catch(error){
     return res.json({
@@ -51,10 +49,9 @@ const postSerial = async (req, res) => {
 /**
  * Return a list of Serials by author id
  */
-const getSerialsByAuthorId = async (req, res) => {
+export const getSerialsByAuthorId = async (req, res) => {
   try{
     const authorSerials = await serialActions.getAuthorSerials(req.query.userId);
-    console.log("Get Serials by Author::", authorSerials);
     res.json(authorSerials);
   } catch (error){
     return res.json({
@@ -70,10 +67,9 @@ const getSerialsByAuthorId = async (req, res) => {
 /**
  *
  */
-const deleteSerial = async (req, res) => {
+export const deleteSerial = async (req, res) => {
   try{
     const deletionResult = await serialActions.deleteSerial(req.query.serialId, req.session.passport.user);
-    console.log("Delete Serial::", deletionResult);
     res.json(deletionResult);
   } catch(error){
     return res.json({
@@ -86,10 +82,9 @@ const deleteSerial = async (req, res) => {
   }
 };
 
-const editSerial = async (req, res) => {
+export const editSerial = async (req, res) => {
   try{
-    const update = serialActions.editSerial(req.body, req.query.serialId, req.session.passport.user);
-    console.log("Edit Serial::", update);
+    const update = await serialActions.editSerial(req.body, req.query.serialId, req.session.passport.user);
     res.json(update);
 
   } catch (error) {
@@ -103,10 +98,39 @@ const editSerial = async (req, res) => {
   }
 };
 
-export {
-  getSerials,
-  postSerial,
-  getSerialsByAuthorId,
-  deleteSerial,
-  editSerial
+export const toggleSerialSubscription = async (req, res) => {
+  try{
+    const result = await serialActions.subscribeToSerial(req.params.serialId, req.session.passport.user);
+    res.json(result);
+  } catch( e){
+    return res.json({
+      status: "400",
+      error: {
+        name: e.name,
+        message: e.message
+      }
+    });
+  }
+};
+
+export const checkForUserSubscription = async (req, res) => {
+  try{
+    let result;
+    if (req.session.passport){
+      result = await serialActions.checkForUserSubscription(req.params.serialId, req.session.passport.user);
+    } else {
+      const noUserError = new Error("No user supplied");
+      throw noUserError;
+    }
+    res.json(result);
+  } catch (e){
+    console.log(e);
+    return res.json({
+      status: "400",
+      error: {
+        name: e.name,
+        message: e.message
+      }
+    });
+  }
 };

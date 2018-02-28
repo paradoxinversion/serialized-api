@@ -125,6 +125,7 @@ class Profile extends React.Component {
             emptyListMessage={`${this.props.match.params.username} hasn't written any serials yet.`}
             serials={this.state.userSerials}
             getProfileData={this.getProfileData}
+            toggleSerialSubscription={this.props.toggleSerialSubscription}
           />
         </div>
       );

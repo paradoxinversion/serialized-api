@@ -4,38 +4,84 @@ import {
   withRouter,
   Link
 } from "react-router-dom";
+import axios from "axios";
 import "./SerialEntryContainer.css";
-const SerialEntryContainer = (props) => {
-  let authorOptions;
-  if (props.serial && props.clientUser && props.clientUser._id === props.serial.author_id){
-    authorOptions = (
-      <div>
-        <button onClick={()=>{
-          props.onSerialDeleted(props.serial._id);
-        }} className="button is-danger level-item">Delete</button>
+class SerialEntryContainer extends React.Component {
+  constructor(props){
+    super(props);
+    this.state = {
+      isSubscribed: false
+    };
+  }
+
+  async checkForSubscription(serialId){
+    const result = await axios.get(`/serial-subscriptions/${this.props.serial._id}/check`);
+
+    console.log(result);
+    if (result.data && !result.data.error){
+      this.setState({
+        isSubscribed: true
+      });
+    } else{
+      this.setState({
+        isSubscribed: false
+      });
+    }
+  }
+  async toggleSerialSubscription(){
+    try{
+      const requestConfiguration = {
+        withCredentials: true
+      };
+
+      const subscriptionResult = await axios.get(`/serial-subscriptions/${this.props.serial._id}`, requestConfiguration);
+      console.log("Subscription Toggled::", subscriptionResult);
+    } catch (e){
+      console.log(e);
+      throw e;
+    }
+  }
+  async componentDidMount(){
+    await this.checkForSubscription(this.props.serial._id);
+  }
+  render(){
+    let authorOptions;
+    let subscriptionOptions;
+    let subscribeButtonText = "Subscribe";
+    if (this.state.isSubscribed){
+      subscribeButtonText = "Unsubscribe";
+    }
+    if (this.props.serial && this.props.clientUser && this.props.clientUser._id === this.props.serial.author_id){
+      authorOptions = (
+        <div>
+          <button onClick={()=>{
+            this.props.onSerialDeleted(this.props.serial._id);
+          }} className="button is-danger level-item">Delete</button>
+        </div>
+      );
+    }
+    return (
+      <div className="entry-container">
+        <h2>{this.props.serial.title}</h2>
+        <p>{this.props.serial.synopsis}</p>
+        <div className="level is-mobile">
+          <div className="level-left">
+            <Link className="button is-primary" to={`${this.props.serial._id}`}>Read It</Link>
+            <button onClick={async ()=>{
+              await this.toggleSerialSubscription(this.props.serial._id);
+              await this.checkForSubscription(this.props.serial._id);
+            }} className="button is-disabled level-item">{subscribeButtonText}</button>
+            {authorOptions}
+          </div>
+        </div>
       </div>
     );
-
   }
-  return (
-    <div className="entry-container">
-      <h2>{props.serial.title}</h2>
-      <p>{props.serial.synopsis}</p>
-      <div className="level is-mobile">
-        <div className="level-left">
-          <Link className="button is-primary" to={`${props.serialUri}`}>Read It</Link>
-          <button className="button is-disabled level-item">Subscribe</button>
-          {authorOptions}
-        </div>
 
-      </div>
-    </div>
-  );
-};
+}
 
 SerialEntryContainer.propTypes = {
   serial: PropTypes.object.isRequired,
-  serialUri: PropTypes.string.isRequired,
   clientUser: PropTypes.object,
   onSerialDeleted: PropTypes.func
 };

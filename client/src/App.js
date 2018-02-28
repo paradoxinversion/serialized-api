@@ -70,11 +70,13 @@ class App extends Component {
       isAuthenticated: false
     });
   }
+
   setAuthStatus(authenticationResponse){
     this.setState({
       isAuthenticated: authenticationResponse
     });
   }
+
   async componentWillMount(){
     await this.checkAuthentication();
   }
@@ -113,6 +115,22 @@ class App extends Component {
     console.log(result);
   }
 
+  async toggleSerialSubscription(serialId){
+    try{
+      const requestConfiguration = {
+        withCredentials: true
+      };
+
+      const subscriptionResult = await axios.get(`/serial-subscriptions/${serialId}`);
+      console.log("Sub result::", subscriptionResult);
+    } catch (e){
+      console.log(e);
+      throw e;
+    }
+  }
+
+
+
   render() {
     return (
       <Router>
@@ -138,7 +156,8 @@ class App extends Component {
                   path="/users/:username"
                   render={ () =>
                     <Profile
-                      clientUser={this.state.user}/>} />
+                      clientUser={this.state.user}
+                      toggleSerialSubscription={this.toggleSerialSubscription}/>} />
                 <Route
                   path="/users"
                   authStatus={this.state.isAuthenticated}

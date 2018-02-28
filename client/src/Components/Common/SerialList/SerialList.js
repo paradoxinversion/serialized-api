@@ -8,25 +8,40 @@ class SerialList extends React.Component {
     super(props);
     this.deleteSerial = this.deleteSerial.bind(this);
   }
+
   async deleteSerial(serialId){
     await axios.delete(`/serials?serialId=${serialId}`, {
       withCredentials: true
     });
     await this.props.getProfileData();
   }
-  
+
+  async checkSubscription(serialId){
+    try{
+      const requestConfiguration = {
+        withCredentials: true
+      };
+
+      const subscriptionResult = await axios.get(`/serial-subscriptions/${serialId}/check`);
+      console.log("Sub result::", subscriptionResult);
+      return subscriptionResult;
+    } catch (e){
+      console.log(e);
+      throw e;
+    }
+  }
+
   render(){
     if (this.props.serials &&  this.props.serials.length > 0){
       const serials = this.props.serials.map((serial) => {
-        const uri = `/serials/${serial._id}`;
         return (
           <li key={serial._id}>
             <SerialEntryContainer
               clientUser={this.props.clientUser}
               serial={serial}
               goToSerial={this.props.goToSerial}
-              serialUri={uri}
-              onSerialDeleted={this.deleteSerial}/>
+              onSerialDeleted={this.deleteSerial}
+              toggleSerialSubscription={this.props.toggleSerialSubscription}/>
           </li>
         );
       });
@@ -40,8 +55,8 @@ class SerialList extends React.Component {
       return <p>{this.props.emptyListMessage}</p>;
     }
   }
+}
 
-};
 SerialList.propTypes = {
   serials: PropTypes.array.isRequired,
   emptyListMessage: PropTypes.string.isRequired

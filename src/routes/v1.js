@@ -39,4 +39,9 @@ router.route("/serials/:serialId/:partId")
   .delete(ensureLoggedIn(), serialPartController.deleteSerialPart)
   .put(ensureLoggedIn(), serialPartController.updateSerialPartNumber);
 
+router.route("/serial-subscriptions/:serialId/")
+  .get(ensureLoggedIn(), serialController.toggleSerialSubscription);
+
+router.route("/serial-subscriptions/:serialId/check")
+  .get(serialController.checkForUserSubscription);
 module.exports = router;
