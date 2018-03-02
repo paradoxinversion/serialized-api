@@ -63,7 +63,9 @@ class ViewSerialPart extends React.Component {
 ViewSerialPart.propTypes = {
   match: PropTypes.object.isRequired,
   clientUser: PropTypes.object,
-  currentSerial: PropTypes.object
+  currentSerial: PropTypes.object,
+  getSerialData: PropTypes.func,
+  serialParts: PropTypes.array
 };
 
 export default withRouter(ViewSerialPart);

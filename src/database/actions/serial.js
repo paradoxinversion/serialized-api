@@ -136,3 +136,14 @@ export const checkForUserSubscription = async(serialId, userId) => {
   console.log("Sub Check Result::", result);
   return result;
 };
+
+export const getUserSerialSubscriptions = async(userId) => {
+  const subscriptions = await Subscription.find({subscriber:userId});
+  // TODO: Find a more elegant solution for this operation
+  const result = [];
+  while (result.length < subscriptions.length){
+    const subscribedSerial = await Serial.findOne({_id: subscriptions[result.length].subscribed_object});
+    result.push(subscribedSerial);
+  }
+  return result;
+};

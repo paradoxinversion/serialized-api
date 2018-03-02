@@ -28,7 +28,7 @@ const SerialEntryContainer = (props) => {
 
       authorOptions = (
         <div>
-          <Link to={`/serials/${props.currentSerial._id}/${props.serialPart._id}/edit`}>Edit</Link>
+          <Link className="button" to={`/serials/${props.currentSerial._id}/${props.serialPart._id}/edit`}>Edit</Link>
           <button onClick={()=>{
             props.onSerialPartDeleted(props.currentSerial._id, props.serialPart._id)
           }} className="button">Delete Part</button>
@@ -62,7 +62,11 @@ const SerialEntryContainer = (props) => {
 SerialEntryContainer.propTypes = {
   serialPart: PropTypes.object.isRequired,
   serialPartUri: PropTypes.string.isRequired,
-  history: PropTypes.object.isRequired
+  history: PropTypes.object.isRequired,
+  currentSerial: PropTypes.object,
+  clientUser: PropTypes.clientUser,
+  onSerialPartDeleted: PropTypes.func,
+  onPartMoved: PropTypes.func
 };
 
 export default withRouter(SerialEntryContainer);

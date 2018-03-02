@@ -76,7 +76,8 @@ class CreateSerialPart extends React.Component {
 CreateSerialPart.propTypes = {
   history: PropTypes.object.isRequired,
   match: PropTypes.object.isRequired,
-  currentSerial: PropTypes.object.isRequired
+  currentSerial: PropTypes.object.isRequired,
+  getSerialData: PropTypes.func
 };
 
 export default withRouter(CreateSerialPart);

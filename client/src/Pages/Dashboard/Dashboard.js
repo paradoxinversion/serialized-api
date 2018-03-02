@@ -5,23 +5,38 @@ import {
 } from "react-router-dom";
 
 import axios from "axios";
-// import SerialList from "../../Components/Common/SerialList/SerialList";
-import OwnedSerialList from "../../Components/Common/OwnedSerialList/OwnedSerialList";
+import SerialList from "../../Components/Common/SerialList/SerialList";
 import "./Dashboard.css";
 
 class Dashboard extends React.Component {
   constructor(props) {
     super(props);
+    this.state = {
+      subscribedSerials: [],
+      clientUserSerials: []
+    };
   }
-  componentDidMount(){
-  }
-  async componentWillMount(){
+
+  async componentDidMount(){
     await this.props.checkAuthentication();
+    await this.getSubscribedSerials();
+    const clientSerials = await this.props.getClientUserSerials();
+    this.setState({
+      clientUserSerials: clientSerials
+    });
+  }
+
+  async getSubscribedSerials(){
+    const subscribedSerials = await axios.get(`/serial-subscriptions`,{
+      withCredentials: true
+    });
+    this.setState({
+      subscribedSerials
+    });
   }
 
   render() {
     let createSerial;
-
     const newSerialLink = `/serials/create`;
     createSerial = <Link className="button level-item" to={newSerialLink}> Create a new Serial </Link>;
 
@@ -32,9 +47,16 @@ class Dashboard extends React.Component {
           <Link className="button level-item" to={`/users/${this.props.clientUser.username}`}> Profile </Link>
         </div>
         {createSerial}
-        <OwnedSerialList
+        <SerialList
           clientUser={this.props.clientUser}
-          emptyListMessage="You have not written any serials" />
+          headerText="Your Serials"
+          emptyListMessage="You have not written any serials yet."
+          serials={this.state.clientUserSerials}/>
+        <SerialList
+          clientUser={this.props.clientUser}
+          headerText="Subscribed Serials"
+          emptyListMessage="You have not subscribed to any serials yet."
+          serials={this.state.subscribedSerials.data}/>
       </div>
     );
   }
@@ -43,7 +65,8 @@ class Dashboard extends React.Component {
 Dashboard.propTypes = {
   checkAuthentication: PropTypes.func.isRequired,
   clientUser: PropTypes.object.isRequred,
-  history: PropTypes.object.isRequired
+  history: PropTypes.object.isRequired,
+  getClientUserSerials: PropTypes.func
 };
 
 export default Dashboard;

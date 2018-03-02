@@ -115,14 +115,36 @@ export const toggleSerialSubscription = async (req, res) => {
 
 export const checkForUserSubscription = async (req, res) => {
   try{
-    let result;
+    let response;
     if (req.session.passport){
-      result = await serialActions.checkForUserSubscription(req.params.serialId, req.session.passport.user);
+      response = await serialActions.checkForUserSubscription(req.params.serialId, req.session.passport.user);
     } else {
       const noUserError = new Error("No user supplied");
       throw noUserError;
     }
-    res.json(result);
+    res.json(response);
+  } catch (e){
+    console.log(e);
+    return res.json({
+      status: "400",
+      error: {
+        name: e.name,
+        message: e.message
+      }
+    });
+  }
+};
+
+export const getUserSerialSubscriptions = async (req, res) => {
+  try{
+    let response;
+    if (req.session.passport){
+      response = await serialActions.getUserSerialSubscriptions(req.session.passport.user);
+    } else {
+      const noUserError = new Error("No user supplied");
+      throw noUserError;
+    }
+    res.json(response);
   } catch (e){
     console.log(e);
     return res.json({

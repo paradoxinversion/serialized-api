@@ -14,7 +14,6 @@ class SerialOverview extends React.Component {
   }
 
   async componentDidMount(){
-    console.log("Serial Overview Mounted");
     await this.props.getSerialData(this.props.match.params.id);
 
   }
@@ -58,7 +57,8 @@ SerialOverview.propTypes = {
   match: PropTypes.object.isRequired,
   serial: PropTypes.object,
   serialParts: PropTypes.array,
-  getSerialData: PropTypes.func.isRequired
+  getSerialData: PropTypes.func.isRequired,
+  currentSerial: PropTypes.object
 };
 
 export default withRouter(SerialOverview);

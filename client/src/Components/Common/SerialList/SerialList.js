@@ -16,22 +16,11 @@ class SerialList extends React.Component {
     await this.props.getProfileData();
   }
 
-  async checkSubscription(serialId){
-    try{
-      const requestConfiguration = {
-        withCredentials: true
-      };
-
-      const subscriptionResult = await axios.get(`/serial-subscriptions/${serialId}/check`);
-      console.log("Sub result::", subscriptionResult);
-      return subscriptionResult;
-    } catch (e){
-      console.log(e);
-      throw e;
-    }
-  }
-
   render(){
+    let headerTextElement = null;
+    if (this.props.headerText){
+      headerTextElement = <h1 className="subtitle"> {this.props.headerText} </h1>;
+    }
     if (this.props.serials &&  this.props.serials.length > 0){
       const serials = this.props.serials.map((serial) => {
         return (
@@ -40,25 +29,33 @@ class SerialList extends React.Component {
               clientUser={this.props.clientUser}
               serial={serial}
               goToSerial={this.props.goToSerial}
-              onSerialDeleted={this.deleteSerial}
-              toggleSerialSubscription={this.props.toggleSerialSubscription}/>
+              onSerialDeleted={this.deleteSerial}/>
           </li>
         );
       });
       return (
         <div>
-          <h1 className="subtitle"> Serials </h1>
+          {headerTextElement}
           <ul>{serials}</ul>
         </div>
       );
     } else{
-      return <p>{this.props.emptyListMessage}</p>;
+      return(
+        <div>
+          {headerTextElement}
+          <p>{this.props.emptyListMessage}</p>
+        </div>
+      );
     }
   }
 }
 
 SerialList.propTypes = {
   serials: PropTypes.array.isRequired,
-  emptyListMessage: PropTypes.string.isRequired
+  emptyListMessage: PropTypes.string.isRequired,
+  headerText: PropTypes.string,
+  getProfileData: PropTypes.func,
+  clientUser: PropTypes.object,
+  goToSerial: PropTypes.func
 };
 export default SerialList;

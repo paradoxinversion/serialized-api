@@ -24,7 +24,7 @@ const Header = (props) => {
           </div>
           <div className="navbar-menu">
             <div className="navbar-end">
-              <div><NavLink className="navbar-item" to={`/profile/${props.clientUser.username}`}> Profile </NavLink></div>
+              <div><NavLink className="navbar-item" to={`/users/${props.clientUser.username}`}> Profile </NavLink></div>
               <div><NavLink className="navbar-item" to="/dashboard"> Dashboard </NavLink></div>
               <div><NavLink className="navbar-item" to="/serials"> Serials </NavLink></div>
               <div><NavLink className="navbar-item" to="/users"> Users </NavLink></div>

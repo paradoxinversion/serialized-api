@@ -39,7 +39,7 @@ class App extends Component {
 
     this.setSerial = this.setSerial.bind(this);
     this.getSerialAndPartData = this.getSerialAndPartData.bind(this);
-
+    this.getClientUserSerials = this.getClientUserSerials.bind(this);
   }
 
   /**
@@ -77,7 +77,7 @@ class App extends Component {
     });
   }
 
-  async componentWillMount(){
+  async componentDidMount(){
     await this.checkAuthentication();
   }
 
@@ -98,6 +98,9 @@ class App extends Component {
     // otherwise, make sure authentication is false
   }
 
+  /**
+    Sets the current serial being viewed/edited and all parts related to it
+  **/
   setSerial(currentSerial, serialParts){
     this.setState({
       currentSerial,
@@ -105,6 +108,9 @@ class App extends Component {
     });
   }
 
+  /**
+    Get the serial matching the serialId and all parts created for it.
+  **/
   async getSerialAndPartData(serialId){
     const uri = `/serials/${serialId}`;
     const config = {
@@ -112,9 +118,11 @@ class App extends Component {
     };
     const result = await axios.get(uri, config);
     this.setSerial(result.data.serial, result.data.serialParts);
-    console.log(result);
   }
 
+  /**
+    Toggle whether or not an authenticated user is subscribed to a serial.
+  **/
   async toggleSerialSubscription(serialId){
     try{
       const requestConfiguration = {
@@ -122,14 +130,27 @@ class App extends Component {
       };
 
       const subscriptionResult = await axios.get(`/serial-subscriptions/${serialId}`);
-      console.log("Sub result::", subscriptionResult);
     } catch (e){
       console.log(e);
       throw e;
     }
   }
 
-
+  /**
+    Get serials owned by the authenticated user
+  **/
+  async getClientUserSerials(){
+    try{
+      const requestConfiguration = {
+        withCredentials: true
+      };
+      const uri = `/serials?userId=${this.state.user._id}`;
+      const serialData = await axios.get(uri, requestConfiguration);
+      return serialData.data;
+    } catch (e){
+      console.error("Something went wrong: \n ", e);
+    }
+  }
 
   render() {
     return (
@@ -183,7 +204,8 @@ class App extends Component {
                   checkAuthentication={this.checkAuthentication}
                   authStatus={this.state.isAuthenticated}
                   clientUser={this.state.user}
-                  component={Dashboard} />
+                  component={Dashboard}
+                  getClientUserSerials={this.getClientUserSerials}/>
 
                 <Route component={NotFound} />
               </Switch>

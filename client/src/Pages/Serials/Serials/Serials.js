@@ -52,7 +52,8 @@ class Serials extends React.Component {
                 <SerialDirectory
                   lookupSerials={this.getUserSerialData}
                   serials={this.state.serialDirectoryLookup}
-                  currentSerial={this.props.currentSerial} />} />
+                  currentSerial={this.props.currentSerial}
+                  clientUser={this.props.clientUser} />} />
 
             <PrivateRoute
               path={`${this.props.match.path}/create`}
@@ -84,7 +85,6 @@ class Serials extends React.Component {
               component={CreateSerialPart}
               currentSerial={this.props.currentSerial}
               serialParts={this.props.serialParts}
-              setCurrentPart={this.props.setCurrentPart}
               currentSerialPart={this.props.currentSerialPart}/>
             <Route
 
@@ -97,7 +97,6 @@ class Serials extends React.Component {
                   serialParts={this.props.serialParts}
                   setCurrentPart={this.props.setCurrentPart}
                   currentSerialPart={this.props.currentSerialPart}
-                  clearCurrentPart={this.props.clearCurrentPart}
                 />} />
 
             <Route
@@ -109,7 +108,6 @@ class Serials extends React.Component {
                   serialParts={this.props.serialParts}
                   clientUser={this.props.clientUser}
                   currentSerial={this.props.currentSerial}
-                  clearCurrentPart={this.props.clearCurrentPart}
                 />} />
 
             <Route component={NotFound} />
@@ -125,7 +123,10 @@ Serials.propTypes = {
   authStatus: PropTypes.bool.isRequired,
   clientUser: PropTypes.object,
   match: PropTypes.object.isRequired,
-  currentSerial: PropTypes.object
+  currentSerial: PropTypes.object,
+  serialParts: PropTypes.array,
+  currentSerialPart: PropTypes.object,
+  getSerialData: PropTypes.func
 };
 
 export default withRouter(Serials);
