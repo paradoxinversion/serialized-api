@@ -6,7 +6,7 @@ import {
 } from "react-router-dom";
 
 // Represents a serial part
-const SerialEntryContainer = (props) => {
+const SerialPartEntryContainer = (props) => {
   let authorOptions = null;
   let moveUp = null;
   let moveDown = null;
@@ -61,7 +61,7 @@ const SerialEntryContainer = (props) => {
   );
 };
 
-SerialEntryContainer.propTypes = {
+SerialPartEntryContainer.propTypes = {
   serialPart: PropTypes.object.isRequired,
   serialPartUri: PropTypes.string.isRequired,
   history: PropTypes.object.isRequired,
@@ -71,4 +71,4 @@ SerialEntryContainer.propTypes = {
   onPartMoved: PropTypes.func
 };
 
-export default withRouter(SerialEntryContainer);
+export default withRouter(SerialPartEntryContainer);

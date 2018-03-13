@@ -42,29 +42,7 @@ class App extends Component {
     this.getClientUserSerials = this.getClientUserSerials.bind(this);
   }
 
-  /**
-    Set the user in the store and the client
-  **/
-  setUser(user){
-    const clientUser = {
-      username: user.username,
-      id: user._id
-    };
-    store.set("client", {user: clientUser});
-    this.setState({
-      user: store.get("client").user
-    });
-  }
-
-  /**
-    Get the user in the store
-  **/
-  getUser(){
-    return store.get("client");
-  }
-
   clearUser(){
-    store.remove("client");
     this.setState({
       user: null,
       isAuthenticated: false
@@ -170,7 +148,6 @@ class App extends Component {
                   render={() =>
                     <Authorization
                       clearUser={this.clearUser}
-                      setUser={this.setUser}
                       onSignIn={this.checkAuthentication}
                       user={this.state.user} />} />
                 <Route

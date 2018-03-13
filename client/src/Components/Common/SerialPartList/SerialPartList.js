@@ -3,6 +3,7 @@ import {
   withRouter
 } from "react-router-dom";
 import axios from "axios";
+import moveSerialPart from "../../../utilityFunctions/moveSerialPart";
 import SerialPartEntryContainer from "../../Containers/SerialPartEntryContainer/SerialPartEntryContainer";
 
 /// A list representing all parts of a serial story
@@ -14,17 +15,26 @@ class SerialPartList extends React.Component {
   }
 
   async deleteSerialPart(serialId, partId){
-    const deletionResult = await axios.delete(`/serials/${serialId}/${partId}`, {
-      withCredentials: true
-    });
-    await this.props.getSerialData(serialId);
+    try{
+      await Promise.all([await axios.delete(`/serials/${serialId}/${partId}`, {
+        withCredentials: true
+      }),
+      await this.props.getSerialData(serialId)])
+    } catch (e) {
+      console.log(e);
+      throw e;
+    }
+
   }
   async movePart(partId, up){
-    const payload = {
-      moveUp: up
+    try{
+      await Promise.all([await moveSerialPart(this.props.currentSerial._id, partId, up),
+        await this.props.getSerialData(this.props.currentSerial._id)]);
+    } catch (e){
+      console.log(e);
+      throw e;
     }
-    const movementResult = await axios.put(`/serials/${this.props.currentSerial._id}/${partId}`, payload, {withCredentials: true});
-    await this.props.getSerialData(this.props.currentSerial._id);
+
   }
   render(){
     if (this.props.serialParts.length > 0){

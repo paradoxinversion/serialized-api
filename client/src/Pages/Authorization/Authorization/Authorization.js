@@ -15,7 +15,6 @@ const Authorization = (props) => {
           exact path={`${props.match.url}/login`}
           render={()=>
             <LogIn
-              setUser={props.setUser}
               onSignIn={props.onSignIn}
             />} />
 
