@@ -34,7 +34,7 @@ const getAllUsers = async () =>{
       lastName: 1,
       biography: 1
     });
-
+  console.log(userList);
   return userList;
 };
 

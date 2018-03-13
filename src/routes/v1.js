@@ -3,6 +3,7 @@ import * as userController from "../controllers/user";
 import * as serialController from "../controllers/serial";
 import * as serialPartController from "../controllers/serialPart";
 import * as authController from "../controllers/auth";
+import * as likesController from "../controllers/likes";
 import logSession from "../middleware/logSession";
 const ensureLoggedIn = require("connect-ensure-login").ensureLoggedIn;
 
@@ -41,10 +42,15 @@ router.route("/serials/:serialId/:partId")
 
 router.route("/serial-subscriptions/")
   .get(ensureLoggedIn(), serialController.getUserSerialSubscriptions);
-  
+
 router.route("/serial-subscriptions/:serialId/")
   .get(ensureLoggedIn(), serialController.toggleSerialSubscription);
 
 router.route("/serial-subscriptions/:serialId/check")
   .get(serialController.checkForUserSubscription);
+
+router.route("/like")
+  .get(likesController.getLikes)
+  .post(ensureLoggedIn(), likesController.toggleLike);
+
 module.exports = router;

@@ -1,5 +1,6 @@
 import SerialPart from "../database/mongo/SerialPart";
 import Serial from "../database/mongo/Serial";
+import Like from "../database/mongo/Like";
 import * as serialPartActions from "../database/actions/serialPart";
 const _ = require("lodash");
 
@@ -108,6 +109,15 @@ const updateSerialPartNumber = async (req, res) => {
     throw e;
   }
 }
+
+// const toggleLikeSerialPart = async (req, res) => {
+//   try {
+//     serialPartActions.toggleLikeSerialPart(req.session.passport.user, req.params.partId)
+//   } catch (e){
+//     console.log(e);
+//     throw e;
+//   }
+// }
 export {
   getSerialParts,
   postSerialPart,

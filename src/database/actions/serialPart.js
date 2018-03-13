@@ -1,7 +1,7 @@
 import * as _ from "lodash";
 import Serial from "../mongo/Serial";
 import SerialPart from "../mongo/SerialPart";
-
+import Like from "../mongo/Like";
 // these routes all have a query param /:serialId
 
 /**
@@ -9,7 +9,7 @@ import SerialPart from "../mongo/SerialPart";
  * @param {ObjectId} serialId The id of the parent serial.
  * @returns {array} an array of serial parts
  */
-const readSerialParts = async (serialId) => {
+export const readSerialParts = async (serialId) => {
   try{
     return await SerialPart.find({serial_id: serialId}).sort({part_number: 1});
   } catch (error) {
@@ -23,7 +23,7 @@ const readSerialParts = async (serialId) => {
  * @param {ObjectId} partId The id of the serial part to be viewed.
  * @returns {Object} The serial part
  */
-const getSingleSerialPart = async (partId) => {
+export const getSingleSerialPart = async (partId) => {
   const part = await SerialPart.findOne({_id:partId}).populate("serial_id");
   return {
     part
@@ -36,7 +36,7 @@ const getSingleSerialPart = async (partId) => {
  * @param {ObjectId} parentSerialId The serial to which this part should be added
  * @returns {Object} a JSON object representing the serial part
  */
-const createSerialPart = async (requestBody, parentSerialId) => {
+export const createSerialPart = async (requestBody, parentSerialId) => {
   try{
     const serialParts = await readSerialParts(parentSerialId);
     console.log(serialParts);
@@ -62,7 +62,7 @@ const createSerialPart = async (requestBody, parentSerialId) => {
  * @param {Object} partId The id of the part to delete
  * @param {ObjectId} userId The requesting user's ID
  */
-const deleteSerialPart = async (partId, userId) => {
+export const deleteSerialPart = async (partId, userId) => {
   try{
     if (!partId){
       const noIdError = new Error("No serial part ID supplied for delete operation.");
@@ -86,7 +86,7 @@ const deleteSerialPart = async (partId, userId) => {
  * @param {ObjectId} partId The id of the serial part ot be edited
  * @returns {Object} a JSON object representing the serial part
  */
-const updateSerialPart = async (requestBody, partId) => {
+export const updateSerialPart = async (requestBody, partId) => {
   try{
     if (!partId){
       const noPartIdError = new Error("No partId was included in the update request");
@@ -110,7 +110,7 @@ const updateSerialPart = async (requestBody, partId) => {
   }
 };
 
-const updateSerialPartNumber = async(serialPartId, moveUp, userId) => {
+export const updateSerialPartNumber = async(serialPartId, moveUp, userId) => {
   try {
     const result = {
 
@@ -162,11 +162,31 @@ const updateSerialPartNumber = async(serialPartId, moveUp, userId) => {
   }
 };
 
-export {
-  readSerialParts,
-  createSerialPart,
-  deleteSerialPart,
-  updateSerialPart,
-  getSingleSerialPart,
-  updateSerialPartNumber
-};
+// export const toggleLikeSerialPart = async (userId, serialPartId) => {
+//   try{
+//     const existingLike = await Like.findOne({user:userId, serialPart: serialPartId});
+//     if (existingLike){
+//       await Like.remove({user:userId, serialPart:serialPartId});
+//     } else {
+//       const newLike = new Like({
+//         likedEntityId: serialPartId,
+//         user: userId,
+//         likedEntityType: 1
+//       });
+//
+//       await newLike.save();
+//       return newLike;
+//     }
+//   } catch (e){
+//     console.log(e);
+//     throw e;
+//   }
+// }
+// export {
+//   readSerialParts,
+//   createSerialPart,
+//   deleteSerialPart,
+//   updateSerialPart,
+//   getSingleSerialPart,
+//   updateSerialPartNumber
+// };

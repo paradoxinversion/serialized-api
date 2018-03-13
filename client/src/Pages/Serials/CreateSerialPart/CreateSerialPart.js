@@ -17,7 +17,7 @@ class CreateSerialPart extends React.Component {
     this.handleFormInput = this.handleFormInput.bind(this);
     this.handleQuillInput = this.handleQuillInput.bind(this);
   }
-  async componentWillMount(){
+  async componentDidMount(){
     if (this.props.currentSerial === null || this.props.currentSerial._id !== this.props.match.params.id){
       await this.props.getSerialData(this.props.match.params.id);
     }

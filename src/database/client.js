@@ -1,13 +1,13 @@
-import mongoose from 'mongoose';
-import Role from './mongo/Role';
-const Config = require('../config/config').getConfig();
+import mongoose from "mongoose";
+import Role from "./mongo/Role";
+const Config = require("../config/config").getConfig();
 
 export default async function startClient()  {
 
   const mongooseOptions = {
     useMongoClient: true
   };
-  console.log(Config)
+  console.log(Config);
   mongoose.Promise = global.Promise;
   await mongoose.connect(`mongodb://${Config.db.host}/${Config.db.database}`, mongooseOptions);
   const roles = await Role.find();

@@ -1,0 +1,2826 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>Serialized</title>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.2.4/semantic.min.css">
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/prism/1.5.1/themes/prism-okaidia.min.css" />
+    <style>
+      blockquote {
+        border-left: solid 4px #eee;
+        padding-left: 8px;
+        font-style: italic;
+        margin-left: 0;
+        padding: 8px;
+      }
+
+      .ui.micro.label {
+        font-size: .25rem;
+      }
+
+      .ui.transaction.accordion .title {
+        text-align: center;
+      }
+
+      .ui.transaction.accordion .content {
+        border-top: solid 1px #ddd !important;
+        border-bottom: solid 1px #ddd !important;
+        background-color: rgba(0,0,0,.03);
+        padding: 0.5em 1em !important;
+      }
+
+      .ui.transaction.accordion .content.active {
+        margin-top: 0.5em;
+      }
+
+      .ui.basic.label {
+        text-align: left;
+        overflow: auto;
+      }
+
+      .resource .ui.sub.header {
+        text-transform: none;
+      }
+
+      @media only screen and (min-width: 768px) {
+        .sidewrap {
+          margin-right: 2rem;
+        }
+
+        .sidenav {
+          left: 0;
+          top: 0;
+          width: inherit;
+          position: fixed !important;
+          height: 100% !important;
+          overflow-y: auto !important;
+          padding-left: 0.5rem;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="ui padded grid">
+      <div class="sidewrap four wide computer five wide tablet sixteen wide mobile column">
+        <div class="sidenav">
+          
+<div class="ui horizontal divider">
+  <a href="#introduction">Introduction</a>
+</div>
+<div class="ui fluid secondary vertical menu">
+  <a class="item" href="#introduction">Serialized</a>
+</div>
+
+
+<div class="ui horizontal divider">
+  <a href="#users">Users</a>
+</div>
+
+<div class="ui accordion fluid">
+  
+    
+    <div class="title active">
+      <i class="dropdown icon"></i>
+      
+        <strong>User Actions</strong>
+      
+    </div>
+    <div class="content active">
+      <div class="ui fluid secondary vertical menu">
+      
+        <a class="item green" href="#users-user-actions-read-users">
+          <i class="ui green empty circular label"></i>
+          
+            <span>Read users</span>
+          
+        </a>
+      
+        <a class="item blue" href="#users-user-actions-create-user">
+          <i class="ui blue empty circular label"></i>
+          
+            <span>Create User</span>
+          
+        </a>
+      
+        <a class="item teal" href="#users-user-actions-update-user">
+          <i class="ui teal empty circular label"></i>
+          
+            <span>Update User</span>
+          
+        </a>
+      
+        <a class="item red" href="#users-user-actions-delete-user">
+          <i class="ui red empty circular label"></i>
+          
+            <span>Delete User</span>
+          
+        </a>
+      
+      </div>
+    </div>
+    
+  
+</div>
+
+
+<div class="ui horizontal divider">
+  <a href="#auth">Auth</a>
+</div>
+
+<div class="ui accordion fluid">
+  
+    
+    <div class="title active">
+      <i class="dropdown icon"></i>
+      
+        <strong>Authentication</strong>
+      
+    </div>
+    <div class="content active">
+      <div class="ui fluid secondary vertical menu">
+      
+        <a class="item green" href="#auth-authentication-get">
+          <i class="ui green empty circular label"></i>
+          
+            <span>GET</span>
+          
+        </a>
+      
+        <a class="item blue" href="#auth-authentication-post">
+          <i class="ui blue empty circular label"></i>
+          
+            <span>POST</span>
+          
+        </a>
+      
+      </div>
+    </div>
+    
+  
+    
+    <div class="title ">
+      <i class="dropdown icon"></i>
+      
+        <strong>Logout</strong>
+      
+    </div>
+    <div class="content ">
+      <div class="ui fluid secondary vertical menu">
+      
+        <a class="item green" href="#auth-logout-get">
+          <i class="ui green empty circular label"></i>
+          
+            <span>GET</span>
+          
+        </a>
+      
+      </div>
+    </div>
+    
+  
+</div>
+
+
+<div class="ui horizontal divider">
+  <a href="#serials">Serials</a>
+</div>
+
+<div class="ui accordion fluid">
+  
+    
+    <div class="title active">
+      <i class="dropdown icon"></i>
+      
+        <strong>Serial Actions</strong>
+      
+    </div>
+    <div class="content active">
+      <div class="ui fluid secondary vertical menu">
+      
+        <a class="item green" href="#serials-serial-actions-get">
+          <i class="ui green empty circular label"></i>
+          
+            <span>GET</span>
+          
+        </a>
+      
+        <a class="item blue" href="#serials-serial-actions-post">
+          <i class="ui blue empty circular label"></i>
+          
+            <span>POST</span>
+          
+        </a>
+      
+        <a class="item teal" href="#serials-serial-actions-put">
+          <i class="ui teal empty circular label"></i>
+          
+            <span>PUT</span>
+          
+        </a>
+      
+        <a class="item red" href="#serials-serial-actions-delete">
+          <i class="ui red empty circular label"></i>
+          
+            <span>DELETE</span>
+          
+        </a>
+      
+      </div>
+    </div>
+    
+  
+</div>
+
+
+<div class="ui horizontal divider">
+  <a href="#serial-parts">Serial Parts</a>
+</div>
+
+<div class="ui accordion fluid">
+  
+    
+    <div class="title active">
+      <i class="dropdown icon"></i>
+      
+        <strong>Serial Parts</strong>
+      
+    </div>
+    <div class="content active">
+      <div class="ui fluid secondary vertical menu">
+      
+        <a class="item green" href="#serial-parts-serial-parts-get">
+          <i class="ui green empty circular label"></i>
+          
+            <span>GET</span>
+          
+        </a>
+      
+        <a class="item blue" href="#serial-parts-serial-parts-post">
+          <i class="ui blue empty circular label"></i>
+          
+            <span>POST</span>
+          
+        </a>
+      
+        <a class="item teal" href="#serial-parts-serial-parts-put">
+          <i class="ui teal empty circular label"></i>
+          
+            <span>PUT</span>
+          
+        </a>
+      
+        <a class="item red" href="#serial-parts-serial-parts-delete">
+          <i class="ui red empty circular label"></i>
+          
+            <span>DELETE</span>
+          
+        </a>
+      
+      </div>
+    </div>
+    
+  
+    
+    <div class="title ">
+      <i class="dropdown icon"></i>
+      
+        <strong>Also Serial Parts</strong>
+      
+    </div>
+    <div class="content ">
+      <div class="ui fluid secondary vertical menu">
+      
+        <a class="item green" href="#serial-parts-also-serial-parts-get">
+          <i class="ui green empty circular label"></i>
+          
+            <span>GET</span>
+          
+        </a>
+      
+        <a class="item teal" href="#serial-parts-also-serial-parts-put">
+          <i class="ui teal empty circular label"></i>
+          
+            <span>PUT</span>
+          
+        </a>
+      
+        <a class="item red" href="#serial-parts-also-serial-parts-delete">
+          <i class="ui red empty circular label"></i>
+          
+            <span>DELETE</span>
+          
+        </a>
+      
+      </div>
+    </div>
+    
+  
+</div>
+
+
+<div class="ui horizontal divider">
+  <a href="#subscriptions">Subscriptions</a>
+</div>
+
+<div class="ui accordion fluid">
+  
+    
+    <div class="title active">
+      <i class="dropdown icon"></i>
+      
+        <strong>Subscriptions</strong>
+      
+    </div>
+    <div class="content active">
+      <div class="ui fluid secondary vertical menu">
+      
+        <a class="item green" href="#subscriptions-subscriptions-get">
+          <i class="ui green empty circular label"></i>
+          
+            <span>GET</span>
+          
+        </a>
+      
+      </div>
+    </div>
+    
+  
+    
+    <div class="title ">
+      <i class="dropdown icon"></i>
+      
+        <strong>Subscriptions Query</strong>
+      
+    </div>
+    <div class="content ">
+      <div class="ui fluid secondary vertical menu">
+      
+        <a class="item green" href="#subscriptions-subscriptions-query-get">
+          <i class="ui green empty circular label"></i>
+          
+            <span>GET</span>
+          
+        </a>
+      
+      </div>
+    </div>
+    
+  
+    
+    <div class="title ">
+      <i class="dropdown icon"></i>
+      
+        <strong>Subscriptions User Check</strong>
+      
+    </div>
+    <div class="content ">
+      <div class="ui fluid secondary vertical menu">
+      
+        <a class="item green" href="#subscriptions-subscriptions-user-check-get">
+          <i class="ui green empty circular label"></i>
+          
+            <span>GET</span>
+          
+        </a>
+      
+      </div>
+    </div>
+    
+  
+</div>
+
+
+        </div>
+      </div>
+      <div class="eleven wide computer ten wide tablet sixteen wide mobile column">
+        
+<div class="ui hidden divider header"></div>
+<h1 class="ui huge header" id="introduction">Serialized</h1>
+<hr class="ui divider">
+<div class="description">
+  <p>Serialized is an API for serving and storing serial stories and parts that make them up</p>
+
+</div>
+
+        <div class="ui hidden divider"></div>
+        
+
+  <div class="ui horizontal divider" id="users">
+    Users
+  </div>
+  <div class="ui header center aligned">
+    <div class="ui sub header">
+      
+    </div>
+  </div>
+  
+    
+      <div class="ui stacked segments">
+        <div class="ui basic segment resource">
+          <div class="ui purple huge ribbon label">
+            User Actions
+          </div>
+          <div class="ui header">
+            <div class="ui sub header">
+              <p>Handles basic user CRUD operations.</p>
+
+            </div>
+          </div>
+        </div>
+
+        
+          
+<div class="ui grey horizontal small divider header">
+  <i class="ui grey micro circular label"></i>
+  <i class="ui pink micro circular label"></i>
+  <i class="ui grey micro circular label"></i>
+</div>
+
+          <div class="ui basic segment">
+            <h3 class="ui block center aligned header" id="users-user-actions-read-users">
+              Read users
+            </h3>
+            <div class="description"><p>Get all users</p>
+</div>
+
+            
+              <h4 class="ui horizontal divider">
+                REQUEST
+              </h4>
+              <div class="description"></div>
+              <div class="fluid ui large labeled button">
+                <div class="ui green large button">
+                  <h3>GET</h3>
+                </div>
+                <a class="ui basic fluid green label">
+                  <code>http://localhost:3000/api/v1/users</code>
+                </a>
+              </div>
+              
+              
+              
+
+              <h4 class="ui horizontal divider">RESPONSE</h4>
+              <div class="description"></div>
+              
+<table class="ui celled definition table">
+  <thead>
+    <tr>
+      <th colspan="2">Headers</th>
+    </tr>
+  </thead>
+  <tbody>
+  
+    <tr>
+      <td class="four wide">Content-Type</td>
+      <td><code>application/json</code></td>
+    </tr>
+  
+  </tbody>
+</table>
+
+              <div class="ui stacked blue segment">
+                <div class="ui fluid transaction accordion">
+                  <div class="title center aligned">
+                    <a class="ui blue circular label">
+                      200
+                    </a>
+                    <code>application/json</code>
+                  </div>
+                  <div class="content tabbed">
+                    <div class="ui top attached tabular menu">
+                      <a data-tab="body" class="active item">BODY</a>
+                      <a data-tab="schema" class="item">SCHEMA</a>
+                    </div>
+                    <div class="ui bottom attached active tab segment" data-tab="body">
+                      <pre style="white-space: inherit">
+                        <code class="language-json">[
+  &#34;User Base&#34;
+]</code>
+                      </pre>
+                    </div>
+                    <div class="ui bottom attached tab segment" data-tab="schema">
+                      <pre style="white-space: inherit">
+                        <code class="language-json">{
+  &#34;$schema&#34;: &#34;http://json-schema.org/draft-04/schema#&#34;,
+  &#34;type&#34;: &#34;array&#34;
+}</code>
+                      </pre>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            
+          </div>
+        
+          
+<div class="ui grey horizontal small divider header">
+  <i class="ui grey micro circular label"></i>
+  <i class="ui pink micro circular label"></i>
+  <i class="ui grey micro circular label"></i>
+</div>
+
+          <div class="ui basic segment">
+            <h3 class="ui block center aligned header" id="users-user-actions-create-user">
+              Create User
+            </h3>
+            <div class="description"><p>Registers a new user to the db</p>
+</div>
+
+            
+              <h4 class="ui horizontal divider">
+                REQUEST
+              </h4>
+              <div class="description"></div>
+              <div class="fluid ui large labeled button">
+                <div class="ui blue large button">
+                  <h3>POST</h3>
+                </div>
+                <a class="ui basic fluid blue label">
+                  <code>http://localhost:3000/api/v1/users</code>
+                </a>
+              </div>
+              
+              
+                
+<table class="ui celled definition table">
+  <thead>
+    <tr>
+      <th colspan="2">Headers</th>
+    </tr>
+  </thead>
+  <tbody>
+  
+    <tr>
+      <td class="four wide">Content-Type</td>
+      <td><code>application/json</code></td>
+    </tr>
+  
+  </tbody>
+</table>
+
+              
+              
+                <div class="ui stacked segment">
+                  <div class="ui fluid transaction accordion">
+                    <div class="title">
+                      <code>application/json</code>
+                    </div>
+                    <div class="content tabbed">
+                      <div class="ui top attached tabular menu">
+                        <a data-tab="body" class="active item">BODY</a>
+                        <a data-tab="schema" class="item">SCHEMA</a>
+                      </div>
+                      <div class="ui bottom attached active tab segment" data-tab="body">
+                        <pre style="white-space: inherit">
+                          <code class="language-json">{
+&#34;birthdate&#34;: &#34;1900-01-01&#34;,
+&#34;email&#34;: &#34;t@t.t&#34;,
+&#34;firstname&#34;: &#34;Anne&#34;,
+&#34;lastname&#34;: &#34;Author&#34;,
+&#34;password&#34;: &#34;insecurepassword&#34;,
+&#34;username&#34;: &#34;AnneAuthor&#34;
+}
+</code>
+                        </pre>
+                      </div>
+                      <div class="ui bottom attached tab segment" data-tab="schema">
+                        <pre style="white-space: inherit">
+                          <code class="language-json"></code>
+                        </pre>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              
+
+              <h4 class="ui horizontal divider">RESPONSE</h4>
+              <div class="description"></div>
+              
+<table class="ui celled definition table">
+  <thead>
+    <tr>
+      <th colspan="2">Headers</th>
+    </tr>
+  </thead>
+  <tbody>
+  
+    <tr>
+      <td class="four wide">Content-Type</td>
+      <td><code>application/json</code></td>
+    </tr>
+  
+  </tbody>
+</table>
+
+              <div class="ui stacked blue segment">
+                <div class="ui fluid transaction accordion">
+                  <div class="title center aligned">
+                    <a class="ui blue circular label">
+                      200
+                    </a>
+                    <code>application/json</code>
+                  </div>
+                  <div class="content tabbed">
+                    <div class="ui top attached tabular menu">
+                      <a data-tab="body" class="active item">BODY</a>
+                      <a data-tab="schema" class="item">SCHEMA</a>
+                    </div>
+                    <div class="ui bottom attached active tab segment" data-tab="body">
+                      <pre style="white-space: inherit">
+                        <code class="language-json">{
+&#34;status&#34;: 200
+}
+</code>
+                      </pre>
+                    </div>
+                    <div class="ui bottom attached tab segment" data-tab="schema">
+                      <pre style="white-space: inherit">
+                        <code class="language-json"></code>
+                      </pre>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            
+              <h4 class="ui horizontal divider">
+                REQUEST
+              </h4>
+              <div class="description"></div>
+              <div class="fluid ui large labeled button">
+                <div class="ui blue large button">
+                  <h3>POST</h3>
+                </div>
+                <a class="ui basic fluid blue label">
+                  <code>http://localhost:3000/api/v1/users</code>
+                </a>
+              </div>
+              
+              
+                
+<table class="ui celled definition table">
+  <thead>
+    <tr>
+      <th colspan="2">Headers</th>
+    </tr>
+  </thead>
+  <tbody>
+  
+    <tr>
+      <td class="four wide">Content-Type</td>
+      <td><code>application/json</code></td>
+    </tr>
+  
+  </tbody>
+</table>
+
+              
+              
+                <div class="ui stacked segment">
+                  <div class="ui fluid transaction accordion">
+                    <div class="title">
+                      <code>application/json</code>
+                    </div>
+                    <div class="content tabbed">
+                      <div class="ui top attached tabular menu">
+                        <a data-tab="body" class="active item">BODY</a>
+                        <a data-tab="schema" class="item">SCHEMA</a>
+                      </div>
+                      <div class="ui bottom attached active tab segment" data-tab="body">
+                        <pre style="white-space: inherit">
+                          <code class="language-json">{
+&#34;birthdate&#34;: &#34;1900-01-01&#34;,
+&#34;email&#34;: &#34;t@t.t&#34;,
+&#34;firstname&#34;: &#34;Anne&#34;,
+&#34;lastname&#34;: &#34;Author&#34;,
+&#34;password&#34;: &#34;insecurepassword&#34;,
+&#34;username&#34;: &#34;AnneAuthor&#34;
+}
+</code>
+                        </pre>
+                      </div>
+                      <div class="ui bottom attached tab segment" data-tab="schema">
+                        <pre style="white-space: inherit">
+                          <code class="language-json"></code>
+                        </pre>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              
+
+              <h4 class="ui horizontal divider">RESPONSE</h4>
+              <div class="description"></div>
+              
+<table class="ui celled definition table">
+  <thead>
+    <tr>
+      <th colspan="2">Headers</th>
+    </tr>
+  </thead>
+  <tbody>
+  
+    <tr>
+      <td class="four wide">Content-Type</td>
+      <td><code>application/json</code></td>
+    </tr>
+  
+  </tbody>
+</table>
+
+              <div class="ui stacked  segment">
+                <div class="ui fluid transaction accordion">
+                  <div class="title center aligned">
+                    <a class="ui  circular label">
+                      409
+                    </a>
+                    <code>application/json</code>
+                  </div>
+                  <div class="content tabbed">
+                    <div class="ui top attached tabular menu">
+                      <a data-tab="body" class="active item">BODY</a>
+                      <a data-tab="schema" class="item">SCHEMA</a>
+                    </div>
+                    <div class="ui bottom attached active tab segment" data-tab="body">
+                      <pre style="white-space: inherit">
+                        <code class="language-json">{
+&#34;status&#34;: 409,
+&#34;name&#34;: &#34;DuplicateEmailError&#34;
+}
+</code>
+                      </pre>
+                    </div>
+                    <div class="ui bottom attached tab segment" data-tab="schema">
+                      <pre style="white-space: inherit">
+                        <code class="language-json"></code>
+                      </pre>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            
+              <h4 class="ui horizontal divider">
+                REQUEST
+              </h4>
+              <div class="description"></div>
+              <div class="fluid ui large labeled button">
+                <div class="ui blue large button">
+                  <h3>POST</h3>
+                </div>
+                <a class="ui basic fluid blue label">
+                  <code>http://localhost:3000/api/v1/users</code>
+                </a>
+              </div>
+              
+              
+                
+<table class="ui celled definition table">
+  <thead>
+    <tr>
+      <th colspan="2">Headers</th>
+    </tr>
+  </thead>
+  <tbody>
+  
+    <tr>
+      <td class="four wide">Content-Type</td>
+      <td><code>application/json</code></td>
+    </tr>
+  
+  </tbody>
+</table>
+
+              
+              
+                <div class="ui stacked segment">
+                  <div class="ui fluid transaction accordion">
+                    <div class="title">
+                      <code>application/json</code>
+                    </div>
+                    <div class="content tabbed">
+                      <div class="ui top attached tabular menu">
+                        <a data-tab="body" class="active item">BODY</a>
+                        <a data-tab="schema" class="item">SCHEMA</a>
+                      </div>
+                      <div class="ui bottom attached active tab segment" data-tab="body">
+                        <pre style="white-space: inherit">
+                          <code class="language-json">{
+&#34;birthdate&#34;: &#34;1900-01-01&#34;,
+&#34;email&#34;: &#34;t@t.t&#34;,
+&#34;firstname&#34;: &#34;Anne&#34;,
+&#34;lastname&#34;: &#34;Author&#34;,
+&#34;password&#34;: &#34;insecurepassword&#34;,
+&#34;username&#34;: &#34;AnneAuthor&#34;
+}
+</code>
+                        </pre>
+                      </div>
+                      <div class="ui bottom attached tab segment" data-tab="schema">
+                        <pre style="white-space: inherit">
+                          <code class="language-json"></code>
+                        </pre>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              
+
+              <h4 class="ui horizontal divider">RESPONSE</h4>
+              <div class="description"></div>
+              
+<table class="ui celled definition table">
+  <thead>
+    <tr>
+      <th colspan="2">Headers</th>
+    </tr>
+  </thead>
+  <tbody>
+  
+    <tr>
+      <td class="four wide">Content-Type</td>
+      <td><code>application/json</code></td>
+    </tr>
+  
+  </tbody>
+</table>
+
+              <div class="ui stacked  segment">
+                <div class="ui fluid transaction accordion">
+                  <div class="title center aligned">
+                    <a class="ui  circular label">
+                      400
+                    </a>
+                    <code>application/json</code>
+                  </div>
+                  <div class="content tabbed">
+                    <div class="ui top attached tabular menu">
+                      <a data-tab="body" class="active item">BODY</a>
+                      <a data-tab="schema" class="item">SCHEMA</a>
+                    </div>
+                    <div class="ui bottom attached active tab segment" data-tab="body">
+                      <pre style="white-space: inherit">
+                        <code class="language-json">{
+&#34;status&#34;: 400
+&#34;name&#34;: &#34;ValidationError&#34;
+}
+</code>
+                      </pre>
+                    </div>
+                    <div class="ui bottom attached tab segment" data-tab="schema">
+                      <pre style="white-space: inherit">
+                        <code class="language-json"></code>
+                      </pre>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            
+          </div>
+        
+          
+<div class="ui grey horizontal small divider header">
+  <i class="ui grey micro circular label"></i>
+  <i class="ui pink micro circular label"></i>
+  <i class="ui grey micro circular label"></i>
+</div>
+
+          <div class="ui basic segment">
+            <h3 class="ui block center aligned header" id="users-user-actions-update-user">
+              Update User
+            </h3>
+            <div class="description"><p>Updates a user&rsquo;s information in the db</p>
+</div>
+
+            
+              <h4 class="ui horizontal divider">
+                REQUEST
+              </h4>
+              <div class="description"></div>
+              <div class="fluid ui large labeled button">
+                <div class="ui teal large button">
+                  <h3>PUT</h3>
+                </div>
+                <a class="ui basic fluid teal label">
+                  <code>http://localhost:3000/api/v1/users</code>
+                </a>
+              </div>
+              
+              
+              
+                <div class="ui stacked segment">
+                  <div class="ui fluid transaction accordion">
+                    <div class="title">
+                      <code></code>
+                    </div>
+                    <div class="content tabbed">
+                      <div class="ui top attached tabular menu">
+                        <a data-tab="body" class="active item">BODY</a>
+                        <a data-tab="schema" class="item">SCHEMA</a>
+                      </div>
+                      <div class="ui bottom attached active tab segment" data-tab="body">
+                        <pre style="white-space: inherit">
+                          <code class="language-">{
+&#34;firstName&#34;
+}
+</code>
+                        </pre>
+                      </div>
+                      <div class="ui bottom attached tab segment" data-tab="schema">
+                        <pre style="white-space: inherit">
+                          <code class="language-json"></code>
+                        </pre>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              
+
+              <h4 class="ui horizontal divider">RESPONSE</h4>
+              <div class="description"></div>
+              
+<table class="ui celled definition table">
+  <thead>
+    <tr>
+      <th colspan="2">Headers</th>
+    </tr>
+  </thead>
+  <tbody>
+  
+    <tr>
+      <td class="four wide">Content-Type</td>
+      <td><code>application/json</code></td>
+    </tr>
+  
+  </tbody>
+</table>
+
+              <div class="ui stacked blue segment">
+                <div class="ui fluid transaction accordion">
+                  <div class="title center aligned">
+                    <a class="ui blue circular label">
+                      200
+                    </a>
+                    <code>application/json</code>
+                  </div>
+                  <div class="content tabbed">
+                    <div class="ui top attached tabular menu">
+                      <a data-tab="body" class="active item">BODY</a>
+                      <a data-tab="schema" class="item">SCHEMA</a>
+                    </div>
+                    <div class="ui bottom attached active tab segment" data-tab="body">
+                      <pre style="white-space: inherit">
+                        <code class="language-json">Hello World
+</code>
+                      </pre>
+                    </div>
+                    <div class="ui bottom attached tab segment" data-tab="schema">
+                      <pre style="white-space: inherit">
+                        <code class="language-json"></code>
+                      </pre>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            
+          </div>
+        
+          
+<div class="ui grey horizontal small divider header">
+  <i class="ui grey micro circular label"></i>
+  <i class="ui pink micro circular label"></i>
+  <i class="ui grey micro circular label"></i>
+</div>
+
+          <div class="ui basic segment">
+            <h3 class="ui block center aligned header" id="users-user-actions-delete-user">
+              Delete User
+            </h3>
+            <div class="description"><p>Deletes a user from the DB</p>
+</div>
+
+            
+              <h4 class="ui horizontal divider">
+                REQUEST
+              </h4>
+              <div class="description"></div>
+              <div class="fluid ui large labeled button">
+                <div class="ui red large button">
+                  <h3>DELETE</h3>
+                </div>
+                <a class="ui basic fluid red label">
+                  <code>http://localhost:3000/api/v1/users</code>
+                </a>
+              </div>
+              
+              
+              
+
+              <h4 class="ui horizontal divider">RESPONSE</h4>
+              <div class="description"></div>
+              
+<table class="ui celled definition table">
+  <thead>
+    <tr>
+      <th colspan="2">Headers</th>
+    </tr>
+  </thead>
+  <tbody>
+  
+    <tr>
+      <td class="four wide">Content-Type</td>
+      <td><code>application/json</code></td>
+    </tr>
+  
+  </tbody>
+</table>
+
+              <div class="ui stacked blue segment">
+                <div class="ui fluid transaction accordion">
+                  <div class="title center aligned">
+                    <a class="ui blue circular label">
+                      200
+                    </a>
+                    <code>application/json</code>
+                  </div>
+                  <div class="content tabbed">
+                    <div class="ui top attached tabular menu">
+                      <a data-tab="body" class="active item">BODY</a>
+                      <a data-tab="schema" class="item">SCHEMA</a>
+                    </div>
+                    <div class="ui bottom attached active tab segment" data-tab="body">
+                      <pre style="white-space: inherit">
+                        <code class="language-json">Hello World
+
+</code>
+                      </pre>
+                    </div>
+                    <div class="ui bottom attached tab segment" data-tab="schema">
+                      <pre style="white-space: inherit">
+                        <code class="language-json"></code>
+                      </pre>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            
+          </div>
+        
+        </div>
+      <div class="ui hidden divider"></div>
+    
+  
+
+  <div class="ui horizontal divider" id="auth">
+    Auth
+  </div>
+  <div class="ui header center aligned">
+    <div class="ui sub header">
+      
+    </div>
+  </div>
+  
+    
+      <div class="ui stacked segments">
+        <div class="ui basic segment resource">
+          <div class="ui purple huge ribbon label">
+            Authentication
+          </div>
+          <div class="ui header">
+            <div class="ui sub header">
+              <p>Handles Sign up and log in</p>
+
+            </div>
+          </div>
+        </div>
+
+        
+          
+<div class="ui grey horizontal small divider header">
+  <i class="ui grey micro circular label"></i>
+  <i class="ui pink micro circular label"></i>
+  <i class="ui grey micro circular label"></i>
+</div>
+
+          <div class="ui basic segment">
+            <h3 class="ui block center aligned header" id="auth-authentication-get">
+              GET
+            </h3>
+            <div class="description"></div>
+
+            
+              <h4 class="ui horizontal divider">
+                REQUEST
+              </h4>
+              <div class="description"></div>
+              <div class="fluid ui large labeled button">
+                <div class="ui green large button">
+                  <h3>GET</h3>
+                </div>
+                <a class="ui basic fluid green label">
+                  <code>http://localhost:3000/api/v1/users/auth</code>
+                </a>
+              </div>
+              
+              
+              
+
+              <h4 class="ui horizontal divider">RESPONSE</h4>
+              <div class="description"></div>
+              
+<table class="ui celled definition table">
+  <thead>
+    <tr>
+      <th colspan="2">Headers</th>
+    </tr>
+  </thead>
+  <tbody>
+  
+    <tr>
+      <td class="four wide">Content-Type</td>
+      <td><code>application/json</code></td>
+    </tr>
+  
+  </tbody>
+</table>
+
+              <div class="ui stacked blue segment">
+                <div class="ui fluid transaction accordion">
+                  <div class="title center aligned">
+                    <a class="ui blue circular label">
+                      200
+                    </a>
+                    <code>application/json</code>
+                  </div>
+                  <div class="content tabbed">
+                    <div class="ui top attached tabular menu">
+                      <a data-tab="body" class="active item">BODY</a>
+                      <a data-tab="schema" class="item">SCHEMA</a>
+                    </div>
+                    <div class="ui bottom attached active tab segment" data-tab="body">
+                      <pre style="white-space: inherit">
+                        <code class="language-json">{
+&#34;biography&#34;: &#34;&lt;p&gt;&lt;u&gt;I did a thing!&lt;/u&gt;&lt;/p&gt;&#34;,
+&#34;birthdate&#34;: &#34;1988-06-01T00:00:00.000Z&#34;,
+&#34;email&#34;: &#34;jedai@saboteur.net&#34;,
+&#34;firstName&#34; : &#34;Jedai&#34;,
+&#34;joinDate&#34; : &#34;2018-01-26T23:38:43.545Z&#34;,
+&#34;lastName&#34;: &#34;Saboteur&#34;,
+&#34;role&#34; : &#34;5a6bbbde0129051ec8ce724a&#34;,
+&#34;username&#34;:&#34;jedai&#34;,
+&#34;_id&#34;:&#34;5a6bbc030129051ec8ce724d&#34;
+}
+</code>
+                      </pre>
+                    </div>
+                    <div class="ui bottom attached tab segment" data-tab="schema">
+                      <pre style="white-space: inherit">
+                        <code class="language-json"></code>
+                      </pre>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            
+          </div>
+        
+          
+<div class="ui grey horizontal small divider header">
+  <i class="ui grey micro circular label"></i>
+  <i class="ui pink micro circular label"></i>
+  <i class="ui grey micro circular label"></i>
+</div>
+
+          <div class="ui basic segment">
+            <h3 class="ui block center aligned header" id="auth-authentication-post">
+              POST
+            </h3>
+            <div class="description"></div>
+
+            
+              <h4 class="ui horizontal divider">
+                REQUEST
+              </h4>
+              <div class="description"></div>
+              <div class="fluid ui large labeled button">
+                <div class="ui blue large button">
+                  <h3>POST</h3>
+                </div>
+                <a class="ui basic fluid blue label">
+                  <code>http://localhost:3000/api/v1/users/auth</code>
+                </a>
+              </div>
+              
+              
+              
+
+              <h4 class="ui horizontal divider">RESPONSE</h4>
+              <div class="description"></div>
+              
+<table class="ui celled definition table">
+  <thead>
+    <tr>
+      <th colspan="2">Headers</th>
+    </tr>
+  </thead>
+  <tbody>
+  
+    <tr>
+      <td class="four wide">Content-Type</td>
+      <td><code>application/json</code></td>
+    </tr>
+  
+  </tbody>
+</table>
+
+              <div class="ui stacked blue segment">
+                <div class="ui fluid transaction accordion">
+                  <div class="title center aligned">
+                    <a class="ui blue circular label">
+                      200
+                    </a>
+                    <code>application/json</code>
+                  </div>
+                  <div class="content tabbed">
+                    <div class="ui top attached tabular menu">
+                      <a data-tab="body" class="active item">BODY</a>
+                      <a data-tab="schema" class="item">SCHEMA</a>
+                    </div>
+                    <div class="ui bottom attached active tab segment" data-tab="body">
+                      <pre style="white-space: inherit">
+                        <code class="language-json">Derp
+
+</code>
+                      </pre>
+                    </div>
+                    <div class="ui bottom attached tab segment" data-tab="schema">
+                      <pre style="white-space: inherit">
+                        <code class="language-json"></code>
+                      </pre>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            
+          </div>
+        
+        </div>
+      <div class="ui hidden divider"></div>
+    
+  
+    
+      <div class="ui stacked segments">
+        <div class="ui basic segment resource">
+          <div class="ui purple huge ribbon label">
+            Logout
+          </div>
+          <div class="ui header">
+            <div class="ui sub header">
+              
+            </div>
+          </div>
+        </div>
+
+        
+          
+<div class="ui grey horizontal small divider header">
+  <i class="ui grey micro circular label"></i>
+  <i class="ui pink micro circular label"></i>
+  <i class="ui grey micro circular label"></i>
+</div>
+
+          <div class="ui basic segment">
+            <h3 class="ui block center aligned header" id="auth-logout-get">
+              GET
+            </h3>
+            <div class="description"></div>
+
+            
+              <h4 class="ui horizontal divider">
+                REQUEST
+              </h4>
+              <div class="description"></div>
+              <div class="fluid ui large labeled button">
+                <div class="ui green large button">
+                  <h3>GET</h3>
+                </div>
+                <a class="ui basic fluid green label">
+                  <code>http://localhost:3000/api/v1/users/auth/logout</code>
+                </a>
+              </div>
+              
+              
+              
+
+              <h4 class="ui horizontal divider">RESPONSE</h4>
+              <div class="description"></div>
+              
+<table class="ui celled definition table">
+  <thead>
+    <tr>
+      <th colspan="2">Headers</th>
+    </tr>
+  </thead>
+  <tbody>
+  
+    <tr>
+      <td class="four wide">Content-Type</td>
+      <td><code>application/json</code></td>
+    </tr>
+  
+  </tbody>
+</table>
+
+              <div class="ui stacked blue segment">
+                <div class="ui fluid transaction accordion">
+                  <div class="title center aligned">
+                    <a class="ui blue circular label">
+                      200
+                    </a>
+                    <code>application/json</code>
+                  </div>
+                  <div class="content tabbed">
+                    <div class="ui top attached tabular menu">
+                      <a data-tab="body" class="active item">BODY</a>
+                      <a data-tab="schema" class="item">SCHEMA</a>
+                    </div>
+                    <div class="ui bottom attached active tab segment" data-tab="body">
+                      <pre style="white-space: inherit">
+                        <code class="language-json">Bye Bye
+
+</code>
+                      </pre>
+                    </div>
+                    <div class="ui bottom attached tab segment" data-tab="schema">
+                      <pre style="white-space: inherit">
+                        <code class="language-json"></code>
+                      </pre>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            
+          </div>
+        
+        </div>
+      <div class="ui hidden divider"></div>
+    
+  
+
+  <div class="ui horizontal divider" id="serials">
+    Serials
+  </div>
+  <div class="ui header center aligned">
+    <div class="ui sub header">
+      
+    </div>
+  </div>
+  
+    
+      <div class="ui stacked segments">
+        <div class="ui basic segment resource">
+          <div class="ui purple huge ribbon label">
+            Serial Actions
+          </div>
+          <div class="ui header">
+            <div class="ui sub header">
+              
+            </div>
+          </div>
+        </div>
+
+        
+          
+<div class="ui grey horizontal small divider header">
+  <i class="ui grey micro circular label"></i>
+  <i class="ui pink micro circular label"></i>
+  <i class="ui grey micro circular label"></i>
+</div>
+
+          <div class="ui basic segment">
+            <h3 class="ui block center aligned header" id="serials-serial-actions-get">
+              GET
+            </h3>
+            <div class="description"></div>
+
+            
+              <h4 class="ui horizontal divider">
+                REQUEST
+              </h4>
+              <div class="description"></div>
+              <div class="fluid ui large labeled button">
+                <div class="ui green large button">
+                  <h3>GET</h3>
+                </div>
+                <a class="ui basic fluid green label">
+                  <code>http://localhost:3000/api/v1/serials{?userId}</code>
+                </a>
+              </div>
+              
+                <table class="ui celled definition table">
+                  <thead>
+                    <tr>
+                      <th colspan="4">Parameters</th>
+                    </tr>
+                  <thead>
+                  <tbody>
+                    
+                      
+  
+    <tr>
+      <td class="center aligned one wide">
+        <i class="ui empty circular label grey" data-content="optional" data-position="top center"></i>
+      </td>
+      <td><code>userId</code></td>
+      <td class="center aligned">
+        <code>id</code>
+        
+        
+      </td>
+      <td class="eight wide">
+        <p>The user who&rsquo;s serials to return</p>
+
+        
+      </td>
+    </tr>
+  
+
+                    
+                    
+                  </tbody>
+                </table>
+              
+              
+              
+
+              <h4 class="ui horizontal divider">RESPONSE</h4>
+              <div class="description"></div>
+              
+<table class="ui celled definition table">
+  <thead>
+    <tr>
+      <th colspan="2">Headers</th>
+    </tr>
+  </thead>
+  <tbody>
+  
+    <tr>
+      <td class="four wide">Content-Type</td>
+      <td><code>application/json</code></td>
+    </tr>
+  
+  </tbody>
+</table>
+
+              <div class="ui stacked blue segment">
+                <div class="ui fluid transaction accordion">
+                  <div class="title center aligned">
+                    <a class="ui blue circular label">
+                      200
+                    </a>
+                    <code>application/json</code>
+                  </div>
+                  <div class="content tabbed">
+                    <div class="ui top attached tabular menu">
+                      <a data-tab="body" class="active item">BODY</a>
+                      <a data-tab="schema" class="item">SCHEMA</a>
+                    </div>
+                    <div class="ui bottom attached active tab segment" data-tab="body">
+                      <pre style="white-space: inherit">
+                        <code class="language-json">{
+&#34;author_id&#34;: &#34;5a6bbc030129051ec8ce724d&#34;,
+&#34;creation_date&#34;: &#34;2018-02-27T19:14:27.153Z&#34;,
+&#34;genre&#34;: &#34;Test Fiction&#34;,
+&#34;nsfw&#34;: &#34;false&#34;,
+&#34;slug&#34;: &#34;test&#34;,
+&#34;title&#34;: &#34;Test&#34;,
+&#34;synopsis&#34;: &#34;The testament of a test&#34;,
+&#34;_id:&#34;5a6bbc030129051ec8ce724d&#34;
+}
+</code>
+                      </pre>
+                    </div>
+                    <div class="ui bottom attached tab segment" data-tab="schema">
+                      <pre style="white-space: inherit">
+                        <code class="language-json"></code>
+                      </pre>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            
+              <h4 class="ui horizontal divider">
+                REQUEST
+              </h4>
+              <div class="description"></div>
+              <div class="fluid ui large labeled button">
+                <div class="ui green large button">
+                  <h3>GET</h3>
+                </div>
+                <a class="ui basic fluid green label">
+                  <code>http://localhost:3000/api/v1/serials{?userId}</code>
+                </a>
+              </div>
+              
+                <table class="ui celled definition table">
+                  <thead>
+                    <tr>
+                      <th colspan="4">Parameters</th>
+                    </tr>
+                  <thead>
+                  <tbody>
+                    
+                      
+  
+    <tr>
+      <td class="center aligned one wide">
+        <i class="ui empty circular label grey" data-content="optional" data-position="top center"></i>
+      </td>
+      <td><code>userId</code></td>
+      <td class="center aligned">
+        <code>id</code>
+        
+        
+      </td>
+      <td class="eight wide">
+        <p>The user who&rsquo;s serials to return</p>
+
+        
+      </td>
+    </tr>
+  
+
+                    
+                    
+                  </tbody>
+                </table>
+              
+              
+              
+
+              <h4 class="ui horizontal divider">RESPONSE</h4>
+              <div class="description"></div>
+              
+<table class="ui celled definition table">
+  <thead>
+    <tr>
+      <th colspan="2">Headers</th>
+    </tr>
+  </thead>
+  <tbody>
+  
+    <tr>
+      <td class="four wide">Content-Type</td>
+      <td><code>application/json</code></td>
+    </tr>
+  
+  </tbody>
+</table>
+
+              <div class="ui stacked blue segment">
+                <div class="ui fluid transaction accordion">
+                  <div class="title center aligned">
+                    <a class="ui blue circular label">
+                      200
+                    </a>
+                    <code>application/json</code>
+                  </div>
+                  <div class="content tabbed">
+                    <div class="ui top attached tabular menu">
+                      <a data-tab="body" class="active item">BODY</a>
+                      <a data-tab="schema" class="item">SCHEMA</a>
+                    </div>
+                    <div class="ui bottom attached active tab segment" data-tab="body">
+                      <pre style="white-space: inherit">
+                        <code class="language-json">[
+{
+  &#34;author_id&#34;: &#34;5a6bbc030139051ec8ce724d&#34;,
+  &#34;creation_date&#34;: &#34;2018-02-27T19:14:27.153Z&#34;,
+  &#34;genre&#34;: &#34;Test Fiction&#34;,
+  &#34;nsfw&#34;: &#34;false&#34;,
+  &#34;slug&#34;: &#34;test&#34;,
+  &#34;title&#34;: &#34;Test&#34;,
+  &#34;synopsis&#34;: &#34;The testament of a test&#34;,
+  &#34;_id:&#34;5a6bbc030129051ec8ce724d&#34;
+},
+{
+  &#34;author_id&#34;: &#34;5a6bbc03012905bec8ce724d&#34;,
+  &#34;creation_date&#34;: &#34;2018-02-27T19:14:27.153Z&#34;,
+  &#34;genre&#34;: &#34;Test Fiction&#34;,
+  &#34;nsfw&#34;: &#34;true&#34;,
+  &#34;slug&#34;: &#34;saucy-test&#34;,
+  &#34;title&#34;: &#34;Saucy Test&#34;,
+  &#34;synopsis&#34;: &#34;The testament of a test, but saucier&#34;,
+  &#34;_id:&#34;5a6bbc030159051ec8ce724d&#34;
+}
+]
+</code>
+                      </pre>
+                    </div>
+                    <div class="ui bottom attached tab segment" data-tab="schema">
+                      <pre style="white-space: inherit">
+                        <code class="language-json"></code>
+                      </pre>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            
+          </div>
+        
+          
+<div class="ui grey horizontal small divider header">
+  <i class="ui grey micro circular label"></i>
+  <i class="ui pink micro circular label"></i>
+  <i class="ui grey micro circular label"></i>
+</div>
+
+          <div class="ui basic segment">
+            <h3 class="ui block center aligned header" id="serials-serial-actions-post">
+              POST
+            </h3>
+            <div class="description"></div>
+
+            
+              <h4 class="ui horizontal divider">
+                REQUEST
+              </h4>
+              <div class="description"></div>
+              <div class="fluid ui large labeled button">
+                <div class="ui blue large button">
+                  <h3>POST</h3>
+                </div>
+                <a class="ui basic fluid blue label">
+                  <code>http://localhost:3000/api/v1/serials{?userId}</code>
+                </a>
+              </div>
+              
+              
+              
+
+              <h4 class="ui horizontal divider">RESPONSE</h4>
+              <div class="description"></div>
+              
+<table class="ui celled definition table">
+  <thead>
+    <tr>
+      <th colspan="2">Headers</th>
+    </tr>
+  </thead>
+  <tbody>
+  
+    <tr>
+      <td class="four wide">Content-Type</td>
+      <td><code>application/json</code></td>
+    </tr>
+  
+  </tbody>
+</table>
+
+              <div class="ui stacked blue segment">
+                <div class="ui fluid transaction accordion">
+                  <div class="title center aligned">
+                    <a class="ui blue circular label">
+                      200
+                    </a>
+                    <code>application/json</code>
+                  </div>
+                  <div class="content tabbed">
+                    <div class="ui top attached tabular menu">
+                      <a data-tab="body" class="active item">BODY</a>
+                      <a data-tab="schema" class="item">SCHEMA</a>
+                    </div>
+                    <div class="ui bottom attached active tab segment" data-tab="body">
+                      <pre style="white-space: inherit">
+                        <code class="language-json">Hello World
+
+</code>
+                      </pre>
+                    </div>
+                    <div class="ui bottom attached tab segment" data-tab="schema">
+                      <pre style="white-space: inherit">
+                        <code class="language-json"></code>
+                      </pre>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            
+          </div>
+        
+          
+<div class="ui grey horizontal small divider header">
+  <i class="ui grey micro circular label"></i>
+  <i class="ui pink micro circular label"></i>
+  <i class="ui grey micro circular label"></i>
+</div>
+
+          <div class="ui basic segment">
+            <h3 class="ui block center aligned header" id="serials-serial-actions-put">
+              PUT
+            </h3>
+            <div class="description"></div>
+
+            
+              <h4 class="ui horizontal divider">
+                REQUEST
+              </h4>
+              <div class="description"></div>
+              <div class="fluid ui large labeled button">
+                <div class="ui teal large button">
+                  <h3>PUT</h3>
+                </div>
+                <a class="ui basic fluid teal label">
+                  <code>http://localhost:3000/api/v1/serials{?userId}</code>
+                </a>
+              </div>
+              
+              
+              
+
+              <h4 class="ui horizontal divider">RESPONSE</h4>
+              <div class="description"></div>
+              
+<table class="ui celled definition table">
+  <thead>
+    <tr>
+      <th colspan="2">Headers</th>
+    </tr>
+  </thead>
+  <tbody>
+  
+    <tr>
+      <td class="four wide">Content-Type</td>
+      <td><code>application/json</code></td>
+    </tr>
+  
+  </tbody>
+</table>
+
+              <div class="ui stacked blue segment">
+                <div class="ui fluid transaction accordion">
+                  <div class="title center aligned">
+                    <a class="ui blue circular label">
+                      200
+                    </a>
+                    <code>application/json</code>
+                  </div>
+                  <div class="content tabbed">
+                    <div class="ui top attached tabular menu">
+                      <a data-tab="body" class="active item">BODY</a>
+                      <a data-tab="schema" class="item">SCHEMA</a>
+                    </div>
+                    <div class="ui bottom attached active tab segment" data-tab="body">
+                      <pre style="white-space: inherit">
+                        <code class="language-json">Hello World
+
+</code>
+                      </pre>
+                    </div>
+                    <div class="ui bottom attached tab segment" data-tab="schema">
+                      <pre style="white-space: inherit">
+                        <code class="language-json"></code>
+                      </pre>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            
+          </div>
+        
+          
+<div class="ui grey horizontal small divider header">
+  <i class="ui grey micro circular label"></i>
+  <i class="ui pink micro circular label"></i>
+  <i class="ui grey micro circular label"></i>
+</div>
+
+          <div class="ui basic segment">
+            <h3 class="ui block center aligned header" id="serials-serial-actions-delete">
+              DELETE
+            </h3>
+            <div class="description"></div>
+
+            
+              <h4 class="ui horizontal divider">
+                REQUEST
+              </h4>
+              <div class="description"></div>
+              <div class="fluid ui large labeled button">
+                <div class="ui red large button">
+                  <h3>DELETE</h3>
+                </div>
+                <a class="ui basic fluid red label">
+                  <code>http://localhost:3000/api/v1/serials{?userId}</code>
+                </a>
+              </div>
+              
+              
+              
+
+              <h4 class="ui horizontal divider">RESPONSE</h4>
+              <div class="description"></div>
+              
+<table class="ui celled definition table">
+  <thead>
+    <tr>
+      <th colspan="2">Headers</th>
+    </tr>
+  </thead>
+  <tbody>
+  
+    <tr>
+      <td class="four wide">Content-Type</td>
+      <td><code>application/json</code></td>
+    </tr>
+  
+  </tbody>
+</table>
+
+              <div class="ui stacked blue segment">
+                <div class="ui fluid transaction accordion">
+                  <div class="title center aligned">
+                    <a class="ui blue circular label">
+                      200
+                    </a>
+                    <code>application/json</code>
+                  </div>
+                  <div class="content tabbed">
+                    <div class="ui top attached tabular menu">
+                      <a data-tab="body" class="active item">BODY</a>
+                      <a data-tab="schema" class="item">SCHEMA</a>
+                    </div>
+                    <div class="ui bottom attached active tab segment" data-tab="body">
+                      <pre style="white-space: inherit">
+                        <code class="language-json">Hello World
+
+</code>
+                      </pre>
+                    </div>
+                    <div class="ui bottom attached tab segment" data-tab="schema">
+                      <pre style="white-space: inherit">
+                        <code class="language-json"></code>
+                      </pre>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            
+          </div>
+        
+        </div>
+      <div class="ui hidden divider"></div>
+    
+  
+
+  <div class="ui horizontal divider" id="serial-parts">
+    Serial Parts
+  </div>
+  <div class="ui header center aligned">
+    <div class="ui sub header">
+      
+    </div>
+  </div>
+  
+    
+      <div class="ui stacked segments">
+        <div class="ui basic segment resource">
+          <div class="ui purple huge ribbon label">
+            Serial Parts
+          </div>
+          <div class="ui header">
+            <div class="ui sub header">
+              
+            </div>
+          </div>
+        </div>
+
+        
+          
+<div class="ui grey horizontal small divider header">
+  <i class="ui grey micro circular label"></i>
+  <i class="ui pink micro circular label"></i>
+  <i class="ui grey micro circular label"></i>
+</div>
+
+          <div class="ui basic segment">
+            <h3 class="ui block center aligned header" id="serial-parts-serial-parts-get">
+              GET
+            </h3>
+            <div class="description"></div>
+
+            
+              <h4 class="ui horizontal divider">
+                REQUEST
+              </h4>
+              <div class="description"></div>
+              <div class="fluid ui large labeled button">
+                <div class="ui green large button">
+                  <h3>GET</h3>
+                </div>
+                <a class="ui basic fluid green label">
+                  <code>http://localhost:3000/api/v1/serials/:serialId</code>
+                </a>
+              </div>
+              
+              
+              
+
+              <h4 class="ui horizontal divider">RESPONSE</h4>
+              <div class="description"></div>
+              
+<table class="ui celled definition table">
+  <thead>
+    <tr>
+      <th colspan="2">Headers</th>
+    </tr>
+  </thead>
+  <tbody>
+  
+    <tr>
+      <td class="four wide">Content-Type</td>
+      <td><code>application/json</code></td>
+    </tr>
+  
+  </tbody>
+</table>
+
+              <div class="ui stacked blue segment">
+                <div class="ui fluid transaction accordion">
+                  <div class="title center aligned">
+                    <a class="ui blue circular label">
+                      200
+                    </a>
+                    <code>application/json</code>
+                  </div>
+                  <div class="content tabbed">
+                    <div class="ui top attached tabular menu">
+                      <a data-tab="body" class="active item">BODY</a>
+                      <a data-tab="schema" class="item">SCHEMA</a>
+                    </div>
+                    <div class="ui bottom attached active tab segment" data-tab="body">
+                      <pre style="white-space: inherit">
+                        <code class="language-json">Hello World
+
+</code>
+                      </pre>
+                    </div>
+                    <div class="ui bottom attached tab segment" data-tab="schema">
+                      <pre style="white-space: inherit">
+                        <code class="language-json"></code>
+                      </pre>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            
+          </div>
+        
+          
+<div class="ui grey horizontal small divider header">
+  <i class="ui grey micro circular label"></i>
+  <i class="ui pink micro circular label"></i>
+  <i class="ui grey micro circular label"></i>
+</div>
+
+          <div class="ui basic segment">
+            <h3 class="ui block center aligned header" id="serial-parts-serial-parts-post">
+              POST
+            </h3>
+            <div class="description"></div>
+
+            
+              <h4 class="ui horizontal divider">
+                REQUEST
+              </h4>
+              <div class="description"></div>
+              <div class="fluid ui large labeled button">
+                <div class="ui blue large button">
+                  <h3>POST</h3>
+                </div>
+                <a class="ui basic fluid blue label">
+                  <code>http://localhost:3000/api/v1/serials/:serialId</code>
+                </a>
+              </div>
+              
+              
+              
+
+              <h4 class="ui horizontal divider">RESPONSE</h4>
+              <div class="description"></div>
+              
+<table class="ui celled definition table">
+  <thead>
+    <tr>
+      <th colspan="2">Headers</th>
+    </tr>
+  </thead>
+  <tbody>
+  
+    <tr>
+      <td class="four wide">Content-Type</td>
+      <td><code>application/json</code></td>
+    </tr>
+  
+  </tbody>
+</table>
+
+              <div class="ui stacked blue segment">
+                <div class="ui fluid transaction accordion">
+                  <div class="title center aligned">
+                    <a class="ui blue circular label">
+                      200
+                    </a>
+                    <code>application/json</code>
+                  </div>
+                  <div class="content tabbed">
+                    <div class="ui top attached tabular menu">
+                      <a data-tab="body" class="active item">BODY</a>
+                      <a data-tab="schema" class="item">SCHEMA</a>
+                    </div>
+                    <div class="ui bottom attached active tab segment" data-tab="body">
+                      <pre style="white-space: inherit">
+                        <code class="language-json">Hello World
+
+</code>
+                      </pre>
+                    </div>
+                    <div class="ui bottom attached tab segment" data-tab="schema">
+                      <pre style="white-space: inherit">
+                        <code class="language-json"></code>
+                      </pre>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            
+          </div>
+        
+          
+<div class="ui grey horizontal small divider header">
+  <i class="ui grey micro circular label"></i>
+  <i class="ui pink micro circular label"></i>
+  <i class="ui grey micro circular label"></i>
+</div>
+
+          <div class="ui basic segment">
+            <h3 class="ui block center aligned header" id="serial-parts-serial-parts-put">
+              PUT
+            </h3>
+            <div class="description"></div>
+
+            
+              <h4 class="ui horizontal divider">
+                REQUEST
+              </h4>
+              <div class="description"></div>
+              <div class="fluid ui large labeled button">
+                <div class="ui teal large button">
+                  <h3>PUT</h3>
+                </div>
+                <a class="ui basic fluid teal label">
+                  <code>http://localhost:3000/api/v1/serials/:serialId</code>
+                </a>
+              </div>
+              
+              
+              
+
+              <h4 class="ui horizontal divider">RESPONSE</h4>
+              <div class="description"></div>
+              
+<table class="ui celled definition table">
+  <thead>
+    <tr>
+      <th colspan="2">Headers</th>
+    </tr>
+  </thead>
+  <tbody>
+  
+    <tr>
+      <td class="four wide">Content-Type</td>
+      <td><code>application/json</code></td>
+    </tr>
+  
+  </tbody>
+</table>
+
+              <div class="ui stacked blue segment">
+                <div class="ui fluid transaction accordion">
+                  <div class="title center aligned">
+                    <a class="ui blue circular label">
+                      200
+                    </a>
+                    <code>application/json</code>
+                  </div>
+                  <div class="content tabbed">
+                    <div class="ui top attached tabular menu">
+                      <a data-tab="body" class="active item">BODY</a>
+                      <a data-tab="schema" class="item">SCHEMA</a>
+                    </div>
+                    <div class="ui bottom attached active tab segment" data-tab="body">
+                      <pre style="white-space: inherit">
+                        <code class="language-json">Hello World
+
+</code>
+                      </pre>
+                    </div>
+                    <div class="ui bottom attached tab segment" data-tab="schema">
+                      <pre style="white-space: inherit">
+                        <code class="language-json"></code>
+                      </pre>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            
+          </div>
+        
+          
+<div class="ui grey horizontal small divider header">
+  <i class="ui grey micro circular label"></i>
+  <i class="ui pink micro circular label"></i>
+  <i class="ui grey micro circular label"></i>
+</div>
+
+          <div class="ui basic segment">
+            <h3 class="ui block center aligned header" id="serial-parts-serial-parts-delete">
+              DELETE
+            </h3>
+            <div class="description"></div>
+
+            
+              <h4 class="ui horizontal divider">
+                REQUEST
+              </h4>
+              <div class="description"></div>
+              <div class="fluid ui large labeled button">
+                <div class="ui red large button">
+                  <h3>DELETE</h3>
+                </div>
+                <a class="ui basic fluid red label">
+                  <code>http://localhost:3000/api/v1/serials/:serialId</code>
+                </a>
+              </div>
+              
+              
+              
+
+              <h4 class="ui horizontal divider">RESPONSE</h4>
+              <div class="description"></div>
+              
+<table class="ui celled definition table">
+  <thead>
+    <tr>
+      <th colspan="2">Headers</th>
+    </tr>
+  </thead>
+  <tbody>
+  
+    <tr>
+      <td class="four wide">Content-Type</td>
+      <td><code>application/json</code></td>
+    </tr>
+  
+  </tbody>
+</table>
+
+              <div class="ui stacked blue segment">
+                <div class="ui fluid transaction accordion">
+                  <div class="title center aligned">
+                    <a class="ui blue circular label">
+                      200
+                    </a>
+                    <code>application/json</code>
+                  </div>
+                  <div class="content tabbed">
+                    <div class="ui top attached tabular menu">
+                      <a data-tab="body" class="active item">BODY</a>
+                      <a data-tab="schema" class="item">SCHEMA</a>
+                    </div>
+                    <div class="ui bottom attached active tab segment" data-tab="body">
+                      <pre style="white-space: inherit">
+                        <code class="language-json">Hello World
+
+</code>
+                      </pre>
+                    </div>
+                    <div class="ui bottom attached tab segment" data-tab="schema">
+                      <pre style="white-space: inherit">
+                        <code class="language-json"></code>
+                      </pre>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            
+          </div>
+        
+        </div>
+      <div class="ui hidden divider"></div>
+    
+  
+    
+      <div class="ui stacked segments">
+        <div class="ui basic segment resource">
+          <div class="ui purple huge ribbon label">
+            Also Serial Parts
+          </div>
+          <div class="ui header">
+            <div class="ui sub header">
+              
+            </div>
+          </div>
+        </div>
+
+        
+          
+<div class="ui grey horizontal small divider header">
+  <i class="ui grey micro circular label"></i>
+  <i class="ui pink micro circular label"></i>
+  <i class="ui grey micro circular label"></i>
+</div>
+
+          <div class="ui basic segment">
+            <h3 class="ui block center aligned header" id="serial-parts-also-serial-parts-get">
+              GET
+            </h3>
+            <div class="description"></div>
+
+            
+              <h4 class="ui horizontal divider">
+                REQUEST
+              </h4>
+              <div class="description"></div>
+              <div class="fluid ui large labeled button">
+                <div class="ui green large button">
+                  <h3>GET</h3>
+                </div>
+                <a class="ui basic fluid green label">
+                  <code>http://localhost:3000/api/v1/serials/:serialId/:partId</code>
+                </a>
+              </div>
+              
+              
+              
+
+              <h4 class="ui horizontal divider">RESPONSE</h4>
+              <div class="description"></div>
+              
+<table class="ui celled definition table">
+  <thead>
+    <tr>
+      <th colspan="2">Headers</th>
+    </tr>
+  </thead>
+  <tbody>
+  
+    <tr>
+      <td class="four wide">Content-Type</td>
+      <td><code>application/json</code></td>
+    </tr>
+  
+  </tbody>
+</table>
+
+              <div class="ui stacked blue segment">
+                <div class="ui fluid transaction accordion">
+                  <div class="title center aligned">
+                    <a class="ui blue circular label">
+                      200
+                    </a>
+                    <code>application/json</code>
+                  </div>
+                  <div class="content tabbed">
+                    <div class="ui top attached tabular menu">
+                      <a data-tab="body" class="active item">BODY</a>
+                      <a data-tab="schema" class="item">SCHEMA</a>
+                    </div>
+                    <div class="ui bottom attached active tab segment" data-tab="body">
+                      <pre style="white-space: inherit">
+                        <code class="language-json">Hello World
+
+</code>
+                      </pre>
+                    </div>
+                    <div class="ui bottom attached tab segment" data-tab="schema">
+                      <pre style="white-space: inherit">
+                        <code class="language-json"></code>
+                      </pre>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            
+          </div>
+        
+          
+<div class="ui grey horizontal small divider header">
+  <i class="ui grey micro circular label"></i>
+  <i class="ui pink micro circular label"></i>
+  <i class="ui grey micro circular label"></i>
+</div>
+
+          <div class="ui basic segment">
+            <h3 class="ui block center aligned header" id="serial-parts-also-serial-parts-put">
+              PUT
+            </h3>
+            <div class="description"></div>
+
+            
+              <h4 class="ui horizontal divider">
+                REQUEST
+              </h4>
+              <div class="description"></div>
+              <div class="fluid ui large labeled button">
+                <div class="ui teal large button">
+                  <h3>PUT</h3>
+                </div>
+                <a class="ui basic fluid teal label">
+                  <code>http://localhost:3000/api/v1/serials/:serialId/:partId</code>
+                </a>
+              </div>
+              
+              
+              
+
+              <h4 class="ui horizontal divider">RESPONSE</h4>
+              <div class="description"></div>
+              
+<table class="ui celled definition table">
+  <thead>
+    <tr>
+      <th colspan="2">Headers</th>
+    </tr>
+  </thead>
+  <tbody>
+  
+    <tr>
+      <td class="four wide">Content-Type</td>
+      <td><code>application/json</code></td>
+    </tr>
+  
+  </tbody>
+</table>
+
+              <div class="ui stacked blue segment">
+                <div class="ui fluid transaction accordion">
+                  <div class="title center aligned">
+                    <a class="ui blue circular label">
+                      200
+                    </a>
+                    <code>application/json</code>
+                  </div>
+                  <div class="content tabbed">
+                    <div class="ui top attached tabular menu">
+                      <a data-tab="body" class="active item">BODY</a>
+                      <a data-tab="schema" class="item">SCHEMA</a>
+                    </div>
+                    <div class="ui bottom attached active tab segment" data-tab="body">
+                      <pre style="white-space: inherit">
+                        <code class="language-json">Hello World
+
+</code>
+                      </pre>
+                    </div>
+                    <div class="ui bottom attached tab segment" data-tab="schema">
+                      <pre style="white-space: inherit">
+                        <code class="language-json"></code>
+                      </pre>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            
+          </div>
+        
+          
+<div class="ui grey horizontal small divider header">
+  <i class="ui grey micro circular label"></i>
+  <i class="ui pink micro circular label"></i>
+  <i class="ui grey micro circular label"></i>
+</div>
+
+          <div class="ui basic segment">
+            <h3 class="ui block center aligned header" id="serial-parts-also-serial-parts-delete">
+              DELETE
+            </h3>
+            <div class="description"></div>
+
+            
+              <h4 class="ui horizontal divider">
+                REQUEST
+              </h4>
+              <div class="description"></div>
+              <div class="fluid ui large labeled button">
+                <div class="ui red large button">
+                  <h3>DELETE</h3>
+                </div>
+                <a class="ui basic fluid red label">
+                  <code>http://localhost:3000/api/v1/serials/:serialId/:partId</code>
+                </a>
+              </div>
+              
+              
+              
+
+              <h4 class="ui horizontal divider">RESPONSE</h4>
+              <div class="description"></div>
+              
+<table class="ui celled definition table">
+  <thead>
+    <tr>
+      <th colspan="2">Headers</th>
+    </tr>
+  </thead>
+  <tbody>
+  
+    <tr>
+      <td class="four wide">Content-Type</td>
+      <td><code>application/json</code></td>
+    </tr>
+  
+  </tbody>
+</table>
+
+              <div class="ui stacked blue segment">
+                <div class="ui fluid transaction accordion">
+                  <div class="title center aligned">
+                    <a class="ui blue circular label">
+                      200
+                    </a>
+                    <code>application/json</code>
+                  </div>
+                  <div class="content tabbed">
+                    <div class="ui top attached tabular menu">
+                      <a data-tab="body" class="active item">BODY</a>
+                      <a data-tab="schema" class="item">SCHEMA</a>
+                    </div>
+                    <div class="ui bottom attached active tab segment" data-tab="body">
+                      <pre style="white-space: inherit">
+                        <code class="language-json">Hello World
+
+</code>
+                      </pre>
+                    </div>
+                    <div class="ui bottom attached tab segment" data-tab="schema">
+                      <pre style="white-space: inherit">
+                        <code class="language-json"></code>
+                      </pre>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            
+          </div>
+        
+        </div>
+      <div class="ui hidden divider"></div>
+    
+  
+
+  <div class="ui horizontal divider" id="subscriptions">
+    Subscriptions
+  </div>
+  <div class="ui header center aligned">
+    <div class="ui sub header">
+      
+    </div>
+  </div>
+  
+    
+      <div class="ui stacked segments">
+        <div class="ui basic segment resource">
+          <div class="ui purple huge ribbon label">
+            Subscriptions
+          </div>
+          <div class="ui header">
+            <div class="ui sub header">
+              
+            </div>
+          </div>
+        </div>
+
+        
+          
+<div class="ui grey horizontal small divider header">
+  <i class="ui grey micro circular label"></i>
+  <i class="ui pink micro circular label"></i>
+  <i class="ui grey micro circular label"></i>
+</div>
+
+          <div class="ui basic segment">
+            <h3 class="ui block center aligned header" id="subscriptions-subscriptions-get">
+              GET
+            </h3>
+            <div class="description"></div>
+
+            
+              <h4 class="ui horizontal divider">
+                REQUEST
+              </h4>
+              <div class="description"></div>
+              <div class="fluid ui large labeled button">
+                <div class="ui green large button">
+                  <h3>GET</h3>
+                </div>
+                <a class="ui basic fluid green label">
+                  <code>http://localhost:3000/api/v1/serial-subscriptions</code>
+                </a>
+              </div>
+              
+              
+              
+
+              <h4 class="ui horizontal divider">RESPONSE</h4>
+              <div class="description"></div>
+              
+<table class="ui celled definition table">
+  <thead>
+    <tr>
+      <th colspan="2">Headers</th>
+    </tr>
+  </thead>
+  <tbody>
+  
+    <tr>
+      <td class="four wide">Content-Type</td>
+      <td><code>application/json</code></td>
+    </tr>
+  
+  </tbody>
+</table>
+
+              <div class="ui stacked blue segment">
+                <div class="ui fluid transaction accordion">
+                  <div class="title center aligned">
+                    <a class="ui blue circular label">
+                      200
+                    </a>
+                    <code>application/json</code>
+                  </div>
+                  <div class="content tabbed">
+                    <div class="ui top attached tabular menu">
+                      <a data-tab="body" class="active item">BODY</a>
+                      <a data-tab="schema" class="item">SCHEMA</a>
+                    </div>
+                    <div class="ui bottom attached active tab segment" data-tab="body">
+                      <pre style="white-space: inherit">
+                        <code class="language-json">Hello World
+
+</code>
+                      </pre>
+                    </div>
+                    <div class="ui bottom attached tab segment" data-tab="schema">
+                      <pre style="white-space: inherit">
+                        <code class="language-json"></code>
+                      </pre>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            
+          </div>
+        
+        </div>
+      <div class="ui hidden divider"></div>
+    
+  
+    
+      <div class="ui stacked segments">
+        <div class="ui basic segment resource">
+          <div class="ui purple huge ribbon label">
+            Subscriptions Query
+          </div>
+          <div class="ui header">
+            <div class="ui sub header">
+              
+            </div>
+          </div>
+        </div>
+
+        
+          
+<div class="ui grey horizontal small divider header">
+  <i class="ui grey micro circular label"></i>
+  <i class="ui pink micro circular label"></i>
+  <i class="ui grey micro circular label"></i>
+</div>
+
+          <div class="ui basic segment">
+            <h3 class="ui block center aligned header" id="subscriptions-subscriptions-query-get">
+              GET
+            </h3>
+            <div class="description"></div>
+
+            
+              <h4 class="ui horizontal divider">
+                REQUEST
+              </h4>
+              <div class="description"></div>
+              <div class="fluid ui large labeled button">
+                <div class="ui green large button">
+                  <h3>GET</h3>
+                </div>
+                <a class="ui basic fluid green label">
+                  <code>http://localhost:3000/api/v1/serial-subscriptions/:serialId</code>
+                </a>
+              </div>
+              
+              
+              
+
+              <h4 class="ui horizontal divider">RESPONSE</h4>
+              <div class="description"></div>
+              
+<table class="ui celled definition table">
+  <thead>
+    <tr>
+      <th colspan="2">Headers</th>
+    </tr>
+  </thead>
+  <tbody>
+  
+    <tr>
+      <td class="four wide">Content-Type</td>
+      <td><code>application/json</code></td>
+    </tr>
+  
+  </tbody>
+</table>
+
+              <div class="ui stacked blue segment">
+                <div class="ui fluid transaction accordion">
+                  <div class="title center aligned">
+                    <a class="ui blue circular label">
+                      200
+                    </a>
+                    <code>application/json</code>
+                  </div>
+                  <div class="content tabbed">
+                    <div class="ui top attached tabular menu">
+                      <a data-tab="body" class="active item">BODY</a>
+                      <a data-tab="schema" class="item">SCHEMA</a>
+                    </div>
+                    <div class="ui bottom attached active tab segment" data-tab="body">
+                      <pre style="white-space: inherit">
+                        <code class="language-json">Hello World
+
+</code>
+                      </pre>
+                    </div>
+                    <div class="ui bottom attached tab segment" data-tab="schema">
+                      <pre style="white-space: inherit">
+                        <code class="language-json"></code>
+                      </pre>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            
+          </div>
+        
+        </div>
+      <div class="ui hidden divider"></div>
+    
+  
+    
+      <div class="ui stacked segments">
+        <div class="ui basic segment resource">
+          <div class="ui purple huge ribbon label">
+            Subscriptions User Check
+          </div>
+          <div class="ui header">
+            <div class="ui sub header">
+              
+            </div>
+          </div>
+        </div>
+
+        
+          
+<div class="ui grey horizontal small divider header">
+  <i class="ui grey micro circular label"></i>
+  <i class="ui pink micro circular label"></i>
+  <i class="ui grey micro circular label"></i>
+</div>
+
+          <div class="ui basic segment">
+            <h3 class="ui block center aligned header" id="subscriptions-subscriptions-user-check-get">
+              GET
+            </h3>
+            <div class="description"></div>
+
+            
+              <h4 class="ui horizontal divider">
+                REQUEST
+              </h4>
+              <div class="description"></div>
+              <div class="fluid ui large labeled button">
+                <div class="ui green large button">
+                  <h3>GET</h3>
+                </div>
+                <a class="ui basic fluid green label">
+                  <code>http://localhost:3000/api/v1/serial-subscriptions/:serialId/check</code>
+                </a>
+              </div>
+              
+              
+              
+
+              <h4 class="ui horizontal divider">RESPONSE</h4>
+              <div class="description"></div>
+              
+<table class="ui celled definition table">
+  <thead>
+    <tr>
+      <th colspan="2">Headers</th>
+    </tr>
+  </thead>
+  <tbody>
+  
+    <tr>
+      <td class="four wide">Content-Type</td>
+      <td><code>application/json</code></td>
+    </tr>
+  
+  </tbody>
+</table>
+
+              <div class="ui stacked blue segment">
+                <div class="ui fluid transaction accordion">
+                  <div class="title center aligned">
+                    <a class="ui blue circular label">
+                      200
+                    </a>
+                    <code>application/json</code>
+                  </div>
+                  <div class="content tabbed">
+                    <div class="ui top attached tabular menu">
+                      <a data-tab="body" class="active item">BODY</a>
+                      <a data-tab="schema" class="item">SCHEMA</a>
+                    </div>
+                    <div class="ui bottom attached active tab segment" data-tab="body">
+                      <pre style="white-space: inherit">
+                        <code class="language-json">{
+&#34;subscribed_object&#34;: &#34;5a99eacb80cce12866083f23&#34;,
+&#34;subscriber&#34;: &#34;5a99eacb80cce12866083f27&#34;,
+&#34;_id&#34;: &#34;5a99eacb80cce12866083f24&#34;
+}
+</code>
+                      </pre>
+                    </div>
+                    <div class="ui bottom attached tab segment" data-tab="schema">
+                      <pre style="white-space: inherit">
+                        <code class="language-json"></code>
+                      </pre>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            
+          </div>
+        
+        </div>
+      <div class="ui hidden divider"></div>
+    
+  
+
+
+      </div>
+    </div>
+    <script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/3.0.0/jquery.min.js"></script>
+    <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.2.4/components/accordion.min.js"></script>
+    <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.2.4/components/tab.min.js"></script>
+    <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.2.4/components/transition.min.js"></script>
+    <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.2.4/components/popup.min.js"></script>
+    <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/prism/1.5.1/prism.min.js"></script>
+    <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/prism/1.5.1/components/prism-json.min.js"></script>
+    <script type="text/javascript">
+      $(function() {
+        $('.ui.accordion').accordion({ animateChildren: false, duration: 0 });
+        $('.content.tabbed').each(function(index) {
+          $('.ui.tabular .item', $(this)).tab({ context: $(this) });
+        });
+        $('.ui.vertical.menu').on('click', '.item', function() {
+          $('.ui.vertical.menu .item').removeClass('active');
+          $(this).addClass('active');
+        });
+        $('.ui.empty.circular.label').popup();
+      });
+    </script>
+  </body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+

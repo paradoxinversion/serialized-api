@@ -5,10 +5,6 @@ const _ = require("lodash");
 const router = express.Router();
 const User = require("../database/mongo/User");
 
-router.get("/test", (req, res) => {
-  res.json("Success!");
-});
-
 router.post("/:userId", async function(req, res){
   try{
     const newSerial = new Serial({

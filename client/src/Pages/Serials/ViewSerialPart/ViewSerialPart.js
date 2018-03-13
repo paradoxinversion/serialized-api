@@ -6,6 +6,9 @@ import {
 } from "react-router-dom";
 import HTMLMarkupContainer from "../../../Components/Containers/HTMLMarkupContainer/HTMLMarkupContainer";
 import SerialStepper from "../../../Components/SerialStepper/SerialStepper";
+import LikeButton from "../../../Components/Common/LikeButton/LikeButton";
+import LikeCounter from "../../../Components/Common/LikeCounter/LikeCounter";
+import getLikes from "../../../utilityFunctions/getLikes";
 import axios from "axios";
 import "../../../css/bulma.css";
 
@@ -13,15 +16,18 @@ class ViewSerialPart extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      part: null
+      part: null,
+      likes: []
     };
+    this.getLikes = this.getLikes.bind(this);
   }
 
-  async componentWillMount(){
+  async componentDidMount(){
     if (this.props.currentSerial == null || this.props.currentSerial._id !== this.props.match.params.id){
       await this.props.getSerialData(this.props.match.params.id);
     }
     await this.getSerialPart();
+    await this.getLikes();
   }
 
   async getSerialPart(){
@@ -35,6 +41,30 @@ class ViewSerialPart extends React.Component {
     });
   }
 
+  // async toggleLikeSerialPart(){
+  //   try{
+  //     const likeToggle = await axios.post(`/like`, {
+  //       entityType: 1,
+  //       entityId: this.props.match.params.partId
+  //     });
+  //   } catch (e){
+  //     console.log(e);
+  //     throw e;
+  //   }
+  // }
+
+  async getLikes(){
+    try{
+      const likes = await getLikes(1, this.props.match.params.partId);
+      this.setState({
+        likes: likes.data
+      })
+      // console.log("Likes",likes);
+    } catch (e){
+      throw e;
+    }
+  }
+
   render() {
     if (this.state.part){
       const parentSerialUri = `/serials/${this.props.currentSerial._id}`;
@@ -42,6 +72,7 @@ class ViewSerialPart extends React.Component {
       if (this.props.clientUser && this.props.clientUser._id === this.props.currentSerial.author_id._id){
         partEditLink = <Link className="button level-item" to={`/serials/${this.props.currentSerial._id}/${this.state.part._id}/edit`}> Edit </Link>;
       }
+
       return (
         <div className="container">
           <div className="level">
@@ -52,6 +83,17 @@ class ViewSerialPart extends React.Component {
           <p>{`Part ${(this.state.part.part_number+1)}`} of {`${this.props.serialParts.length} in ${this.props.currentSerial.title}`}</p>
           <HTMLMarkupContainer content={this.state.part.content} />
           <SerialStepper currentSerial={this.props.currentSerial} currentPart={this.state.part} serialParts={this.props.serialParts}/>
+
+
+          {
+            (this.props.clientUser && this.props.clientUser._id) ?
+              <LikeButton entityType="1" entityId={this.state.part._id} getLikes={this.getLikes}/> :
+              null
+          }
+
+          <LikeCounter totalLikes={this.state.likes.length} />
+
+
         </div>
       );
     } else{

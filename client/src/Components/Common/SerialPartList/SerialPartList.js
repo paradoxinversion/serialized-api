@@ -5,6 +5,7 @@ import {
 import axios from "axios";
 import SerialPartEntryContainer from "../../Containers/SerialPartEntryContainer/SerialPartEntryContainer";
 
+/// A list representing all parts of a serial story
 class SerialPartList extends React.Component {
   constructor(props){
     super(props);

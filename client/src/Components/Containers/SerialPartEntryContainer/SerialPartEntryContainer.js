@@ -4,6 +4,8 @@ import {
   withRouter,
   Link
 } from "react-router-dom";
+
+// Represents a serial part
 const SerialEntryContainer = (props) => {
   let authorOptions = null;
   let moveUp = null;
