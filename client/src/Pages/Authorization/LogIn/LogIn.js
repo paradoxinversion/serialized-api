@@ -4,6 +4,7 @@ import {
   Link
 } from "react-router-dom";
 import axios from "axios";
+import submitAuthentication from "../../../utilityFunctions/authentication/submitAuthentication"
 import PropTypes from "prop-types";
 import {
   InputField
@@ -19,6 +20,7 @@ class LogIn extends React.Component {
     this.handleSubmit = this.handleSubmit.bind(this);
     this.handleFormInput = this.handleFormInput.bind(this);
   }
+
   handleFormInput(event){
     const target = event.target;
     const value = target.type === "checkbox" ? target.checked : target.value;
@@ -32,12 +34,13 @@ class LogIn extends React.Component {
   async handleSubmit(event) {
     event.preventDefault();
     try{
-      const uri = "/users/auth";
-      const data = {
-        email: this.state.email,
-        password: this.state.password
-      };
-      await axios.post(uri, data);
+      // const uri = "/users/auth";
+      // const data = {
+      //   email: this.state.email,
+      //   password: this.state.password
+      // };
+      // await axios.post(uri, data);
+      await submitAuthentication(this.state.email, this.state.password);
       await this.props.onSignIn();
       const dashboard = {
         pathname: "/dashboard"

@@ -9,7 +9,7 @@ import SerialStepper from "../../../Components/SerialStepper/SerialStepper";
 import LikeButton from "../../../Components/Common/LikeButton/LikeButton";
 import LikeCounter from "../../../Components/Common/LikeCounter/LikeCounter";
 import getLikes from "../../../utilityFunctions/getLikes";
-import axios from "axios";
+import getSerialPart from "../../../utilityFunctions/serials/getSerialPart";
 import "../../../css/bulma.css";
 
 class ViewSerialPart extends React.Component {
@@ -31,35 +31,16 @@ class ViewSerialPart extends React.Component {
   }
 
   async getSerialPart(){
-    const uri = `/serials/${this.props.match.params.id}/${this.props.match.params.partId}`;
-    const configuration = {
-      withCredentials: true
-    };
-    const serialPartData = await axios.get(uri, configuration);
-    this.setState({
-      part: serialPartData.data.part
-    });
+    const response = await getSerialPart(this.props.match.params.id, this.props.match.params.partId);
+    this.setState({ part: response.part });
   }
-
-  // async toggleLikeSerialPart(){
-  //   try{
-  //     const likeToggle = await axios.post(`/like`, {
-  //       entityType: 1,
-  //       entityId: this.props.match.params.partId
-  //     });
-  //   } catch (e){
-  //     console.log(e);
-  //     throw e;
-  //   }
-  // }
 
   async getLikes(){
     try{
       const likes = await getLikes(1, this.props.match.params.partId);
       this.setState({
         likes: likes.data
-      })
-      // console.log("Likes",likes);
+      });
     } catch (e){
       throw e;
     }
