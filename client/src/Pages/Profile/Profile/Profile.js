@@ -4,10 +4,12 @@ import {
   withRouter,
   Link
 } from "react-router-dom";
-import axios from "axios";
 import ProfileEdit from "../ProfileEdit/ProfileEdit";
 import HTMLMarkupContainer from "../../../Components/Containers/HTMLMarkupContainer/HTMLMarkupContainer";
 import SerialList from "../../../Components/Common/SerialList/SerialList";
+import getProfileData from "../../../utilityFunctions/profile/getProfileData";
+import getUserSerialData from "../../../utilityFunctions/serials/getUserSerialData";
+import handleProfileEdit from "../../../utilityFunctions/profile/handleProfileEdit";
 import "../../../css/bulma.css";
 
 class Profile extends React.Component {
@@ -29,14 +31,10 @@ class Profile extends React.Component {
 
   async getProfileData (){
     try{
-      const requestConfiguration = {
-        withCredentials: true
-      };
-      const uri = `/users/${this.props.match.params.username}`;
-      const response = await axios.get(uri, requestConfiguration);
+      const response = await getProfileData(this.props.match.params.username);
       this.setState({
-        queriedUser: response.data.userData,
-        isProfileOwner: response.data.isQueriedUser
+        queriedUser: response.userData,
+        isProfileOwner: response.isQueriedUser
       });
       await this.getUserSerialData();
     } catch (e){
@@ -46,19 +44,13 @@ class Profile extends React.Component {
 
   async getUserSerialData(){
     try{
-
-      const requestConfiguration = {
-        withCredentials: true
-      };
-      const uri = `/serials?userId=${this.state.queriedUser._id}`;
-      const serialData = await axios.get(uri, requestConfiguration);
+      const serialData = await getUserSerialData(this.state.queriedUser._id);
       this.setState({
-        userSerials: serialData.data
+        userSerials: serialData
       });
     } catch (e){
       console.error("Something went wrong: \n ", e);
     }
-
   }
 
   async componentWillMount(){
@@ -84,14 +76,7 @@ class Profile extends React.Component {
   }
 
   async handleProfileSubmit(){
-    const uri = `/users`;
-    const data = {
-      biography: this.state.biography
-    };
-    const configuration = {
-      withCredentials: true
-    };
-    await axios.put(uri, data, configuration);
+    await handleProfileEdit(this.state.biography);
     this.setState({
       editMode: false
     });
