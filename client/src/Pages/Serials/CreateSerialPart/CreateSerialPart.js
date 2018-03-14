@@ -2,6 +2,7 @@ import React from "react";
 import PropTypes from "prop-types";
 import { withRouter } from "react-router-dom";
 import axios from "axios";
+import handleSerialPartSubmission from "../../../utilityFunctions/serials/handleSerialPartSubmission";
 import {
   InputField,
   QuillContainer
@@ -40,15 +41,7 @@ class CreateSerialPart extends React.Component {
 
   async handleSerialPartSubmit(event){
     event.preventDefault();
-    const uri = `/serials/${this.props.currentSerial._id}`;
-    const data ={
-      title: this.state.title,
-      content: this.state.content
-    };
-    const configuration = {
-      withCredentials: true
-    };
-    await axios.post(uri, data, configuration);
+    await handleSerialPartSubmission(this.props.currentSerial._id, this.state.title, this.state.content);
     const serial = {
       pathname: `/serials/${this.props.currentSerial._id}`
     };

@@ -1,7 +1,7 @@
 import React from "react";
 import PropTypes from "prop-types";
 import {withRouter} from "react-router-dom";
-import axios from "axios";
+import handleSerialEdit from "../../../utilityFunctions/serials/handleSerialEdit";
 import {
   InputField,
   CheckBox
@@ -30,17 +30,7 @@ class EditSerial extends React.Component {
 
   async handleSerialSubmit(event){
     event.preventDefault();
-    const uri = `/serials?serialId=${this.props.match.params.id}`;
-    const data = {
-      title: this.state.title,
-      synopsis: this.state.synopsis,
-      genre: this.state.genre,
-      nsfw: this.state.nsfw
-    };
-    const configuration = {
-      withCredentials: true
-    };
-    await axios.put(uri, data, configuration);
+    await handleSerialEdit(this.props.match.params.id, this.state.title, this.state.synopsis, this.state.genre, this.state.nsfw);
     const profile = {
       pathname: `/users/${this.props.clientUser.username}`
     };

@@ -1,7 +1,7 @@
 import React from "react";
 import PropTypes from "prop-types";
 import { withRouter } from "react-router-dom";
-import axios from "axios";
+import handleSerialSubmission from "../../../utilityFunctions/serials/handleSerialSubmission";
 import {
   InputField,
   CheckBox
@@ -31,17 +31,7 @@ class CreateSerial extends React.Component {
 
   async handleSerialSubmit(event){
     event.preventDefault();
-    const uri = `/serials`;
-    const data = {
-      title: this.state.title,
-      synopsis: this.state.synopsis,
-      genre: this.state.genre,
-      nsfw: this.state.nsfw
-    };
-    const configuration = {
-      withCredentials: true
-    };
-    await axios.post(uri, data, configuration);
+    await handleSerialSubmission(this.state.title, this.state.synopsis, this.state.genre, this.state.nsfw);
     const profile = {
       pathname: `/users/${this.props.clientUser.username}`
     };

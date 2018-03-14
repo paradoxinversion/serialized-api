@@ -3,6 +3,7 @@ import {
   withRouter,
   Link
 } from "react-router-dom";
+import getUserData from "../../utilityFunctions/users/getUserData";
 import axios from "axios";
 import "../../css/bulma.css";
 
@@ -40,11 +41,7 @@ class UserDirectory extends React.Component{
 
   async getUserData(){
     try{
-      const requestConfiguration = {
-        withCredentials: true
-      };
-      const uri = `/users`;
-      const userData = await axios.get(uri, requestConfiguration);
+      const userData = await getUserData();
       this.setState({
         users: userData.data.userData
       });

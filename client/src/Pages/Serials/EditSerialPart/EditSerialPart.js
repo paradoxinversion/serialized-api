@@ -2,6 +2,7 @@ import React from "react";
 import PropTypes from "prop-types";
 import {withRouter} from "react-router-dom";
 import axios from "axios";
+import handleSerialPartEdit from "../../../utilityFunctions/serials/handleSerialPartEdit";
 import {
   InputField,
   QuillContainer
@@ -33,6 +34,7 @@ class EditSerialPart extends React.Component {
     await this.getSerialPart();
   }
 
+  // This now exists outside of this function, switch it out
   async getSerialPart(){
     const uri = `/serials/${this.props.match.params.id}/${this.props.match.params.partId}`;
     const configuration = {
@@ -55,15 +57,7 @@ class EditSerialPart extends React.Component {
 
   async handleSerialSubmit(event){
     event.preventDefault();
-    const uri = `/serials/${this.props.currentSerial._id}/?partId=${this.props.match.params.partId}`;
-    const data = {
-      title: this.state.title,
-      content: this.state.content,
-    };
-    const configuration = {
-      withCredentials: true
-    };
-    await axios.put(uri, data, configuration);
+    await handleSerialPartEdit(this.props.currentSerial._id, this.props.match.params.partId, this.state.title, this.state.content);
     const parentSerial = {
       pathname: `/serials/${this.props.currentSerial._id}`
     };
