@@ -1,14 +1,11 @@
 import React from "react";
 import PropTypes from "prop-types";
-import axios from "axios";
+import toggleLike from "../../../utilityFunctions/likes/toggleLike";
 class LikeButton extends React.Component {
 
   async toggleLike(){
     try{
-      const likeToggle = await axios.post(`/like`, {
-        entityType: this.props.entityType,
-        entityId: this.props.entityId
-      });
+      await toggleLike(this.props.entityType, this.props.entityId, this.props.parentEntityId);
     } catch (e){
       console.log(e);
       throw e;
@@ -18,8 +15,10 @@ class LikeButton extends React.Component {
   render(){
     return (
       <button onClick={async () => {
-        await this.toggleLike();
-        await this.props.getLikes();
+        await Promise.all[
+          await this.toggleLike(),
+          await this.props.getLikes()
+        ];
       }}>Like</button>
     );
   }

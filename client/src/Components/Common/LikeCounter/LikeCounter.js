@@ -1,6 +1,6 @@
 import React from "react";
 import PropTypes from "prop-types";
-// import axios from "axios";
+
 const LikeCounter = (props) => {
   return (
     <p>Liked by {props.totalLikes}</p>

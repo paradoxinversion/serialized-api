@@ -68,7 +68,7 @@ class ViewSerialPart extends React.Component {
 
           {
             (this.props.clientUser && this.props.clientUser._id) ?
-              <LikeButton entityType="1" entityId={this.state.part._id} getLikes={this.getLikes}/> :
+              <LikeButton  entityType="1" entityId={this.state.part._id} parentEntityId={this.props.currentSerial._id} getLikes={this.getLikes}/> :
               null
           }
 

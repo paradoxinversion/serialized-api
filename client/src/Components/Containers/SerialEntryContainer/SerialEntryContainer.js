@@ -3,7 +3,8 @@ import PropTypes from "prop-types";
 import {
   Link
 } from "react-router-dom";
-import axios from "axios";
+import toggleSerialSubscription from "../../../utilityFunctions/serials/toggleSerialSubscription";
+import checkForSubscription from "../../../utilityFunctions/serials/checkForSubscription";
 import "./SerialEntryContainer.css";
 
 class SerialEntryContainer extends React.Component {
@@ -15,25 +16,16 @@ class SerialEntryContainer extends React.Component {
   }
 
   async checkForSubscription(){
-    const result = await axios.get(`/serial-subscriptions/${this.props.serial._id}/check`);
-    if (result.data && !result.data.error){
-      this.setState({
-        isSubscribed: true
-      });
-    } else{
-      this.setState({
-        isSubscribed: false
-      });
-    }
+    const result = await checkForSubscription(this.props.serial._id);
+    console.log(result);
+    this.setState({
+      isSubscribed: result.isSubscribed
+    });
   }
 
   async toggleSerialSubscription(){
     try{
-      const requestConfiguration = {
-        withCredentials: true
-      };
-
-      await axios.get(`/serial-subscriptions/${this.props.serial._id}`, requestConfiguration);
+      await toggleSerialSubscription(this.props.serial._id);
     } catch (e){
       console.log(e);
       throw e;

@@ -1,5 +1,5 @@
 import Like from "../mongo/Like";
-export const toggleLikeSerialPart = async (userId, serialPartId) => {
+export const toggleLikeSerialPart = async (userId, serialPartId, parentSerialId) => {
   try{
     const existingPartLike = await Like.findOne({user:userId, likedEntityId: serialPartId});
     if (existingPartLike){
@@ -9,6 +9,7 @@ export const toggleLikeSerialPart = async (userId, serialPartId) => {
       const newPartLike = new Like({
         likedEntityId: serialPartId,
         user: userId,
+        parentEntityId: parentSerialId,
         likedEntityType: 1
       });
 

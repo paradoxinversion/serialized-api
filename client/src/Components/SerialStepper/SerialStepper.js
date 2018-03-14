@@ -10,13 +10,12 @@ const SerialStepper = (props)=> {
     if (props.currentPart.part_number !== 0){
       previous = (
         <Link to={`${props.serialParts[props.currentPart.part_number-1]._id}`}> Previous</Link>
-      )
+      );
     }
     if (props.currentPart.part_number < props.serialParts.length-1){
-      console.log(props.serialParts[props.currentPart.part_number+1]);
       next = (
         <Link to={`${props.serialParts[props.currentPart.part_number+1]._id}`}> Next</Link>
-      )
+      );
     }
     return (
 
@@ -24,11 +23,15 @@ const SerialStepper = (props)=> {
         {previous}
         {next}
       </div>
-    )
+    );
   } else{
     return null;
   }
 
-}
+};
 
+SerialStepper.propTypes = {
+  currentPart: PropTypes.object,
+  serialParts: PropTypes.object
+};
 export default SerialStepper;

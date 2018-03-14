@@ -1,6 +1,6 @@
 import React from "react";
 import PropTypes from "prop-types";
-import axios from "axios";
+import deleteSerial from "../../../utilityFunctions/serials/deleteSerial";
 
 import SerialEntryContainer from "../../Containers/SerialEntryContainer/SerialEntryContainer";
 class SerialList extends React.Component {
@@ -10,10 +10,7 @@ class SerialList extends React.Component {
   }
 
   async deleteSerial(serialId){
-    await axios.delete(`/serials?serialId=${serialId}`, {
-      withCredentials: true
-    });
-    await this.props.getProfileData();
+    await deleteSerial(serialId);
   }
 
   render(){
