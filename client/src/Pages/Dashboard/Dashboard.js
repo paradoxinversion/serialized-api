@@ -4,8 +4,8 @@ import {
   Link
 } from "react-router-dom";
 
-import axios from "axios";
 import SerialList from "../../Components/Common/SerialList/SerialList";
+import getUserSerialSubscriptions from "../../utilityFunctions/serials/getUserSerialSubscriptions";
 import "./Dashboard.css";
 
 class Dashboard extends React.Component {
@@ -27,9 +27,7 @@ class Dashboard extends React.Component {
   }
 
   async getSubscribedSerials(){
-    const subscribedSerials = await axios.get(`/serial-subscriptions`,{
-      withCredentials: true
-    });
+    const subscribedSerials = await getUserSerialSubscriptions();
     this.setState({
       subscribedSerials
     });
@@ -56,7 +54,7 @@ class Dashboard extends React.Component {
           clientUser={this.props.clientUser}
           headerText="Subscribed Serials"
           emptyListMessage="You have not subscribed to any serials yet."
-          serials={this.state.subscribedSerials.data}/>
+          serials={this.state.subscribedSerials}/>
       </div>
     );
   }

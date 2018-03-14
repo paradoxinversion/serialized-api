@@ -34,12 +34,6 @@ class LogIn extends React.Component {
   async handleSubmit(event) {
     event.preventDefault();
     try{
-      // const uri = "/users/auth";
-      // const data = {
-      //   email: this.state.email,
-      //   password: this.state.password
-      // };
-      // await axios.post(uri, data);
       await submitAuthentication(this.state.email, this.state.password);
       await this.props.onSignIn();
       const dashboard = {
