@@ -5,7 +5,7 @@ import {
   withRouter,
   Switch
 } from "react-router-dom";
-import axios from "axios";
+// import axios from "axios";
 import CreateSerial from "../CreateSerial/CreateSerial";
 import CreateSerialPart from "../CreateSerialPart/CreateSerialPart";
 import ViewSerialPart from "../ViewSerialPart/ViewSerialPart";
@@ -15,6 +15,7 @@ import EditSerialPart from "../EditSerialPart/EditSerialPart";
 import SerialDirectory from "../SerialDirectory/SerialDirectory";
 import PrivateRoute from "../../../Components/PrivateRoute/PrivateRoute";
 import NotFound from "../../NotFound/NotFound";
+import getAllSerials from "../../../utilityFunctions/serials/getAllSerials";
 
 
 class Serials extends React.Component {
@@ -28,13 +29,9 @@ class Serials extends React.Component {
 
   async getUserSerialData(){
     try{
-      const requestConfiguration = {
-        withCredentials: true
-      };
-      const uri = `/serials`;
-      const serialData = await axios.get(uri, requestConfiguration);
+      const serialData = await getAllSerials();
       this.setState({
-        serialDirectoryLookup: serialData.data
+        serialDirectoryLookup: serialData.serials
       });
     } catch (e){
       console.error("Something went wrong: \n ", e);

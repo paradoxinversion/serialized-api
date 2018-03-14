@@ -9,25 +9,10 @@ class SerialDirectory extends React.Component{
     super(props);
   }
 
-  async getUserSerialData(){
-    try{
-      const requestConfiguration = {
-        withCredentials: true
-      };
-      const uri = `/serials`;
-      const serialData = await axios.get(uri, requestConfiguration);
-      this.setState({
-        serials: serialData.data
-      });
-    } catch (e){
-      console.error("Something went wrong: \n ", e);
-    }
-  }
-
   async componentWillMount(){
-    // await this.getUserSerialData();
     await this.props.lookupSerials();
   }
+  
   render () {
     let list;
     if (this.props.serials){

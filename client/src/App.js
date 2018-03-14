@@ -4,13 +4,8 @@ import {
   Route,
   Switch
 } from "react-router-dom";
-import axios from "axios";
 import "./css/bulma.css";
 import "./App.css";
-
-/*
-  Route Components
-*/
 import Home from "./Pages/Home/Home";
 import Profile from "./Pages/Profile/Profile/Profile";
 import Serials from "./Pages/Serials/Serials/Serials";
@@ -21,8 +16,10 @@ import Dashboard from "./Pages/Dashboard/Dashboard";
 import UserDirectory from "./Pages/UserDirectory/UserDirectory";
 import PrivateRoute from "./Components/PrivateRoute/PrivateRoute";
 import NotFound from "./Pages/NotFound/NotFound";
-import store from "store";
-
+import checkAuthentication from "./utilityFunctions/authentication/checkAuthentication";
+import getSerialAndPartData from "./utilityFunctions/serials/getSerialAndPartData";
+import toggleSerialSubscription from "./utilityFunctions/serials/toggleSerialSubscription";
+import getClientUserSerials from "./utilityFunctions/serials/getClientUserSerials";
 class App extends Component {
   constructor(props) {
     super(props);
@@ -32,9 +29,7 @@ class App extends Component {
       serialParts: null,
       isAuthenticated: false
     };
-    this.setUser = this.setUser.bind(this);
     this.checkAuthentication = this.checkAuthentication.bind(this);
-    this.getUser = this.getUser.bind(this);
     this.clearUser = this.clearUser.bind(this);
 
     this.setSerial = this.setSerial.bind(this);
@@ -56,24 +51,22 @@ class App extends Component {
   }
 
   async componentDidMount(){
-    await this.checkAuthentication();
+    try{
+      await this.checkAuthentication();
+    } catch (e){
+      throw e;
+    }
+
   }
 
   async checkAuthentication() {
-    const uri = "/users/auth";
-    const result = await axios.get(uri, {withCredentials: true});
-    if (result.data.isAuthenticated){
-      this.setState({
-        isAuthenticated: true,
-        user: result.data.user
-      });
-    } else{
-      this.setState({
-        isAuthenticated: false,
-        user: null
-      });
+    try{
+      const authenticationResult = await checkAuthentication();
+      this.setState(authenticationResult);
+    } catch (e) {
+      throw e;
     }
-    // otherwise, make sure authentication is false
+
   }
 
   /**
@@ -90,12 +83,13 @@ class App extends Component {
     Get the serial matching the serialId and all parts created for it.
   **/
   async getSerialAndPartData(serialId){
-    const uri = `/serials/${serialId}`;
-    const config = {
-      withCredentials: true
-    };
-    const result = await axios.get(uri, config);
-    this.setSerial(result.data.serial, result.data.serialParts);
+    try{
+      const result = await getSerialAndPartData(serialId);
+      this.setSerial(result.currentSerial, result.serialParts);
+    } catch (e) {
+      throw e;
+    }
+
   }
 
   /**
@@ -103,11 +97,7 @@ class App extends Component {
   **/
   async toggleSerialSubscription(serialId){
     try{
-      const requestConfiguration = {
-        withCredentials: true
-      };
-
-      const subscriptionResult = await axios.get(`/serial-subscriptions/${serialId}`);
+      await toggleSerialSubscription(serialId);
     } catch (e){
       console.log(e);
       throw e;
@@ -119,12 +109,7 @@ class App extends Component {
   **/
   async getClientUserSerials(){
     try{
-      const requestConfiguration = {
-        withCredentials: true
-      };
-      const uri = `/serials?userId=${this.state.user._id}`;
-      const serialData = await axios.get(uri, requestConfiguration);
-      return serialData.data;
+      return await getClientUserSerials(this.state.user._id);
     } catch (e){
       console.error("Something went wrong: \n ", e);
     }
@@ -175,7 +160,7 @@ class App extends Component {
                       serialParts={this.state.serialParts}
                       currentSerialPart={this.state.currentSerialPart}
                       clearCurrentPart={this.clearCurrentSerialPart}/> } />
-
+                      
                 <PrivateRoute
                   path="/dashboard"
                   checkAuthentication={this.checkAuthentication}
@@ -183,10 +168,8 @@ class App extends Component {
                   clientUser={this.state.user}
                   component={Dashboard}
                   getClientUserSerials={this.getClientUserSerials}/>
-
                 <Route component={NotFound} />
               </Switch>
-
             </div>
           </div>
           <Footer />
