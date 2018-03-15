@@ -1,6 +1,7 @@
 import React from "react";
 import PropTypes from "prop-types";
 import toggleLike from "../../../utilityFunctions/likes/toggleLike";
+import checkForUserLike from "../../../utilityFunctions/likes/checkForUserLike";
 class LikeButton extends React.Component {
 
   async toggleLike(){
@@ -19,7 +20,13 @@ class LikeButton extends React.Component {
           await this.toggleLike(),
           await this.props.getLikes()
         ];
-      }}>Like</button>
+      }}>{
+          checkForUserLike(this.props.clientUser._id, this.props.likes)
+            ?
+            <p>Unlike</p>
+            :
+            <p>Like</p>
+        }</button>
     );
   }
 }

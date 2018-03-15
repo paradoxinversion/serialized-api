@@ -4,15 +4,14 @@ import {
   Link
 } from "react-router-dom";
 import getUserData from "../../utilityFunctions/users/getUserData";
-import axios from "axios";
-import "../../css/bulma.css";
-
+import "./UserDirectory.css";
+import "./UserList.css";
 const UserList = withRouter((props) => {
   if (props.users.length > 0){
     const users = props.users.map((user) => {
       const uri = `/users/${user.username}`;
       return (
-        <li key={user._id}>
+        <li className="user-list-item" key={user._id}>
           <Link to={{
             pathname: uri
           }}>{user.username}</Link>
@@ -21,10 +20,9 @@ const UserList = withRouter((props) => {
       );
     });
     return (
-      <div>
-        <h1 className="subtitle"> Users </h1>
-        <ul>{users}</ul>
-      </div>
+
+      <ul className="user-list">{users}</ul>
+
     );
   } else{
     return <p> No one has signed up yet. Be the first one to register and tell your story. </p>;
@@ -56,7 +54,7 @@ class UserDirectory extends React.Component{
   render () {
     return (
       <div>
-        <h1 className="title">Directory</h1>
+        <h1 className="title">Serialized Users</h1>
         <UserList users={this.state.users} />
       </div>
     );

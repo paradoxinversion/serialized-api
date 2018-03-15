@@ -1,0 +1,33 @@
+@import "./sass/_variables.scss";
+@import "./sass/reset.scss";
+*{
+  box-sizing: border-box;
+}
+
+body{
+  font-family: sans-serif;
+}
+
+.button{
+  border: 1px solid black;
+  font-size: 18px;
+  // border-radius: 20px;
+  padding: .5rem;
+}
+
+.title{
+  font-size: 24px;
+  margin-bottom: 1rem;
+}
+
+.App {
+  text-align: center;
+}
+
+.main-wrapper{
+  min-height: calc(100vh - 50px);
+}
+
+.container{
+  padding: 1rem;
+}

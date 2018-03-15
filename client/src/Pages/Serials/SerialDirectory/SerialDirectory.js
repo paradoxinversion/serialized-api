@@ -2,7 +2,7 @@ import React from "react";
 import { Link } from "react-router-dom";
 import axios from "axios";
 import SerialList from "../../../Components/Common/SerialList/SerialList";
-import "../../../css/bulma.css";
+// import "../../../css/bulma.css";
 
 class SerialDirectory extends React.Component{
   constructor(props){
@@ -12,7 +12,7 @@ class SerialDirectory extends React.Component{
   async componentWillMount(){
     await this.props.lookupSerials();
   }
-  
+
   render () {
     let list;
     if (this.props.serials){

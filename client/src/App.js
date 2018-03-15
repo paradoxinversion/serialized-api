@@ -4,7 +4,7 @@ import {
   Route,
   Switch
 } from "react-router-dom";
-import "./css/bulma.css";
+// import "./css/bulma.css";
 import "./App.css";
 import Home from "./Pages/Home/Home";
 import Profile from "./Pages/Profile/Profile/Profile";
@@ -118,7 +118,6 @@ class App extends Component {
   render() {
     return (
       <Router>
-
         <div>
           <div className="main-wrapper">
             <Header authStatus={this.state.isAuthenticated} clientUser={this.state.user}/>
@@ -160,7 +159,7 @@ class App extends Component {
                       serialParts={this.state.serialParts}
                       currentSerialPart={this.state.currentSerialPart}
                       clearCurrentPart={this.clearCurrentSerialPart}/> } />
-                      
+
                 <PrivateRoute
                   path="/dashboard"
                   checkAuthentication={this.checkAuthentication}

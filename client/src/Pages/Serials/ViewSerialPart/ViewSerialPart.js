@@ -10,7 +10,7 @@ import LikeButton from "../../../Components/Common/LikeButton/LikeButton";
 import LikeCounter from "../../../Components/Common/LikeCounter/LikeCounter";
 import getLikes from "../../../utilityFunctions/getLikes";
 import getSerialPart from "../../../utilityFunctions/serials/getSerialPart";
-import "../../../css/bulma.css";
+// import "../../../css/bulma.css";
 
 class ViewSerialPart extends React.Component {
   constructor(props) {
@@ -68,7 +68,13 @@ class ViewSerialPart extends React.Component {
 
           {
             (this.props.clientUser && this.props.clientUser._id) ?
-              <LikeButton  entityType="1" entityId={this.state.part._id} parentEntityId={this.props.currentSerial._id} getLikes={this.getLikes}/> :
+              <LikeButton
+                clientUser={this.props.clientUser}
+                entityType="1" entityId={this.state.part._id}
+                parentEntityId={this.props.currentSerial._id}
+                getLikes={this.getLikes}
+                likes={this.state.likes}/>
+              :
               null
           }
 

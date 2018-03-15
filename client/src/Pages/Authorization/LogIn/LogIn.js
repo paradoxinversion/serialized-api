@@ -3,13 +3,13 @@ import {
   withRouter,
   Link
 } from "react-router-dom";
-import axios from "axios";
-import submitAuthentication from "../../../utilityFunctions/authentication/submitAuthentication"
+import submitAuthentication from "../../../utilityFunctions/authentication/submitAuthentication";
 import PropTypes from "prop-types";
 import {
   InputField
 } from "../../../Components/Common/Forms/FormComponents";
-import "../../../css/bulma-custom.css";
+import "./Login.css";
+// import "../../../css/bulma-custom.css";
 class LogIn extends React.Component {
   constructor(props) {
     super(props);
@@ -47,15 +47,15 @@ class LogIn extends React.Component {
 
   render() {
     return (
-      <div>
-        <h1 className="title"> Log In </h1>
-        <h2 className="subtitle"> Please enter your login information </h2>
-        <form onSubmit={this.handleSubmit}>
-          <InputField name="email" title="Email" inputType="email" content={this.state.email} controlFunc={this.handleFormInput} placeholder="you@website.com" />
-          <InputField name="password" title="Password" inputType="password" content={this.state.password} controlFunc={this.handleFormInput} />
-          <input className="button is-primary2" type="submit" value="Submit" />
+      <div className="log-in">
+        <h1 className="title"> Welcome Back! </h1>
+        <form className="log-in-form" onSubmit={this.handleSubmit}>
+          <InputField name="email" inputType="email" content={this.state.email} controlFunc={this.handleFormInput} placeholder="email" />
+          <InputField name="password" inputType="password" content={this.state.password} controlFunc={this.handleFormInput} placeholder="password"/>
+          <Link to="/auth/register">Did you mean to Register?</Link>
+          <input className="button is-primary" type="submit" value="Submit" />
         </form>
-        <p> Need to <Link to="/auth/register">Register</Link> instead?</p>
+
       </div>
     );
   }

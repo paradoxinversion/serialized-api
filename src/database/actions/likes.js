@@ -46,7 +46,7 @@ export const getSerialPartLikes = async (serialPartId) => {
   try {
     console.log(serialPartId);
     const serialPartLikes = await Like.find({likedEntityId: serialPartId}).select({
-      userId:1
+      user:1
     });
     console.log("Likes", serialPartLikes)
     return serialPartLikes;

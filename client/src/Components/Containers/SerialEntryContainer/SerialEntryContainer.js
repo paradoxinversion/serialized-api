@@ -64,14 +64,12 @@ class SerialEntryContainer extends React.Component {
     }
     return (
       <div className="entry-container">
-        <h2>{this.props.serial.title}</h2>
-        <p>{this.props.serial.synopsis}</p>
-        <div className="level is-mobile">
-          <div className="level-left">
-            <Link className="button is-primary" to={`serials/${this.props.serial._id}`}>Read It</Link>
-            {subscriptionOptions}
-            {authorOptions}
-          </div>
+        <h2 className="serial-entry-title">{this.props.serial.title}</h2>
+        <p className="serial-entry-synopsis">{this.props.serial.synopsis}</p>
+        <div className="serial-entry-options">
+          <Link className="button" to={`/serials/${this.props.serial._id}`}>Read It</Link>
+          {subscriptionOptions}
+          {authorOptions}
         </div>
       </div>
     );

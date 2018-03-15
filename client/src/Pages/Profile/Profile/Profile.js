@@ -10,7 +10,7 @@ import SerialList from "../../../Components/Common/SerialList/SerialList";
 import getProfileData from "../../../utilityFunctions/profile/getProfileData";
 import getUserSerialData from "../../../utilityFunctions/serials/getUserSerialData";
 import handleProfileEdit from "../../../utilityFunctions/profile/handleProfileEdit";
-import "../../../css/bulma.css";
+// import "../../../css/bulma.css";
 
 class Profile extends React.Component {
   constructor(props) {
@@ -97,10 +97,10 @@ class Profile extends React.Component {
       );
     }else {
       return (
-        <div>
-          <h1 className="title is-4"> {this.state.queriedUser.username} </h1>
+        <div className="profile">
+          <h1 className="title"> {this.state.queriedUser.username} </h1>
           <HTMLMarkupContainer content={this.state.queriedUser.biography} />
-          <div className="is-clearfix">
+          <div className="">
             {editProfile}
           </div>
           <hr className="horizontal-rule" />

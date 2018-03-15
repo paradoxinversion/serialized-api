@@ -1,42 +1,25 @@
-.active{
-  color: grey;
-  font-weight: bold;
-}
-
-.logo{
-  color: white;
-  text-decoration: none;
-  font-size: 20px;
-  font-weight: bold;
-}
-
-.navbar{
+.horizontal-navbar {
   background-color: black;
   color: white;
-  padding: 4px;
-}
+  display: flex;
+  flex-direction: column;
+  text-align: center;
+  text-decoration: none; }
 
-.navbar-burger{
-  background-color: black;
-  color: white;
-  border-color: white;
-  padding-bottom: 4px;
+.navbar-brand {
+  margin: 0.5rem 0 1rem 0; }
 
-}
+.logo {
+  font-size: 24px;
+  color: white;
+  text-decoration: none; }
 
-.navbar-burger:active{
-  background-color: black;
-  color: white;
-  border-color: white;
-}
-.navbar-burger:hover{
-  background-color: black;
-  color: white;
-  border-color: white;
-}
+.navbar-menu {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 1rem; }
 
-.button.is-active{
-  background-color: black;
+.navbar-item {
+  margin: 0 0.5rem;
   color: white;
-  border-color: white;
-}
+  text-decoration: none; }

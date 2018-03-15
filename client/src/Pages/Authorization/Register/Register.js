@@ -10,8 +10,7 @@ import {
   InputField,
   DatePicker
 } from "../../../Components/Common/Forms/FormComponents";
-
-import "../../../css/bulma.css";
+import "./Register.css";
 class Register extends React.Component {
   constructor(props) {
     super(props);
@@ -51,30 +50,30 @@ class Register extends React.Component {
 
   render() {
     return (
-      <div>
-        <h1 className="title"> Register </h1>
-        <h2 className="subtitle"> You&apos;re just a few steps away! </h2>
-        <form onSubmit={this.handleSubmit}>
-          <InputField name="email" title="Email" inputType="email"
+      <div className="register">
+        <h1 className="title"> Who are you? </h1>
+        <form className="registration-form" onSubmit={this.handleSubmit}>
+          <InputField name="email" inputType="email"
             content={this.state.email} controlFunc={this.handleFormInput}
-            placeholder="you@website.com" isRequired={true}/>
-          <InputField name="username" title="Username" inputType="text"
+            placeholder="email" isRequired={true}/>
+          <InputField name="username"inputType="text"
             content={this.state.username} controlFunc={this.handleFormInput}
-            placeholder="AwesomeAuthor" isRequired={true}/>
-          <InputField name="firstName" title="First Name" inputType="text"
+            placeholder="username" isRequired={true}/>
+          <InputField name="firstName" inputType="text"
             content={this.state.firstName} controlFunc={this.handleFormInput}
-            placeholder="Anne" isRequired={true}/>
-          <InputField name="lastName" title="Last Name" inputType="text"
+            placeholder="first name" isRequired={true}/>
+          <InputField name="lastName" inputType="text"
             content={this.state.lastName} controlFunc={this.handleFormInput}
-            placeholder="Author" isRequired={true}/>
-          <DatePicker name="birthdate" title="Birthdate" date={this.state.birthdate}
+            placeholder="last name" isRequired={true}/>
+          <DatePicker name="birthdate" date={this.state.birthdate}
             controlFunc={this.handleFormInput} required={true} />
-          <InputField name="password" title="Password" inputType="password"
+          <InputField name="password" inputType="password"
             content={this.state.password} controlFunc={this.handleFormInput}
-            placeholder="sOmeThingREALLYsecret" isRequired={true}/>
+            placeholder="password" isRequired={true}/>
+          <Link to="/auth/login">Did you mean to Sign In?</Link>
           <input className="button" type="submit" value="Submit" />
         </form>
-        <p> Did you mean to <Link to="/auth/login">Log In</Link> instead?</p>
+
       </div>
     );
   }

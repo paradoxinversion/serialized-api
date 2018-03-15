@@ -1,9 +1,13 @@
 import React from "react";
 import PropTypes from "prop-types";
-import "../../../../../css/bulma.css";
+import "./InputField.css";
 const InputField = (props) => (
   <div>
-    <label className="label">{props.title}</label>
+    {
+      props.title ?
+        <label className="label">{props.title}</label> :
+        null
+    }
     <input
       className="input"
       name={props.name}
