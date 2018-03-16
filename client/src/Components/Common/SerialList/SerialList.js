@@ -1,7 +1,7 @@
 import React from "react";
 import PropTypes from "prop-types";
 import deleteSerial from "../../../utilityFunctions/serials/deleteSerial";
-
+import "./SerialList.css";
 import SerialEntryContainer from "../../Containers/SerialEntryContainer/SerialEntryContainer";
 class SerialList extends React.Component {
   constructor(props){
@@ -31,14 +31,14 @@ class SerialList extends React.Component {
         );
       });
       return (
-        <div>
+        <div className="serial-list-container">
           {headerTextElement}
-          <ul>{serials}</ul>
+          <ul className="serial-list">{serials}</ul>
         </div>
       );
     } else{
       return(
-        <div>
+        <div className="serial-list-container">
           {headerTextElement}
           <p>{this.props.emptyListMessage}</p>
         </div>

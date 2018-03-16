@@ -10,6 +10,7 @@ import LikeButton from "../../../Components/Common/LikeButton/LikeButton";
 import LikeCounter from "../../../Components/Common/LikeCounter/LikeCounter";
 import getLikes from "../../../utilityFunctions/getLikes";
 import getSerialPart from "../../../utilityFunctions/serials/getSerialPart";
+import "./ViewSerialPart.css";
 // import "../../../css/bulma.css";
 
 class ViewSerialPart extends React.Component {
@@ -48,37 +49,43 @@ class ViewSerialPart extends React.Component {
 
   render() {
     if (this.state.part){
-      const parentSerialUri = `/serials/${this.props.currentSerial._id}`;
-      let partEditLink;
-      if (this.props.clientUser && this.props.clientUser._id === this.props.currentSerial.author_id._id){
-        partEditLink = <Link className="button level-item" to={`/serials/${this.props.currentSerial._id}/${this.state.part._id}/edit`}> Edit </Link>;
-      }
-
       return (
-        <div className="container">
-          <div className="level">
-            <Link className="button level-item" to={parentSerialUri}>Back to {this.props.currentSerial.title}</Link>
-            {partEditLink}
+        <div className="serial-part-container">
+          <div className="serial-part-metadata">
+            <div className="serial-part-metadata-info">
+              <h1 className="title"> {this.state.part.title}</h1>
+              <h1 className="subtitle"> By {this.props.currentSerial.author_id.username}</h1>
+              <p>{`Part ${(this.state.part.part_number+1)}`} of {`${this.props.serialParts.length} in ${this.props.currentSerial.title}`}</p>
+            </div>
+            <div className="serial-part-metadata-likes">
+              <LikeCounter totalLikes={this.state.likes.length} />
+              {
+                (this.props.clientUser && this.props.clientUser._id) ?
+                  <LikeButton
+                    clientUser={this.props.clientUser}
+                    entityType="1" entityId={this.state.part._id}
+                    parentEntityId={this.props.currentSerial._id}
+                    getLikes={this.getLikes}
+                    likes={this.state.likes}/>
+                  :
+                  null
+              }
+              <Link className="button" to={`/serials/${this.props.currentSerial._id}`}>Back to {this.props.currentSerial.title}</Link>
+              {
+                (this.props.clientUser && this.props.clientUser._id === this.props.currentSerial.author_id._id) ?
+                  (<React.Fragment>
+                    <Link className="button" to={`/serials/${this.props.currentSerial._id}/${this.state.part._id}/edit`}> Edit </Link>
+                  </React.Fragment>) :
+                  null
+              }
+            </div>
           </div>
-          <h1 className="title"> {this.state.part.title}</h1>
-          <p>{`Part ${(this.state.part.part_number+1)}`} of {`${this.props.serialParts.length} in ${this.props.currentSerial.title}`}</p>
-          <HTMLMarkupContainer content={this.state.part.content} />
+          <hr className="horizontal-rule" />
+          <div className="serial-part-content-area">
+            <HTMLMarkupContainer content={this.state.part.content} />
+          </div>
+
           <SerialStepper currentSerial={this.props.currentSerial} currentPart={this.state.part} serialParts={this.props.serialParts}/>
-
-
-          {
-            (this.props.clientUser && this.props.clientUser._id) ?
-              <LikeButton
-                clientUser={this.props.clientUser}
-                entityType="1" entityId={this.state.part._id}
-                parentEntityId={this.props.currentSerial._id}
-                getLikes={this.getLikes}
-                likes={this.state.likes}/>
-              :
-              null
-          }
-
-          <LikeCounter totalLikes={this.state.likes.length} />
 
 
         </div>

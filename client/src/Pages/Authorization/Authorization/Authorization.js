@@ -9,25 +9,23 @@ import Register from "../Register/Register";
 import LogOut from "../LogOut/LogOut";
 const Authorization = (props) => {
   return (
-    <div>
-      <div>
-        <Route
-          exact path={`${props.match.url}/login`}
-          render={()=>
-            <LogIn
-              onSignIn={props.onSignIn}
-            />} />
+    <div className="authorization-container">
+      <Route
+        exact path={`${props.match.url}/login`}
+        render={()=>
+          <LogIn
+            onSignIn={props.onSignIn}
+          />} />
 
-        <Route
-          exact path={`${props.match.url}/register`}
-          render={()=> <Register />} />
+      <Route
+        exact path={`${props.match.url}/register`}
+        render={()=> <Register />} />
 
-        <Route
-          exact path={`${props.match.url}/logout`}
-          render={() =>
-            <LogOut
-              clearUser={props.clearUser} /> }/>
-      </div>
+      <Route
+        exact path={`${props.match.url}/logout`}
+        render={() =>
+          <LogOut
+            clearUser={props.clearUser} /> }/>
     </div>
   );
 };

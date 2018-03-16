@@ -20,26 +20,36 @@ class SerialOverview extends React.Component {
 
   render() {
     if (this.props.currentSerial){
-      let authorControls;
       let nsfw;
       if (this.props.currentSerial.nsfw){
         nsfw = ", NSFW";
       }
-      if (this.props.clientUser && this.props.currentSerial.author_id && this.props.clientUser._id === this.props.currentSerial.author_id._id){
-        authorControls = (
-          <div className="level">
-            <Link className="button level-item" to={`/serials/${this.props.currentSerial._id}/new`}> Create a New Part </Link>
-            <Link className="button level-item" to={`/serials/${this.props.currentSerial._id}/edit`}> Edit Serial Details </Link>
-          </div>
-        );
-      }
+
       return (
-        <div>
-          <h1 className="title"> {this.props.currentSerial.title}</h1>
-          <h2 className="subtitle">By <Link to={`/users/${this.props.currentSerial.author_id.username}`}>{this.props.currentSerial.author_id.username}</Link></h2>
-          <p className="genre">{this.props.currentSerial.genre}{nsfw}</p>
-          <p>{this.props.currentSerial.synopsis}</p>
-          {authorControls}
+        <div className="serial-overview">
+          <div className="serial-metadata">
+            <div className="serial-metadata-info">
+              <h1 className="title"> {this.props.currentSerial.title}</h1>
+              <h2 className="subtitle">By <Link to={`/users/${this.props.currentSerial.author_id.username}`}>{this.props.currentSerial.author_id.username}</Link></h2>
+              <p className="genre">{this.props.currentSerial.genre}{nsfw}</p>
+              <p>{this.props.currentSerial.synopsis}</p>
+            </div>
+            <div className="serial-metadata-options right-aligned">
+              {
+                (this.props.clientUser && this.props.currentSerial.author_id && this.props.clientUser._id === this.props.currentSerial.author_id._id) ?
+                  (
+                    <React.Fragment>
+                      <Link className="button level-item" to={`/serials/${this.props.currentSerial._id}/new`}> Create a New Part </Link>
+                      <Link className="button level-item" to={`/serials/${this.props.currentSerial._id}/edit`}> Edit Serial Details </Link>
+                    </React.Fragment>
+                  ) :
+                  null
+              }
+            </div>
+          </div>
+
+
+
           <hr className="horizontal-rule" />
           <SerialPartList getSerialData={this.props.getSerialData} clientUser={this.props.clientUser} currentSerial={this.props.currentSerial} serialParts={this.props.serialParts}/>
         </div>

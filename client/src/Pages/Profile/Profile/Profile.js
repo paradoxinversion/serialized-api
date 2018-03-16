@@ -10,6 +10,7 @@ import SerialList from "../../../Components/Common/SerialList/SerialList";
 import getProfileData from "../../../utilityFunctions/profile/getProfileData";
 import getUserSerialData from "../../../utilityFunctions/serials/getUserSerialData";
 import handleProfileEdit from "../../../utilityFunctions/profile/handleProfileEdit";
+import "./Profile.css";
 // import "../../../css/bulma.css";
 
 class Profile extends React.Component {
@@ -84,13 +85,6 @@ class Profile extends React.Component {
   }
 
   render() {
-    let editProfile;
-    let createSerial;
-    if (this.props.clientUser && this.state.queriedUser._id === this.props.clientUser._id){
-      const newSerialLink = `/serials/create`;
-      editProfile = <button className="button level-item is-pulled-right" onClick={this.handleEditButtonClick.bind(this)}> Edit Profile </button>;
-      createSerial = <Link className="button level-item" to={newSerialLink}> Create a new Serial </Link>;
-    }
     if (this.state.editMode){
       return (
         <ProfileEdit textChanged={this.handleQuillInput} handleSubmit={this.handleProfileSubmit} handleCancel={this.handleCancelEdit}/>
@@ -100,11 +94,15 @@ class Profile extends React.Component {
         <div className="profile">
           <h1 className="title"> {this.state.queriedUser.username} </h1>
           <HTMLMarkupContainer content={this.state.queriedUser.biography} />
-          <div className="">
-            {editProfile}
-          </div>
+          {
+            (this.props.clientUser && this.state.queriedUser._id === this.props.clientUser._id) ?
+              (<React.Fragment>
+                <button className="button right-aligned" onClick={this.handleEditButtonClick.bind(this)}> Edit Profile </button>
+              </React.Fragment>) :
+              null
+          }
           <hr className="horizontal-rule" />
-          {createSerial}
+
           <SerialList
             clientUser={this.props.clientUser}
             emptyListMessage={`${this.props.match.params.username} hasn't written any serials yet.`}

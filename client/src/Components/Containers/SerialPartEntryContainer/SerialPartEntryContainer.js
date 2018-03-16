@@ -4,61 +4,59 @@ import {
   withRouter,
   Link
 } from "react-router-dom";
-
+import "./SerialPartEntryContainer.css";
 // Represents a serial part
 const SerialPartEntryContainer = (props) => {
-  let authorOptions = null;
-  let moveUp = null;
-  let moveDown = null;
   if (props.currentSerial){
+    return (
+      <div className="serial-part-entry-container">
+        <h2>{props.serialPart.title}</h2>
+        {/* <p>{props.serialPart.synopsis}</p> */}
+        <div className="serial-part-entry-options">
 
-    if (props.clientUser && props.clientUser._id === props.currentSerial.author_id._id){
-      if (props.serialPart.part_number > 0){
-        moveDown = (
-          <button onClick={()=>{
-            props.onPartMoved(props.serialPart._id, false)
-          }} className="button">Move Down</button>
-        )
-      }
-      if (props.serialPart.part_number < props.serialParts.length-1){
-        moveUp = (
-          <button onClick={()=>{
-            props.onPartMoved(props.serialPart._id, true)
-          }} className="button">Move Up</button>
-        );
-      }
-
-      authorOptions = (
-        <div>
-          <Link className="button" to={`/serials/${props.currentSerial._id}/${props.serialPart._id}/edit`}>Edit</Link>
-          <button onClick={()=>{
-            props.onSerialPartDeleted(props.currentSerial._id, props.serialPart._id)
-          }} className="button">Delete Part</button>
-          {moveUp}
-          {moveDown}
-
-        </div>
-      )
-    }
-  }
-
-  return (
-    <div>
-      <h2>{props.serialPart.title}</h2>
-      {/* <p>{props.serialPart.synopsis}</p> */}
-      <div className="level is-mobile">
-        <div className="level-left">
-          <button className="button is-primary level-item" onClick={()=>{
+          <button className="button serial-part-entry-option-item" onClick={()=>{
             const location = {
               pathname: props.serialPartUri
             };
             props.history.push(location);
           }}>Read it</button>
-          {authorOptions}
+          {
+            (props.clientUser && props.clientUser._id === props.currentSerial.author_id._id) ?
+              (<React.Fragment>
+                <Link className="button serial-part-entry-option-item" to={`/serials/${props.currentSerial._id}/${props.serialPart._id}/edit`}>Edit</Link>
+                <button onClick={()=>{
+                  props.onSerialPartDeleted(props.currentSerial._id, props.serialPart._id)
+                }} className="button serial-part-entry-option-item">Delete Part</button>
+              </React.Fragment>) :
+              null
+          }
+          {
+            (props.clientUser && props.clientUser._id === props.currentSerial.author_id._id && props.serialPart.part_number > 0) ?
+              ( <React.Fragment>
+                <button onClick={()=>{
+                  props.onPartMoved(props.serialPart._id, false)
+                }} className="button serial-part-entry-option-item"><i className="fas fa-chevron-up"></i></button>
+              </React.Fragment>) :
+              null
+          }
+
+          {
+            (props.clientUser && props.clientUser._id === props.currentSerial.author_id._id && props.serialPart.part_number < props.serialParts.length-1) ?
+              ( <React.Fragment>
+                <button onClick={()=>{
+                  props.onPartMoved(props.serialPart._id, true)
+                }} className="button serial-part-entry-option-item"><i className="fas fa-chevron-down"></i></button>
+              </React.Fragment> ) :
+              null
+          }
+
         </div>
       </div>
-    </div>
-  );
+    );
+  } else {
+    return <p> ... </p>
+  }
+
 };
 
 SerialPartEntryContainer.propTypes = {

@@ -1,2 +1,12 @@
+.right-aligned {
+  align-self: flex-end; }
+
 .horizontal-rule {
   border-top: 3px solid black; }
+
+.profile {
+  display: flex;
+  flex-direction: column; }
+
+.profile > .button {
+  max-width: 150px; }

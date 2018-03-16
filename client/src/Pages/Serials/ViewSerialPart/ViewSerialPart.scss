@@ -1,0 +1,25 @@
+.serial-part-container{
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+}
+
+.serial-part-metadata{
+  display: flex;
+  margin-bottom: 1rem;
+}
+
+.serial-part-metadata-info{
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+}
+
+.serial-part-metadata-likes{
+  display: flex;
+  flex-direction: column;
+}
+
+.serial-part-content-area{
+  margin-bottom: 2rem;
+}

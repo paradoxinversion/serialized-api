@@ -34,8 +34,8 @@ class SerialPartList extends React.Component {
       console.log(e);
       throw e;
     }
-
   }
+
   render(){
     if (this.props.serialParts.length > 0){
       const serials = this.props.serialParts.map((serialPart) => {
@@ -54,9 +54,9 @@ class SerialPartList extends React.Component {
         );
       });
       return (
-        <div>
+        <div className="serial-part-list-container">
           <h1 className="subtitle"> Parts </h1>
-          <ul>{serials}</ul>
+          <ul className="serial-part-list">{serials}</ul>
         </div>
       );
     } else{
@@ -64,6 +64,6 @@ class SerialPartList extends React.Component {
     }
   }
 
-};
+}
 
 export default SerialPartList;

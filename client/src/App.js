@@ -121,7 +121,7 @@ class App extends Component {
         <div>
           <div className="main-wrapper">
             <Header authStatus={this.state.isAuthenticated} clientUser={this.state.user}/>
-            <div className="container is-fluid">
+            <div className="container">
               <Switch>
                 <Route
                   exact path="/"

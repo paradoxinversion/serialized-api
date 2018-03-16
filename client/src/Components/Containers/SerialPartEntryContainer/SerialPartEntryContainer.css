@@ -1,0 +1,12 @@
+.serial-part-entry-container {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 1.5rem; }
+
+.serial-part-entry-options {
+  display: inherit;
+  flex-direction: row; }
+
+.serial-part-entry-option-item {
+  font-size: 14px;
+  text-decoration: none; }

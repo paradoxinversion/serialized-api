@@ -3,25 +3,31 @@ import PropTypes from "prop-types";
 import {
   Link
 } from "react-router-dom";
+import "./SerialStepper.css";
 const SerialStepper = (props)=> {
-  let previous;
-  let next;
+
   if (props.currentPart){
-    if (props.currentPart.part_number !== 0){
-      previous = (
-        <Link to={`${props.serialParts[props.currentPart.part_number-1]._id}`}> Previous</Link>
-      );
-    }
-    if (props.currentPart.part_number < props.serialParts.length-1){
-      next = (
-        <Link to={`${props.serialParts[props.currentPart.part_number+1]._id}`}> Next</Link>
-      );
-    }
+
     return (
 
-      <div>
-        {previous}
-        {next}
+      <div className="serial-stepper">
+        {
+          (props.currentPart.part_number !== 0) ?
+            (
+              <React.Fragment>
+                <Link to={`${props.serialParts[props.currentPart.part_number-1]._id}`}> Previous</Link>
+              </React.Fragment>
+            ) : null
+        }
+        {
+          (props.currentPart.part_number < props.serialParts.length-1) ?
+            (
+              <React.Fragment>
+                <Link to={`${props.serialParts[props.currentPart.part_number+1]._id}`}> Next</Link>
+              </React.Fragment>
+            ) : null
+        }
+
       </div>
     );
   } else{
