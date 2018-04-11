@@ -9,6 +9,7 @@
     "client": "node start-client.js",
     "build:server": "babel ./src -d ./dist",
     "start": "concurrently \"mongod\" \"npm run server\" \"npm run client\"",
+    "start:heroku": "node ./dist/app.js",
     "heroku-postbuild": "cd client && npm install --only-dev && npm install && npm run build"
   },
   "keywords": [],
