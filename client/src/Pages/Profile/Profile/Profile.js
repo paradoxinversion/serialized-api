@@ -11,7 +11,6 @@ import getProfileData from "../../../utilityFunctions/profile/getProfileData";
 import getUserSerialData from "../../../utilityFunctions/serials/getUserSerialData";
 import handleProfileEdit from "../../../utilityFunctions/profile/handleProfileEdit";
 import "./Profile.css";
-// import "../../../css/bulma.css";
 
 class Profile extends React.Component {
   constructor(props) {

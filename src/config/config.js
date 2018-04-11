@@ -8,8 +8,8 @@ module.exports = (()=>{
     return process.env.NODE_ENV;
   };
   const makeConfig = () => {
-    if (getEnv() === 'development'){
-      require('dotenv').config({path:path.join(__dirname, "../.env")});
+    if (getEnv() === "development"){
+      require("dotenv").config({path:path.join(__dirname, "../.env")});
     }
 
     config = {
@@ -18,7 +18,6 @@ module.exports = (()=>{
         database: process.env.DB_NAME
       },
       security: {
-        tokensecret: process.env.TOKEN_SECRET,
         sessionSecret: process.env.SESSION_SECRET
       },
       server: {

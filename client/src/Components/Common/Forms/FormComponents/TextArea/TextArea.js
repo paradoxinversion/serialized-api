@@ -1,6 +1,5 @@
 import React from "react";
 import PropTypes from "prop-types";
-// import "../../../../../css/bulma.css";
 const TextArea = (props) => (
   <div>
     <label className="label">{props.title}</label>

@@ -25,7 +25,7 @@ router.post("/:userId", async function(req, res){
 
     res.json(newSerial);
   } catch(e){
-    res.send('Something went wrong');
+    res.send("Something went wrong");
   }
 });
 

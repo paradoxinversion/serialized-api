@@ -2,7 +2,6 @@ import React from "react";
 import { Link } from "react-router-dom";
 import axios from "axios";
 import SerialList from "../../../Components/Common/SerialList/SerialList";
-// import "../../../css/bulma.css";
 
 class SerialDirectory extends React.Component{
   constructor(props){

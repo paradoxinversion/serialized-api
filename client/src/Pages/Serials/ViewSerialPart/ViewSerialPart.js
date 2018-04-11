@@ -11,7 +11,6 @@ import LikeCounter from "../../../Components/Common/LikeCounter/LikeCounter";
 import getLikes from "../../../utilityFunctions/getLikes";
 import getSerialPart from "../../../utilityFunctions/serials/getSerialPart";
 import "./ViewSerialPart.css";
-// import "../../../css/bulma.css";
 
 class ViewSerialPart extends React.Component {
   constructor(props) {

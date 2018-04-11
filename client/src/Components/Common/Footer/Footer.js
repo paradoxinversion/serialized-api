@@ -1,6 +1,5 @@
 import React from "react";
 import "./Footer.css";
-// import "../../../css/bulma.css";
 import "./Footer.css";
 const Footer = () => {
   return (

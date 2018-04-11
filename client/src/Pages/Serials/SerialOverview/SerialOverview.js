@@ -5,7 +5,6 @@ import {
   Link
 } from "react-router-dom";
 import SerialPartList from "../../../Components/Common/SerialPartList/SerialPartList";
-// import "../../../css/bulma.css";
 import "./SerialOverview.css";
 
 class SerialOverview extends React.Component {

@@ -9,7 +9,6 @@ import {
   InputField
 } from "../../../Components/Common/Forms/FormComponents";
 import "./Login.css";
-// import "../../../css/bulma-custom.css";
 class LogIn extends React.Component {
   constructor(props) {
     super(props);

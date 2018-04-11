@@ -1,19 +1,19 @@
 import "babel-polyfill";
+import path from "path";
+import express from "express";
+import morgan from "morgan";
+import * as bodyParser from "body-parser";
+import passport from "passport";
+import cookieParser from "cookie-parser";
 
-import express from 'express';
-import morgan from 'morgan';
-import * as bodyParser from 'body-parser';
-import passport from 'passport';
-import cookieParser from "cookie-parser"
-
-import mongoClient from './database/client';
-const session = require("express-session")
-const Config = require('./config/config').getConfig();
+import mongoClient from "./database/client";
+const session = require("express-session");
+const Config = require("./config/config").getConfig();
 
 const api = require("./routes/v1");
 
 const app = express();
-
+app.use(express.static(path.join(__dirname, "client/build")));
 const userLoggedIn = require("./middleware/userLoggedIn");
 
 app.use(morgan("dev"));
@@ -48,6 +48,8 @@ app.use(function(req, res, next){
   next(err);
 });
 
+
+
 app.use(function(error, req, res, next){
   res.status(error.status || 500);
   res.json({
@@ -58,6 +60,4 @@ app.use(function(error, req, res, next){
   next(error);
 });
 
-app.listen(Config.server.port, function(){
-  console.log(`API Running on port ${Config.server.port}`);
-});
+app.listen(process.env.PORT || Config.server.port);
