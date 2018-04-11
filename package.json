@@ -6,7 +6,7 @@
   "scripts": {
     "test": "mocha --reporter spec --require babel-register --require babel-polyfill",
     "server": "nodemon ./src/app.js --exec babel-node",
-    "clean": "rm -r dist",
+    "clean": "rm -rf ./dist && mkdir ./dist",
     "client": "node start-client.js",
     "build:server": "npm run clean && babel ./src -d ./dist",
     "start": "concurrently \"mongod\" \"npm run server\" \"npm run client\"",
