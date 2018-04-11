@@ -1,4 +1,4 @@
-import axios from "axios";
+
 import axiosInstance from "../axiosInstance";
 export const getSerialLikes = async (serialData) => {
   try{

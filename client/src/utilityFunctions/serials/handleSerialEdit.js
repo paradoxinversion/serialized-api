@@ -1,4 +1,4 @@
-import axios from "axios";
+
 import axiosInstance from "../../axiosInstance";
 const handleSerialEdit = async (serialId, title, synopsis, genre, nsfw) => {
   const uri = `/serials?serialId=${serialId}`;

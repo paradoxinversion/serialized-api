@@ -2,7 +2,7 @@ import React from "react";
 import {
   withRouter
 } from "react-router-dom";
-import axios from "axios";
+
 import axiosInstance from "../../../axiosInstance";
 import moveSerialPart from "../../../utilityFunctions/moveSerialPart";
 import SerialPartEntryContainer from "../../Containers/SerialPartEntryContainer/SerialPartEntryContainer";

@@ -1,4 +1,3 @@
-import axios from "axios";
 import axiosInstance from "../../axiosInstance"
 /**
   Toggle whether or not an authenticated user is subscribed to a serial.

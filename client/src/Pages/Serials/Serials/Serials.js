@@ -6,7 +6,7 @@ import {
   Switch
 } from "react-router-dom";
 import "./Serials.css";
-// import axios from "axios";
+// ;
 import CreateSerial from "../CreateSerial/CreateSerial";
 import CreateSerialPart from "../CreateSerialPart/CreateSerialPart";
 import ViewSerialPart from "../ViewSerialPart/ViewSerialPart";

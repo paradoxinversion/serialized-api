@@ -1,4 +1,3 @@
-import axios from "axios";
 import axiosInstance from "../../axiosInstance"
 const handleSubmit = async(email, password) => {
   try{

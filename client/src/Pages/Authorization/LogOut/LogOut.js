@@ -1,5 +1,4 @@
 import React from "react";
-import axios from "axios";
 import axiosInstance from "../../../axiosInstance";
 import PropTypes from "prop-types";
 class LogOut extends React.Component {

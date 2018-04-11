@@ -1,4 +1,4 @@
-import axios from "axios";
+
 import axiosInstance from "../../axiosInstance";
 const handleSerialPartSubmission = async (serialId, title, content) => {
   const uri = `/serials/${serialId}`;

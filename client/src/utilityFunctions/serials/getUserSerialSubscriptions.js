@@ -1,4 +1,4 @@
-import axios from "axios";
+
 import axiosInstance from "../../axiosInstance"
 // Returns all of the client's serial subscriptions
 const getUserSerialSubscriptions = async () => {
