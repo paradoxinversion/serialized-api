@@ -1,9 +1,8 @@
-import axios from "axios";
-
+import axiosInstance from "../../axiosInstance";
 const getSerialPart = async (serialId, partId) => {
   const uri = `/serials/${serialId}/${partId}`;
   const configuration = { withCredentials: true };
-  const serialPartData = await axios.get(uri, configuration);
+  const serialPartData = await axiosInstance.get(uri, configuration);
   return { part: serialPartData.data.part };
 };
 

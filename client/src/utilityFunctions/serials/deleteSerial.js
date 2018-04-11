@@ -1,7 +1,7 @@
-import axios from "axios";
+import axiosInstance from "../../axiosInstance";
 
 const deleteSerial = async (serialId) => {
-  await axios.delete(`/serials?serialId=${serialId}`, {
+  await axiosInstance.delete(`/serials?serialId=${serialId}`, {
     withCredentials: true
   });
 };

@@ -1,7 +1,6 @@
-import axios from "axios";
-
+import axiosInstance from "../../axiosInstance";
 const handleProfileSubmit = async (biography) => {
-  await axios.put("/users", { biography }, {withCredentials: true});
+  await axiosInstance.put("/users", { biography }, {withCredentials: true});
 };
 
 export default handleProfileSubmit;

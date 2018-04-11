@@ -1,5 +1,5 @@
 import axios from "axios";
-
+import axiosInstance from "../../axiosInstance";
 const handleSerialPartSubmission = async (serialId, title, content) => {
   const uri = `/serials/${serialId}`;
   const data ={
@@ -9,7 +9,7 @@ const handleSerialPartSubmission = async (serialId, title, content) => {
   const configuration = {
     withCredentials: true
   };
-  const submissionResult = await axios.post(uri, data, configuration);
+  const submissionResult = await axiosInstance.post(uri, data, configuration);
   return submissionResult;
 };
 

@@ -1,8 +1,8 @@
-import axios from "axios";
-
+// import axios from "axios";
+import axiosInstance from "../../axiosInstance";
 const getUserData = async () =>{
   try{
-    const userData = await axios.get("/users", { withCredentials: true });
+    const userData = await axiosInstance.get("/users", { withCredentials: true });
     return userData;
   } catch (e){
     console.error("Something went wrong: \n ", e);

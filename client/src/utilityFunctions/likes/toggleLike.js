@@ -1,8 +1,7 @@
-import axios from "axios";
-
+import axiosInstance from "../../axiosInstance";
 const toggleLike = async (entityType, entityId, parentEntityId) => {
   try{
-    const likeToggle = await axios.post(`/like`, {
+    const likeToggle = await axiosInstance.post(`/like`, {
       entityType,
       entityId,
       parentEntityId

@@ -13,7 +13,7 @@ const Config = require("./config/config").getConfig();
 const api = require("./routes/v1");
 
 const app = express();
-app.use(express.static(path.join(__dirname, "client/build")));
+app.use(express.static(path.join(__dirname, "../client/build")));
 const userLoggedIn = require("./middleware/userLoggedIn");
 
 app.use(morgan("dev"));
@@ -42,12 +42,14 @@ app.use(function(req, res, next) {
 });
 app.use("/api/v1", api);
 
-app.use(function(req, res, next){
-  const err = new Error("Resource not Found");
-  err.status = 404;
-  next(err);
+// app.use(function(req, res, next){
+//   const err = new Error("Resource not Found");
+//   err.status = 404;
+//   next(err);
+// });
+app.get("*", (req, res) => {
+  res.sendFile(path.join(__dirname, "../client/build/index.html"));
 });
-
 
 
 app.use(function(error, req, res, next){

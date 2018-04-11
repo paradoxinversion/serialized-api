@@ -1,7 +1,6 @@
-import axios from "axios";
-
+import axiosInstance from "../../axiosInstance";
 const handleRegistrationSubmission = async (email, username, firstName, lastName, birthdate, password) => {
-  const newUser = await axios.post("/users",
+  const newUser = await axiosInstance.post("/users",
     {
       email,
       username,

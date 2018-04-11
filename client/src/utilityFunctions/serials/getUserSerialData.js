@@ -1,13 +1,12 @@
 import axios from "axios";
-
+import axiosInstance from "../../axiosInstance";
 const getUserSerialData = async (userId) => {
   try{
 
     const requestConfiguration = {
       withCredentials: true
     };
-    const uri = `/serials?userId=${userId}`;
-    const serialData = await axios.get(uri, requestConfiguration);
+    const serialData = await axiosInstance.get(`/serials?userId=${userId}`, requestConfiguration);
     return serialData.data;
   } catch (e){
     console.error("Something went wrong: \n ", e);

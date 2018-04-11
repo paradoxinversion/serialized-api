@@ -1,8 +1,7 @@
-import axios from "axios";
-
+import axiosInstance from "../../axiosInstance";
 const getUserSerialData = async () => {
   try{
-    const serialData = await axios.get("serials", {
+    const serialData = await axiosInstance.get("/serials", {
       withCredentials: true
     });
     return {

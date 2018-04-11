@@ -1,7 +1,6 @@
-import axios from "axios";
-
+import axiosInstance from "../../axiosInstance";
 const checkAuthentication = async () => {
-  const result = await axios.get("/users/auth", {withCredentials: true});
+  const result = await axiosInstance.get("/users/auth", {withCredentials: true});
   if (result.data.isAuthenticated){
     return {
       isAuthenticated: true,

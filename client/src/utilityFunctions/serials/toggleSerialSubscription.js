@@ -1,11 +1,11 @@
 import axios from "axios";
-
+import axiosInstance from "../../axiosInstance"
 /**
   Toggle whether or not an authenticated user is subscribed to a serial.
 **/
 const toggleSerialSubscription = async(serialId) => {
   try{
-    return await axios.get(`/serial-subscriptions/${serialId}`, {
+    return await axiosInstance.get(`/serial-subscriptions/${serialId}`, {
       withCredentials: true
     });
   } catch (e){

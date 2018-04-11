@@ -6,12 +6,16 @@
   "scripts": {
     "test": "mocha --reporter spec --require babel-register --require babel-polyfill",
     "server": "nodemon ./src/app.js --exec babel-node",
-    "clean": "rm -rf ./dist && mkdir ./dist",
     "client": "node start-client.js",
-    "build:server": "npm run clean && babel ./src -d ./dist",
+    "build:server": "rm -rf ./dist && babel ./src -d ./dist",
+    "build:client-local": "cd client && rm -rf ./build && npm run build",
+    "build:client-deploy": "cd client && npm install --only-dev && npm install && rm -rf ./build && npm run build",
+    "build:all-local": "npm run build:server && npm run build:client-local",
+    "build:all-deploy": "npm run build:server && npm run build:client-deploy",
+    "start:dev": "node ./dist/app.js",
     "start": "concurrently \"mongod\" \"npm run server\" \"npm run client\"",
     "start:heroku": "node ./dist/app.js",
-    "heroku-postbuild": "npm run build:server && cd client && npm install --only-dev && npm install && npm run build"
+    "heroku-postbuild": "npm run build:all-deploy"
   },
   "engines" : {
     "node": "8.9.3"

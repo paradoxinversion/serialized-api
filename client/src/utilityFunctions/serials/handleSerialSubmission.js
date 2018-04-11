@@ -1,5 +1,5 @@
 import axios from "axios";
-
+import axiosInstance from "../../axiosInstance"
 const handleSerialSubmit = async (title, synopsis, genre, nsfw) => {
   const uri = `/serials`;
   const data = {
@@ -11,7 +11,7 @@ const handleSerialSubmit = async (title, synopsis, genre, nsfw) => {
   const configuration = {
     withCredentials: true
   };
-  await axios.post(uri, data, configuration);
+  await axiosInstance.post(uri, data, configuration);
 };
 
 export default handleSerialSubmit;

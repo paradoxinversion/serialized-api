@@ -1,10 +1,10 @@
-import axios from "axios";
+import axiosInstance from "../../axiosInstance"
 /**
   Get the serial matching the serialId and all parts created for it.
 **/
 const getSerialAndPartData = async (serialId) => {
   try{
-    const result = await axios.get(`/serials/${serialId}`, {
+    const result = await axiosInstance.get(`/serials/${serialId}`, {
       withCredentials: true
     });
     return {

@@ -3,6 +3,7 @@ import {
   withRouter
 } from "react-router-dom";
 import axios from "axios";
+import axiosInstance from "../../../axiosInstance";
 import moveSerialPart from "../../../utilityFunctions/moveSerialPart";
 import SerialPartEntryContainer from "../../Containers/SerialPartEntryContainer/SerialPartEntryContainer";
 
@@ -16,7 +17,7 @@ class SerialPartList extends React.Component {
 
   async deleteSerialPart(serialId, partId){
     try{
-      await Promise.all([await axios.delete(`/serials/${serialId}/${partId}`, {
+      await Promise.all([await axiosInstance.delete(`/serials/${serialId}/${partId}`, {
         withCredentials: true
       }),
       await this.props.getSerialData(serialId)])

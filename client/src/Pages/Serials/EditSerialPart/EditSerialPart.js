@@ -2,6 +2,7 @@ import React from "react";
 import PropTypes from "prop-types";
 import {withRouter} from "react-router-dom";
 import axios from "axios";
+import axiosInstance from "../../../axiosInstance";
 import handleSerialPartEdit from "../../../utilityFunctions/serials/handleSerialPartEdit";
 import {
   InputField,
@@ -40,7 +41,7 @@ class EditSerialPart extends React.Component {
     const configuration = {
       withCredentials: true
     };
-    const serialPartData = await axios.get(uri, configuration);
+    const serialPartData = await axiosInstance.get(uri, configuration);
     this.setState({
       part: serialPartData.data.part,
       title: serialPartData.data.part.title,

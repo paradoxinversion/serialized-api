@@ -1,5 +1,5 @@
 import axios from "axios";
-
+import axiosInstance from "../../axiosInstance";
 const handleSerialEdit = async (serialId, title, synopsis, genre, nsfw) => {
   const uri = `/serials?serialId=${serialId}`;
   const data = {
@@ -11,7 +11,7 @@ const handleSerialEdit = async (serialId, title, synopsis, genre, nsfw) => {
   const configuration = {
     withCredentials: true
   };
-  const serialEditResponse = await axios.put(uri, data, configuration);
+  const serialEditResponse = await axiosInstance.put(uri, data, configuration);
   return serialEditResponse;
 };
 
