@@ -12,6 +12,9 @@
     "start:heroku": "node ./dist/app.js",
     "heroku-postbuild": "cd client && npm install --only-dev && npm install && npm run build"
   },
+  "engines" : {
+    "node": "8.9.3"
+  },
   "keywords": [],
   "author": "Jedai Saboteur",
   "license": "ISC",
