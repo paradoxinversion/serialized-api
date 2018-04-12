@@ -31,7 +31,6 @@ const Authorization = (props) => {
 };
 
 Authorization.propTypes = {
-  setUser: PropTypes.func.isRequired,
   onSignIn: PropTypes.func.isRequired,
   clearUser: PropTypes.func.isRequired,
   match: PropTypes.object.isRequired

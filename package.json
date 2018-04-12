@@ -5,19 +5,19 @@
   "main": "app.js",
   "scripts": {
     "test": "mocha --reporter spec --require babel-register --require babel-polyfill",
-    "server": "nodemon ./src/app.js --exec babel-node",
-    "client": "node start-client.js",
+    "server-dev": "nodemon ./src/app.js --exec babel-node",
+    "client-dev": "node start-client.js",
     "build:server": "rm -rf ./dist && babel ./src -d ./dist",
     "build:client-local": "cd client && rm -rf ./build && npm run build",
     "build:client-deploy": "cd client && npm install --only-dev && npm install && rm -rf ./build && npm run build",
     "build:all-local": "npm run build:server && npm run build:client-local",
     "build:all-deploy": "npm run build:server && npm run build:client-deploy",
     "start:dev": "node ./dist/app.js",
-    "start": "concurrently \"mongod\" \"npm run server\" \"npm run client\"",
+    "start": "concurrently \"mongod\" \"npm run server-dev\" \"npm run client-dev\"",
     "start:heroku": "node ./dist/app.js",
     "heroku-postbuild": "npm run build:all-deploy"
   },
-  "engines" : {
+  "engines": {
     "node": "8.9.3"
   },
   "keywords": [],
@@ -28,6 +28,7 @@
     "bcrypt": "^1.0.3",
     "body-parser": "^1.18.2",
     "connect-ensure-login": "^0.1.1",
+    "connect-mongo": "^2.0.1",
     "cookie-parser": "^1.4.3",
     "dotenv": "^4.0.0",
     "express": "^4.16.2",

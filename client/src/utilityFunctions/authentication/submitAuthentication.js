@@ -1,7 +1,8 @@
-import axiosInstance from "../../axiosInstance"
+import axiosInstance from "../../axiosInstance";
 const handleSubmit = async(email, password) => {
   try{
-    await axiosInstance.post("/users/auth", { email, password });
+    const c = await axiosInstance.post("/users/auth", { email, password });
+    console.log(c);
   } catch (e){
     console.error("Something went wrong: \n ", e);
   }

@@ -21,7 +21,7 @@ class SerialList extends React.Component {
     if (this.props.serials &&  this.props.serials.length > 0){
       const serials = this.props.serials.map((serial) => {
         return (
-          <li key={serial._id}>
+          <li className="serial-list-item" key={serial._id}>
             <SerialEntryContainer
               clientUser={this.props.clientUser}
               serial={serial}

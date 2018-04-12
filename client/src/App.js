@@ -62,6 +62,7 @@ class App extends Component {
     try{
       const authenticationResult = await checkAuthentication();
       this.setState(authenticationResult);
+      console.log(this.state);
     } catch (e) {
       throw e;
     }

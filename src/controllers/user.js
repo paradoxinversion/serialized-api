@@ -59,7 +59,9 @@ const attemptUserAuthentication = async function attemptUserAuthentication(req, 
     const authenticatedUser = {
       user:req.user
     };
-    console.log("Attempt Authentication::", authenticatedUser);
+
+    console.log(req.session);
+    console.log("REQ USER", req.user);
     res.json(authenticatedUser);
   } catch(e){
     throw e;

@@ -6,6 +6,7 @@
 
 .serial-entry-options{
   display: inherit;
+  flex-direction: inherit;
   flex-grow: 1;
   font-size: 16px;
 }
@@ -13,4 +14,8 @@
 .serial-entry-title{
   font-size: 18px;
   font-weight: bold;
+}
+
+.serial-list-item{
+  width: 100%;
 }
