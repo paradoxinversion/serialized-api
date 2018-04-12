@@ -35,7 +35,7 @@ app.use(session(
     resave: "true",
     saveUninitialized: "false",
     maxAge: 24 * 60 * 60,
-    store: new MongoStore({ url: `mongodb://${Config.db.host}/${Config.db.database}` })
+    store: new MongoStore({ url: (process.env.MONGODB_URI ||`mongodb://${Config.db.host}/${Config.db.database}` )})
   }
 ));
 app.use(passport.initialize());
