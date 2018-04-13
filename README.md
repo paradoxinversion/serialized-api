@@ -1,3 +1,12 @@
+# Setup
+
+You will need MongoDB in order to develop and run this project. Make sure you have it installed or you will be very much out of luck, unless you want to make a Postgres-enabled fork.
+
+## Install Dependencies
+
+1. Install Dependencies
+  `npm install`
+
 The following scripts are used to help with dev and deployment
 
 Building
