@@ -1,2 +1,8 @@
 .hero-image {
   width: 100%; }
+
+@media screen and (min-width: 400px) {
+  .hero-image {
+    max-height: 300px;
+    height: auto;
+    overflow: hidden; } }
