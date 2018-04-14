@@ -69,11 +69,16 @@ class ViewSerialPart extends React.Component {
                   :
                   null
               }
-              <Link className="button" to={`/serials/${this.props.currentSerial._id}`}>Back to {this.props.currentSerial.title}</Link>
+              
+              
+            </div>
+            <div className="serial-part-meta-options">
+              <Link className="button serial-part-meta-option" to={`/serials/${this.props.currentSerial._id}`}>Back to {this.props.currentSerial.title}</Link>
               {
+                
                 (this.props.clientUser && this.props.clientUser._id === this.props.currentSerial.author_id._id) ?
                   (<React.Fragment>
-                    <Link className="button" to={`/serials/${this.props.currentSerial._id}/${this.state.part._id}/edit`}> Edit </Link>
+                    <Link className="button button--warn serial-part-meta-option" to={`/serials/${this.props.currentSerial._id}/${this.state.part._id}/edit`}> Edit </Link>
                   </React.Fragment>) :
                   null
               }

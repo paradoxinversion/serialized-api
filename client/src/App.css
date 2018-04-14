@@ -52,9 +52,32 @@ body {
   font-family: sans-serif; }
 
 .button {
-  border: 1px solid black;
+  border: 1px solid #5a5a5a;
   font-size: 18px;
-  padding: .5rem; }
+  padding: .5rem;
+  background-color: white;
+  border-radius: 5px;
+  text-decoration: none; }
+
+.button--primary {
+  background-color: #0fbb0f;
+  color: white;
+  border: none; }
+
+.button--positive {
+  border: none;
+  background-color: #72C2EA;
+  color: white; }
+
+.button--danger {
+  border: none;
+  background-color: red;
+  color: white; }
+
+.button--warn {
+  border: none;
+  background-color: orange;
+  color: white; }
 
 .title {
   font-size: 24px;

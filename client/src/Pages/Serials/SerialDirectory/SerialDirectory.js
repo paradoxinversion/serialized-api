@@ -1,7 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import SerialList from "../../../Components/Common/SerialList/SerialList";
-
+import "./SerialDirectory.css";
 class SerialDirectory extends React.Component{
   constructor(props){
     super(props);
@@ -27,9 +27,11 @@ class SerialDirectory extends React.Component{
       );
     }
     return (
-      <div>
-        <h1 className="title">Directory</h1>
-        <Link className="button is-primary" to='/serials/create'> Create a Serial </Link>
+      <div className="serial-directory">
+        <header className="directory-header">
+          <h1 className="title">Directory</h1>
+          <Link className="button is-primary" to='/serials/create'> Create a Serial </Link>
+        </header>
         {list}
       </div>
     );

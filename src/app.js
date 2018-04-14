@@ -16,11 +16,10 @@ const api = require("./routes/v1");
 
 const app = express();
 if (process.env.NODE_ENV === "production"){
-  console.log("using static dir")
   app.use(express.static(path.join(__dirname, "../client/build")));
 }
 
-const userLoggedIn = require("./middleware/userLoggedIn");
+require("./middleware/userLoggedIn");
 
 app.use(morgan("dev"));
 
@@ -41,13 +40,21 @@ app.use(session(
 app.use(passport.initialize());
 app.use(passport.session());
 
-
+app.use(function(req, res, next) {
+  if (!req.secure) {
+    next();
+  } else {
+    res.redirect("https://" + req.headers.host + req.url);
+  }
+});
 app.use(function(req, res, next) {
   res.header("Access-Control-Allow-Origin", "http://localhost:3000");
   res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
   res.header("Access-Control-Allow-Credentials", true);
+  res.header("Access-Control-Allow-Methods", "PUT, POST, GET, DELETE, OPTIONS");
   next();
 });
+
 // app.use(userLoggedIn);
 app.use("/api/v1", api);
 
@@ -75,5 +82,5 @@ app.use(function(error, req, res, next){
   });
   next(error);
 });
-// app.listen(process.env.PORT || Config.server.port, () => {console.log(`running on port ${app.port}`)});
+
 app.listen(process.env.PORT || 3001);

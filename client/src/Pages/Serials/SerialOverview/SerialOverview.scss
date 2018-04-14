@@ -2,6 +2,7 @@
 .serial-overview{
   display: flex;
   flex-direction: column;
+  width: 100%;
 }
 .serial-part-title{
   margin-right: 1rem;
@@ -12,6 +13,7 @@
 
 .serial-metadata{
   display: flex;
+  width: 100%;
 }
 .serial-metadata-info{
   flex-grow: 1;
@@ -20,4 +22,8 @@
   display: inherit;
   flex-direction: column;
   align-self: flex-start;
+}
+
+.serial-overview-user-option{
+  margin-bottom: 6px;
 }

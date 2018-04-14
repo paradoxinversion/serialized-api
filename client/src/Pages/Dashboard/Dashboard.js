@@ -36,7 +36,7 @@ class Dashboard extends React.Component {
   render() {
     let createSerial;
     const newSerialLink = `/serials/create`;
-    createSerial = <Link className="button dashboard-option" to={newSerialLink}> Create a new Serial </Link>;
+    createSerial = <Link className="button button--primary dashboard-option" to={newSerialLink}> Create a new Serial </Link>;
 
     return (
       <div>

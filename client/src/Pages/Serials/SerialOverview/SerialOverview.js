@@ -38,8 +38,8 @@ class SerialOverview extends React.Component {
                 (this.props.clientUser && this.props.currentSerial.author_id && this.props.clientUser._id === this.props.currentSerial.author_id._id) ?
                   (
                     <React.Fragment>
-                      <Link className="button level-item" to={`/serials/${this.props.currentSerial._id}/new`}> Create a New Part </Link>
-                      <Link className="button level-item" to={`/serials/${this.props.currentSerial._id}/edit`}> Edit Serial Details </Link>
+                      <Link className="button button--primary serial-overview-user-option" to={`/serials/${this.props.currentSerial._id}/new`}> Create a New Part </Link>
+                      <Link className="button button--warn serial-overview-user-option" to={`/serials/${this.props.currentSerial._id}/edit`}> Edit Serial Details </Link>
                     </React.Fragment>
                   ) :
                   null

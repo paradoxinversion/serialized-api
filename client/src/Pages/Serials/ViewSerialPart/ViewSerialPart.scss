@@ -6,6 +6,7 @@
 
 .serial-part-metadata{
   display: flex;
+  flex-direction: column;
   margin-bottom: 1rem;
 }
 
@@ -22,4 +23,15 @@
 
 .serial-part-content-area{
   margin-bottom: 2rem;
+  
+}
+.serial-part-meta-options{
+  display: flex;
+  text-align: center;
+  flex-direction: column;
+}
+
+.serial-part-meta-option{
+  margin-bottom: 0.5rem;
+  width: 100%;
 }

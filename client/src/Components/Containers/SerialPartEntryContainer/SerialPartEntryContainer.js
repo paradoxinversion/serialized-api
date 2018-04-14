@@ -10,11 +10,10 @@ const SerialPartEntryContainer = (props) => {
   if (props.currentSerial){
     return (
       <div className="serial-part-entry-container">
-        <h2>{props.serialPart.title}</h2>
-        {/* <p>{props.serialPart.synopsis}</p> */}
+        <h2 className="serial-part-title">{props.serialPart.title}</h2>
         <div className="serial-part-entry-options">
 
-          <button className="button serial-part-entry-option-item" onClick={()=>{
+          <button className="button button--primary serial-part-entry-option-item" onClick={()=>{
             const location = {
               pathname: props.serialPartUri
             };
@@ -23,33 +22,34 @@ const SerialPartEntryContainer = (props) => {
           {
             (props.clientUser && props.clientUser._id === props.currentSerial.author_id._id) ?
               (<React.Fragment>
-                <Link className="button serial-part-entry-option-item" to={`/serials/${props.currentSerial._id}/${props.serialPart._id}/edit`}>Edit</Link>
+                <Link className="button button--warn serial-part-entry-option-item" to={`/serials/${props.currentSerial._id}/${props.serialPart._id}/edit`}>Edit</Link>
                 <button onClick={()=>{
-                  props.onSerialPartDeleted(props.currentSerial._id, props.serialPart._id)
-                }} className="button serial-part-entry-option-item">Delete Part</button>
+                  props.onSerialPartDeleted(props.currentSerial._id, props.serialPart._id);
+                }} className="button button--danger serial-part-entry-option-item">Delete Part</button>
               </React.Fragment>) :
               null
           }
-          {
-            (props.clientUser && props.clientUser._id === props.currentSerial.author_id._id && props.serialPart.part_number > 0) ?
-              ( <React.Fragment>
-                <button onClick={()=>{
-                  props.onPartMoved(props.serialPart._id, false)
-                }} className="button serial-part-entry-option-item"><i className="fas fa-chevron-up"></i></button>
-              </React.Fragment>) :
-              null
-          }
+          <div className="serial-placement-options serial-part-entry-option-item">
+            {
+              (props.clientUser && props.clientUser._id === props.currentSerial.author_id._id && props.serialPart.part_number > 0) ?
+                ( <React.Fragment>
+                  <button onClick={()=>{
+                    props.onPartMoved(props.serialPart._id, false);
+                  }} className="button serial-placement-selector"><i className="fas fa-chevron-up"></i></button>
+                </React.Fragment>) :
+                null
+            }
 
-          {
-            (props.clientUser && props.clientUser._id === props.currentSerial.author_id._id && props.serialPart.part_number < props.serialParts.length-1) ?
-              ( <React.Fragment>
-                <button onClick={()=>{
-                  props.onPartMoved(props.serialPart._id, true)
-                }} className="button serial-part-entry-option-item"><i className="fas fa-chevron-down"></i></button>
-              </React.Fragment> ) :
-              null
-          }
-
+            {
+              (props.clientUser && props.clientUser._id === props.currentSerial.author_id._id && props.serialPart.part_number < props.serialParts.length-1) ?
+                ( <React.Fragment>
+                  <button onClick={()=>{
+                    props.onPartMoved(props.serialPart._id, true);
+                  }} className="button serial-placement-selector"><i className="fas fa-chevron-down"></i></button>
+                </React.Fragment> ) :
+                null
+            }
+          </div>
         </div>
       </div>
     );
