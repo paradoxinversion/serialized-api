@@ -49,8 +49,8 @@ class QuillContainer extends React.Component {
   }
   render(){
     return (
-      <div>
-        <div id="editor"></div>
+      <div className="text-editor" >
+        <div id="editor" ></div>
       </div>
     );
   }

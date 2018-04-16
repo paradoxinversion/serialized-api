@@ -10,3 +10,9 @@
 .dashboard-option {
   margin-bottom: 0.5rem;
   text-decoration: none; }
+
+@media screen and (min-width: 426px) {
+  .dashboard-options {
+    flex-direction: row; }
+  .dashboard-option {
+    margin-right: 0.5rem; } }

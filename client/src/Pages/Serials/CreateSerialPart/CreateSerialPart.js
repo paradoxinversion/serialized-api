@@ -52,12 +52,13 @@ class CreateSerialPart extends React.Component {
     const toolbarOptions = [ [{ "indent": "-1"}, { "indent": "+1" }],["bold", "italic", "underline", "strike"]];
 
     return (
-      <div>
+      <div className="is-full-width">
         <h1> New Serial Part</h1>
-        <form onSubmit={this.handleSubmit}>
+        <form className="is-full-height" onSubmit={this.handleSubmit}>
           <InputField inputType="text" title="Title" name="title" controlFunc={this.handleFormInput} content={this.state.title} isRequired={true} />
+          <button className="button is-primary" type="submit"  onClick={this.handleSerialPartSubmit.bind(this)}>Submit</button>
           <QuillContainer toolbarOptions={toolbarOptions} textChanged={this.handleQuillInput}/>
-          <input className="button is-primary" type="submit" value="Submit" onClick={this.handleSerialPartSubmit.bind(this)} />
+          
         </form>
       </div>
 

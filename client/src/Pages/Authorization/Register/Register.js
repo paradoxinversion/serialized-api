@@ -71,7 +71,7 @@ class Register extends React.Component {
             content={this.state.password} controlFunc={this.handleFormInput}
             placeholder="password" isRequired={true}/>
           <Link to="/auth/login">Did you mean to Sign In?</Link>
-          <input className="button" type="submit" value="Submit" />
+          <input className="button button--primary" type="submit" value="Submit" />
         </form>
 
       </div>

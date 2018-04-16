@@ -6,3 +6,4 @@ build
 Documentation
 dist
 client/build
+*.css

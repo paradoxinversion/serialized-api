@@ -39,14 +39,14 @@ class EditSerial extends React.Component {
 
   render() {
     return (
-      <div>
+      <div className="is-full-width">
         <h1> Edit Serial </h1>
         <form onSubmit={this.handleSubmit}>
           <InputField inputType="text" title="Title" name="title" controlFunc={this.handleFormInput} content={this.state.title} isRequired={true} />
           <InputField inputType="text" title="Synopsis" name="synopsis" controlFunc={this.handleFormInput} content={this.state.synopsis} isRequired={true} />
           <InputField inputType="text" title="Genre" name="genre" controlFunc={this.handleFormInput} content={this.state.genre} isRequired={true} />
           <CheckBox title="NSFW" name="nsfw" controlFunc={this.handleFormInput} checked={this.state.nsfw} />
-          <input type="submit" value="Submit" onClick={this.handleSerialSubmit.bind(this)} />
+          <input className="button button--primary" type="submit" value="Submit" onClick={this.handleSerialSubmit.bind(this)} />
         </form>
       </div>
 

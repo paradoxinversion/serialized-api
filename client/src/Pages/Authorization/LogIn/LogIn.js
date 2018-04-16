@@ -52,7 +52,7 @@ class LogIn extends React.Component {
           <InputField name="email" inputType="email" content={this.state.email} controlFunc={this.handleFormInput} placeholder="email" />
           <InputField name="password" inputType="password" content={this.state.password} controlFunc={this.handleFormInput} placeholder="password"/>
           <Link to="/auth/register">Did you mean to Register?</Link>
-          <input className="button is-primary" type="submit" value="Submit" />
+          <input className="button button--primary" type="submit" value="Submit" />
         </form>
 
       </div>

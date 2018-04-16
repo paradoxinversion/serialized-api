@@ -20,3 +20,11 @@
   margin-bottom: 0.5rem;
   text-align: center;
   text-decoration: none; }
+
+@media screen and (min-width: 426px) {
+  .serial-entry-options {
+    flex-direction: row; }
+  .serial-entry-option-item {
+    margin-right: 0.5rem;
+    text-align: center;
+    text-decoration: none; } }

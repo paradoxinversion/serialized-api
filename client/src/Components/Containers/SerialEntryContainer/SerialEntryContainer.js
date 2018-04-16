@@ -42,7 +42,7 @@ class SerialEntryContainer extends React.Component {
       subscribeButtonText = "Unsubscribe";
     }
     return (
-      <div className="entry-container">
+      <div className="card entry-container">
         <h2 className="serial-entry-title">{this.props.serial.title}</h2>
         <p className="serial-entry-synopsis">{this.props.serial.synopsis}</p>
         <div className="serial-entry-options">
@@ -52,7 +52,7 @@ class SerialEntryContainer extends React.Component {
             (this.props.serial && this.props.clientUser && this.props.clientUser._id === this.props.serial.author_id) ?
               (
                 <React.Fragment>
-                  <Link className="button button--primary serial-entry-option-item" to={`/serials/${this.props.serial._id}/new`}> Create a New Part </Link>
+                  <Link className="button button--primary serial-entry-option-item" to={`/serials/${this.props.serial._id}/new`}> New Part </Link>
                   <button onClick={()=>{
                     this.props.onSerialDeleted(this.props.serial._id);
                   }} className="button button--danger serial-entry-option-item">Delete</button>

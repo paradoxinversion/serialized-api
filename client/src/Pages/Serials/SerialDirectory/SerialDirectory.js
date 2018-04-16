@@ -30,7 +30,7 @@ class SerialDirectory extends React.Component{
       <div className="serial-directory">
         <header className="directory-header">
           <h1 className="title">Directory</h1>
-          <Link className="button is-primary" to='/serials/create'> Create a Serial </Link>
+          <Link className="button button--primary" to='/serials/create'> Create a Serial </Link>
         </header>
         {list}
       </div>

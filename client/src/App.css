@@ -49,7 +49,8 @@ table {
   box-sizing: border-box; }
 
 body {
-  font-family: sans-serif; }
+  font-family: sans-serif;
+  background-color: #f7f7f7; }
 
 .button {
   border: 1px solid #5a5a5a;
@@ -57,7 +58,8 @@ body {
   padding: .5rem;
   background-color: white;
   border-radius: 5px;
-  text-decoration: none; }
+  text-decoration: none;
+  text-align: center; }
 
 .button--primary {
   background-color: #0fbb0f;
@@ -83,6 +85,12 @@ body {
   font-size: 24px;
   margin-bottom: 1rem; }
 
+.is-full-width {
+  width: 100%; }
+
+.is-full-height {
+  height: 100%; }
+
 .App {
   text-align: center; }
 
@@ -99,3 +107,21 @@ body {
 
 .horizontal-rule {
   border-top: 3px solid black; }
+
+.card {
+  display: flex;
+  border: 1px solid grey;
+  border-radius: 3px;
+  padding: 1rem;
+  background-color: white; }
+
+.card--vertical {
+  flex-direction: column; }
+
+@media screen and (min-width: 426px) {
+  .content {
+    width: 90%; } }
+
+@media screen and (min-width: 769px) {
+  .content {
+    width: 70%; } }

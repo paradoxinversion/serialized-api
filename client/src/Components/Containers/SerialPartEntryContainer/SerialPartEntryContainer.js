@@ -9,7 +9,7 @@ import "./SerialPartEntryContainer.css";
 const SerialPartEntryContainer = (props) => {
   if (props.currentSerial){
     return (
-      <div className="serial-part-entry-container">
+      <div className="card serial-part-entry-container">
         <h2 className="serial-part-title">{props.serialPart.title}</h2>
         <div className="serial-part-entry-options">
 
@@ -18,14 +18,14 @@ const SerialPartEntryContainer = (props) => {
               pathname: props.serialPartUri
             };
             props.history.push(location);
-          }}>Read it</button>
+          }}>Read</button>
           {
             (props.clientUser && props.clientUser._id === props.currentSerial.author_id._id) ?
               (<React.Fragment>
                 <Link className="button button--warn serial-part-entry-option-item" to={`/serials/${props.currentSerial._id}/${props.serialPart._id}/edit`}>Edit</Link>
                 <button onClick={()=>{
                   props.onSerialPartDeleted(props.currentSerial._id, props.serialPart._id);
-                }} className="button button--danger serial-part-entry-option-item">Delete Part</button>
+                }} className="button button--danger serial-part-entry-option-item">Delete</button>
               </React.Fragment>) :
               null
           }

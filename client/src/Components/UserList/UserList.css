@@ -1,0 +1,9 @@
+.user-list {
+  display: flex;
+  flex-direction: column; }
+
+@media screen and (min-width: 426px) {
+  .user-list {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    grid-gap: 1rem; } }
