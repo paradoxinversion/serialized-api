@@ -1,9 +1,0 @@
-.right-aligned {
-  align-self: flex-end; }
-
-.profile {
-  display: flex;
-  flex-direction: column; }
-
-.profile > .button {
-  max-width: 150px; }
