@@ -53,13 +53,17 @@ class CreateSerialPart extends React.Component {
 
     return (
       <div className="is-full-width">
-        <h1> New Serial Part</h1>
-        <form className="is-full-height" onSubmit={this.handleSubmit}>
-          <InputField inputType="text" title="Title" name="title" controlFunc={this.handleFormInput} content={this.state.title} isRequired={true} />
-          <button className="button is-primary" type="submit"  onClick={this.handleSerialPartSubmit.bind(this)}>Submit</button>
-          <QuillContainer toolbarOptions={toolbarOptions} textChanged={this.handleQuillInput}/>
-          
-        </form>
+        <header className="container">
+          <h1 className="title"> New Serial Part</h1>
+        </header>
+        <section className="container container--centered" >
+          <form className="form form--standalone" onSubmit={this.handleSubmit}>
+            <InputField inputType="text" title="Title" name="title" controlFunc={this.handleFormInput} content={this.state.title} isRequired={true} />
+            <button className="button is-primary" type="submit"  onClick={this.handleSerialPartSubmit.bind(this)}>Submit</button>
+            <QuillContainer toolbarOptions={toolbarOptions} textChanged={this.handleQuillInput}/>
+          </form>
+        </section>
+       
       </div>
 
     );
