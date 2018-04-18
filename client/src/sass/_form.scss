@@ -1,0 +1,50 @@
+.form{
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+.form__link{
+  font-size: 14px;
+  margin-bottom: 1rem;
+}
+
+.form__link--end{
+  // text-align: right;
+  align-self: flex-end;
+}
+
+.form__button--start{
+  align-self: flex-start;
+}
+
+.form__button--center{
+  align-self: center;
+}
+
+.form__button--end{
+  align-self: flex-end;
+}
+
+.form__option-bar{
+  display: flex;
+  justify-content: space-between
+}
+@media screen and (min-width: 426px){
+  .form{
+    width: 90%;
+  }
+  .form--standalone{
+    width: 75%;
+  }
+}
+
+@media screen and (min-width: 769px){
+  .form{
+    width: 70%;
+  }
+
+  .form--standalone{
+    width: 55%;
+  }
+}

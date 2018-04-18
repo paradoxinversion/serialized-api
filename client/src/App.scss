@@ -1,5 +1,6 @@
-@import "./sass/_variables.scss";
+@import "./sass/variables.scss";
 @import "./sass/reset.scss";
+@import "./sass/form.scss";
 *{
   box-sizing: border-box;
 }
@@ -61,13 +62,15 @@ body{
 
 }
 
+.content--centered{
+  text-align: center;
+}
+
 .App {
   text-align: center;
 }
 
 .main-wrapper{
-  display: flex;
-  flex-direction: column;
   min-height: calc(100vh - 50px);
 }
 
@@ -77,8 +80,13 @@ body{
   display: flex;
   flex-direction: column;
 }
+
+.container--centered{
+  align-items: center;
+}
 .horizontal-rule{
-  border-top: 3px solid black;
+  border-top: 1px solid black;
+  margin: 0;
 }
 
 .text-editor{
@@ -102,10 +110,17 @@ body{
   .content{
     width: 90%;
   }
+  .text-content{
+    width: 90%;
+  }
+
 }
 
 @media screen and (min-width: 769px){
   .content{
+    width: 70%;
+  }
+  .text-content{
     width: 70%;
   }
 }

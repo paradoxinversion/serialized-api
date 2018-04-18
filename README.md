@@ -7,6 +7,20 @@ You will need MongoDB in order to develop and run this project. Make sure you ha
 1. Install Dependencies
   `npm install`
 
+2. Add a file named `.env` in the `src` folder with the following information to prepare your environment
+
+3. Run the program with `npm start`. Note that concurrently will take care of starting the mongo server when developing. If you are running tests, make sure to manually start a mongod process.
+
+```BASH
+
+DB_HOST=localhost
+DB_NAME=serialized_api_dev
+TOKEN_SECRET=<InsertYourSecret>
+SESSION_SECRET=<InsertYourSecret>
+API_PORT=3001
+
+```
+
 The following scripts are used to help with dev and deployment
 
 Building

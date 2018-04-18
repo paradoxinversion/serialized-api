@@ -40,22 +40,27 @@ class Dashboard extends React.Component {
 
     return (
       <div>
-        <h1 className="title"> Welcome back, {this.props.clientUser.username} </h1>
-        <div className="dashboard-options">
-          <Link className="button dashboard-option" to={`/users/${this.props.clientUser.username}`}> Profile </Link>
-          {createSerial}
-        </div>
-
-        <SerialList
-          clientUser={this.props.clientUser}
-          headerText="Your Serials"
-          emptyListMessage="You have not written any serials yet."
-          serials={this.state.clientUserSerials}/>
-        <SerialList
-          clientUser={this.props.clientUser}
-          headerText="Subscribed Serials"
-          emptyListMessage="You have not subscribed to any serials yet."
-          serials={this.state.subscribedSerials}/>
+        <header className="container">
+          <h1 className="title"> Welcome back, {this.props.clientUser.username} </h1>
+          <div className="dashboard-options">
+            <Link className="button dashboard-option" to={`/users/${this.props.clientUser.username}`}> Profile </Link>
+            {createSerial}
+          </div>
+        </header>
+        
+        <section className="container">
+          <SerialList
+            clientUser={this.props.clientUser}
+            headerText="Your Serials"
+            emptyListMessage="You have not written any serials yet."
+            serials={this.state.clientUserSerials}/>
+          <SerialList
+            clientUser={this.props.clientUser}
+            headerText="Subscribed Serials"
+            emptyListMessage="You have not subscribed to any serials yet."
+            serials={this.state.subscribedSerials}/>
+        </section>
+       
       </div>
     );
   }

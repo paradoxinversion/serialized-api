@@ -47,14 +47,17 @@ class LogIn extends React.Component {
   render() {
     return (
       <div className="log-in">
-        <h1 className="title"> Welcome Back! </h1>
-        <form className="log-in-form" onSubmit={this.handleSubmit}>
-          <InputField name="email" inputType="email" content={this.state.email} controlFunc={this.handleFormInput} placeholder="email" />
-          <InputField name="password" inputType="password" content={this.state.password} controlFunc={this.handleFormInput} placeholder="password"/>
-          <Link to="/auth/register">Did you mean to Register?</Link>
-          <input className="button button--primary" type="submit" value="Submit" />
-        </form>
-
+        <header className="container">
+          <h1 className="title"> Welcome Back! </h1>
+        </header>
+        <section className="container container--centered">
+          <form className="log-in-form form form--standalone" onSubmit={this.handleSubmit}>
+            <InputField name="email" inputType="email" content={this.state.email} controlFunc={this.handleFormInput} placeholder="email" />
+            <InputField name="password" inputType="password" content={this.state.password} controlFunc={this.handleFormInput} placeholder="password"/>
+            <Link className="form__link form__link--end" to="/auth/register">Did you mean to Register?</Link>
+            <input className="button button--primary form__button--center" type="submit" value="Submit" />
+          </form>
+        </section>
       </div>
     );
   }

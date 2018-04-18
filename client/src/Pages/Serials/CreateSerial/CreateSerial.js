@@ -41,14 +41,19 @@ class CreateSerial extends React.Component {
   render() {
     return (
       <div className="is-full-width">
-        <h1> New Serial </h1>
-        <form onSubmit={this.handleSubmit}>
-          <InputField inputType="text" title="Title" name="title" controlFunc={this.handleFormInput} content={this.state.title} isRequired={true} />
-          <InputField inputType="text" title="Synopsis" name="synopsis" controlFunc={this.handleFormInput} content={this.state.synopsis} isRequired={true} />
-          <InputField inputType="text" title="Genre" name="genre" controlFunc={this.handleFormInput} content={this.state.genre} isRequired={true} />
-          <CheckBox title="NSFW" name="nsfw" controlFunc={this.handleFormInput} checked={this.state.nsfw} />
-          <input className="button button--primary" type="submit" value="Submit" onClick={this.handleSerialSubmit.bind(this)} />
-        </form>
+        <header>
+          <h1> New Serial </h1>
+        </header>
+        <section className="container container--centered">
+          <form className="form form--standalone" onSubmit={this.handleSubmit}>
+            <InputField inputType="text" title="Title" name="title" controlFunc={this.handleFormInput} content={this.state.title} isRequired={true} />
+            <InputField inputType="text" title="Synopsis" name="synopsis" controlFunc={this.handleFormInput} content={this.state.synopsis} isRequired={true} />
+            <InputField inputType="text" title="Genre" name="genre" controlFunc={this.handleFormInput} content={this.state.genre} isRequired={true} />
+            <CheckBox title="NSFW" name="nsfw" controlFunc={this.handleFormInput} checked={this.state.nsfw} />
+            <input className="button button--primary form__button--end" type="submit" value="Submit" onClick={this.handleSerialSubmit.bind(this)} />
+          </form>
+        </section>
+        
       </div>
 
     );

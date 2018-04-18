@@ -25,39 +25,7 @@ describe('Serial Actions', function(){
     authorizedUser = await authorization.logUserIn(authorizedUserData.requestBody.email, authorizedUserData.requestBody.password, d);
   });
 
-  describe('Add Serials', function(){
 
-    context ("When a user provides proper credentials", function(){
-      it('Adds a serial to the Database', async function(){
-        testSerial = await dataHelper.addSerialHelper(authorizedUser);
-        return expect(testSerial.dbResult.title).to.equal(testSerial.requestBody.title);
-      });
-    });
-  });
-
-  describe('Edit Serials', function(){
-    context ("When a user provides proper credentials", function(){
-      it('Accepts edits to the title of the serial', async function(){
-        const requestBody = {
-          title: "New Title",
-          synopsis: "A new story"
-        };
-        const editResult = await serialActions.editSerial(requestBody, testSerial.dbResult._id, authorizedUser.token);
-        return expect(editResult.title).to.equal("New Title");
-      });
-
-    });
-  });
-
-  describe('Delete Serial', function(){
-    context ("When a user provides proper credentials", function(){
-      it('Removes the provided serial', async function(){
-        await serialActions.deleteSerial(testSerial.dbResult._id, authorizedUser.token);
-        return expect(await Serial.find()).to.eql([]);
-      });
-
-    });
-  });
 
   after(async function (){
     await dbHelpers.closeTestDBConnection();

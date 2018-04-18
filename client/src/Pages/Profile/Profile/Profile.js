@@ -91,24 +91,28 @@ class Profile extends React.Component {
     }else {
       return (
         <div className="profile">
-          <h1 className="title"> {this.state.queriedUser.username} </h1>
-          <HTMLMarkupContainer content={this.state.queriedUser.biography} />
-          {
-            (this.props.clientUser && this.state.queriedUser._id === this.props.clientUser._id) ?
-              (<React.Fragment>
-                <button className="button right-aligned" onClick={this.handleEditButtonClick.bind(this)}> Edit Profile </button>
-              </React.Fragment>) :
-              null
-          }
-          <hr className="horizontal-rule" />
-
-          <SerialList
-            clientUser={this.props.clientUser}
-            emptyListMessage={`${this.props.match.params.username} hasn't written any serials yet.`}
-            serials={this.state.userSerials}
-            getProfileData={this.getProfileData}
-            toggleSerialSubscription={this.props.toggleSerialSubscription}
-          />
+          <header className="container">
+            <h1 className="title"> {this.state.queriedUser.username} </h1>
+            <HTMLMarkupContainer content={this.state.queriedUser.biography} />
+            {
+              (this.props.clientUser && this.state.queriedUser._id === this.props.clientUser._id) ?
+                (<React.Fragment>
+                  <button className="button right-aligned" onClick={this.handleEditButtonClick.bind(this)}> Edit Profile </button>
+                </React.Fragment>) :
+                null
+            }
+            <hr className="horizontal-rule" />
+          </header>
+          
+          <section className="container">
+            <SerialList
+              clientUser={this.props.clientUser}
+              emptyListMessage={`${this.props.match.params.username} hasn't written any serials yet.`}
+              serials={this.state.userSerials}
+              getProfileData={this.getProfileData}
+              toggleSerialSubscription={this.props.toggleSerialSubscription} />
+          </section>
+          
         </div>
       );
     }

@@ -9,7 +9,7 @@ import Register from "../Register/Register";
 import LogOut from "../LogOut/LogOut";
 const Authorization = (props) => {
   return (
-    <div className="authorization-container">
+    <React.Fragment>
       <Route
         exact path={`${props.match.url}/login`}
         render={()=>
@@ -26,7 +26,7 @@ const Authorization = (props) => {
         render={() =>
           <LogOut
             clearUser={props.clearUser} /> }/>
-    </div>
+    </React.Fragment>
   );
 };
 

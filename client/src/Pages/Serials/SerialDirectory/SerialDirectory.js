@@ -28,11 +28,14 @@ class SerialDirectory extends React.Component{
     }
     return (
       <div className="serial-directory">
-        <header className="directory-header">
+        <header className="directory-header container">
           <h1 className="title">Directory</h1>
           <Link className="button button--primary" to='/serials/create'> Create a Serial </Link>
         </header>
-        {list}
+        <section className="container">
+          {list}
+        </section>
+        
       </div>
     );
   }

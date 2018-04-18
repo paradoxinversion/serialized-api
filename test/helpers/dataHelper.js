@@ -1,24 +1,20 @@
 import faker from "faker";
-import * as userActions from "../../src/database/actions/user";
 import * as serialActions from "../../src/database/actions/serial";
 import * as serialPartActions from "../../src/database/actions/serialPart";
 
-export const addUserHelper = async () => {
+
+export const fakeUserSignupRequest = () => {
 
   const requestBody = {
     email: faker.internet.email(),
     username: faker.internet.userName(),
     password: faker.internet.password(),
-    'first-name': faker.name.firstName(),
-    'last-name': faker.name.lastName(),
+    firstName: faker.name.firstName(),
+    lastName: faker.name.lastName(),
     birthdate: faker.date.between("01/01/1996", "01/01/1900")
   };
 
-  const dbResult =  await userActions.addNewUser(requestBody);
-  return {
-    requestBody,
-    dbResult
-  };
+  return requestBody;
 };
 
 export const addSerialHelper = async (user) => {

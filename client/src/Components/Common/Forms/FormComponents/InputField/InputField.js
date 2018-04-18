@@ -2,7 +2,7 @@ import React from "react";
 import PropTypes from "prop-types";
 import "./InputField.css";
 const InputField = (props) => (
-  <div>
+  <React.Fragment>
     {
       props.title ?
         <label className="label">{props.title}</label> :
@@ -17,7 +17,7 @@ const InputField = (props) => (
       placeholder={props.placeholder}
       required={props.isRequired}
     />
-  </div>
+  </React.Fragment>
 );
 
 InputField.propTypes ={

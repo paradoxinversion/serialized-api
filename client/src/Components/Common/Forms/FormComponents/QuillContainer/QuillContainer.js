@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 import Quill from "quill";
 import "./quill.snow.css";
 import QuillDeltaToHtmlConverter from "quill-delta-to-html";
-
+import "./QuillContainer.css";
 class QuillContainer extends React.Component {
   constructor(props){
     super(props);

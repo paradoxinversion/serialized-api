@@ -1,10 +1,11 @@
-process.env.NODE_ENV = 'testing';
+process.env.NODE_ENV = "testing";
+import faker from "faker";
 import {expect} from "chai";
 import * as userActions from "../src/database/actions/user";
 import User from "../src/database/mongo/User";
 import * as authorization from "../src/controllers/auth";
-import * as dataHelper from './helpers/dataHelper';
-import * as dbHelpers from './helpers/databaseHelper';
+import * as dataHelper from "./helpers/dataHelper";
+import * as dbHelpers from "./helpers/databaseHelper";
 /**
  * This function is a standin for the done() function utilized by passport.
  *
@@ -14,62 +15,23 @@ const d = (error, user) => {
   if (user) return user;
   return null;
 };
-describe('User DB Actions', function(){
+
+describe("User DB Actions", function(){
   before(async function (){
     await dbHelpers.prepareTestDB();
   });
 
-  describe('AddNewUser', function(){
-    it('Saves a new user to the DB', async function(){
-      const newUser = await dataHelper.addUserHelper();
-      return expect(newUser.dbResult.username).to.equal(newUser.requestBody.username);
+  describe("addNewUser", function(){
+    it("Saves a new user to the DB", async function(){
+      const signUpReq = dataHelper.fakeUserSignupRequest();
+      const newUser = await userActions.addNewUser(signUpReq);
+      return expect(newUser.username).to.equal(signUpReq.username.toLowerCase());
     });
   });
 
-  describe('getAllUsers', function(){
-    before('Clear previous users from collection and add new ones', async function(){
-      await User.remove({});
-      await dataHelper.addUserHelper();
-      await dataHelper.addUserHelper();
-    });
-
-    it ("Gets all users from the db", async function(){
-      const userCount = await User.count({});
-      return expect(userCount).to.equal(2);
-    });
-
-  });
-
-  describe('Edit User', function(){
-    let testUser;
-    before('Clear previous users from collection and add new ones', async function(){
-      await User.remove({});
-      testUser = await dataHelper.addUserHelper();
-    });
-
-    it ("Modifies a user", async function(){
-      const authorizedUser = await authorization.logUserIn(testUser.requestBody.email, testUser.requestBody.password, d);
-
-      const requestBody = {
-        "first-name": "freddy"
-      };
-      const userUpdate = await userActions.updateUser(requestBody, authorizedUser.token);
-      return expect(userUpdate.firstName).to.equal("freddy");
-    });
-  });
-
-  describe("Delete User", function(){
-    let testUser;
-    before('Clear previous users from collection and add new ones', async function(){
-      await User.remove({});
-      testUser = await dataHelper.addUserHelper();
-    });
-
-    it("Deletes a user if the requesting user provides the matching token", async function(){
-      const authorizedUser = await authorization.logUserIn(testUser.requestBody.email, testUser.requestBody.password, d);
-      await userActions.deleteUser(authorizedUser.token);
-      const userCount = await User.count({});
-      return expect(userCount).to.equal(0);
+  describe("updateUser", function(){
+    it ("Updates a user's first name, last name, or bio", function(){
+      
     });
   });
 

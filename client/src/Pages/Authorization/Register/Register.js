@@ -51,29 +51,32 @@ class Register extends React.Component {
   render() {
     return (
       <div className="register">
-        <h1 className="title"> Who are you? </h1>
-        <form className="registration-form" onSubmit={this.handleSubmit}>
-          <InputField name="email" inputType="email"
-            content={this.state.email} controlFunc={this.handleFormInput}
-            placeholder="email" isRequired={true}/>
-          <InputField name="username"inputType="text"
-            content={this.state.username} controlFunc={this.handleFormInput}
-            placeholder="username" isRequired={true}/>
-          <InputField name="firstName" inputType="text"
-            content={this.state.firstName} controlFunc={this.handleFormInput}
-            placeholder="first name" isRequired={true}/>
-          <InputField name="lastName" inputType="text"
-            content={this.state.lastName} controlFunc={this.handleFormInput}
-            placeholder="last name" isRequired={true}/>
-          <DatePicker name="birthdate" date={this.state.birthdate}
-            controlFunc={this.handleFormInput} required={true} />
-          <InputField name="password" inputType="password"
-            content={this.state.password} controlFunc={this.handleFormInput}
-            placeholder="password" isRequired={true}/>
-          <Link to="/auth/login">Did you mean to Sign In?</Link>
-          <input className="button button--primary" type="submit" value="Submit" />
-        </form>
-
+        <header className="container">
+          <h1 className="title"> Who are you? </h1>
+        </header>
+        <section className="container container--centered">
+          <form className="registration-form form form--standalone" onSubmit={this.handleSubmit}>
+            <InputField name="email" inputType="email"
+              content={this.state.email} controlFunc={this.handleFormInput}
+              placeholder="email" isRequired={true}/>
+            <InputField name="username"inputType="text"
+              content={this.state.username} controlFunc={this.handleFormInput}
+              placeholder="username" isRequired={true}/>
+            <InputField name="firstName" inputType="text"
+              content={this.state.firstName} controlFunc={this.handleFormInput}
+              placeholder="first name" isRequired={true}/>
+            <InputField name="lastName" inputType="text"
+              content={this.state.lastName} controlFunc={this.handleFormInput}
+              placeholder="last name" isRequired={true}/>
+            <DatePicker name="birthdate" date={this.state.birthdate}
+              controlFunc={this.handleFormInput} required={true} />
+            <InputField name="password" inputType="password"
+              content={this.state.password} controlFunc={this.handleFormInput}
+              placeholder="password" isRequired={true}/>
+            <Link to="/auth/login">Did you mean to Sign In?</Link>
+            <input className="button button--primary" type="submit" value="Submit" />
+          </form>
+        </section>
       </div>
     );
   }

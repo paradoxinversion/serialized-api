@@ -7,11 +7,20 @@
 @media screen and (min-width: 426px){
   .user-list{
     display: grid;
-    grid-template-columns: 1fr 1fr 1fr;
+    grid-template-columns: 1fr 1fr;
     grid-gap: 1rem;
   }
   .user-list-item{
     // width: calc(33.3vw - 1rem);
     // margin-right: 1rem;
   }
+}
+
+@media screen and (min-width: 1024px){
+  .user-list{
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    grid-gap: 1rem;
+  }
+
 }

@@ -5,5 +5,11 @@
 @media screen and (min-width: 426px) {
   .user-list {
     display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-gap: 1rem; } }
+
+@media screen and (min-width: 1024px) {
+  .user-list {
+    display: grid;
     grid-template-columns: 1fr 1fr 1fr;
     grid-gap: 1rem; } }

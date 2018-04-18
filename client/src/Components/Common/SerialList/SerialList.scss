@@ -10,3 +10,11 @@
     grid-gap: 1rem;
   }
 }
+
+@media screen and (min-width: 1100px){
+  .serial-list{
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    grid-gap: 1rem;
+  }
+}

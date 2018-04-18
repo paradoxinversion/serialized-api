@@ -31,8 +31,13 @@ class UserDirectory extends React.Component{
   render () {
     return (
       <div>
-        <h1 className="title">Serialized Users</h1>
-        <UserList users={this.state.users} />
+        <header className="container">
+          <h1 className="title">Serialized Users</h1>
+        </header>
+        <section className="container">
+          <UserList users={this.state.users} />
+        </section>
+        
       </div>
     );
   }

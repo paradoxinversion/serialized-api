@@ -14,8 +14,7 @@
   flex-grow: 1; }
 
 .serial-part-metadata-likes {
-  display: flex;
-  flex-direction: column; }
+  width: 250px; }
 
 .serial-part-content-area {
   margin-bottom: 2rem; }
@@ -28,3 +27,13 @@
 .serial-part-meta-option {
   margin-bottom: 0.5rem;
   width: 100%; }
+
+.serial-part-meta-option__button {
+  height: 30px; }
+
+@media screen and (min-width: 769px) {
+  .serial-part-meta-options {
+    flex-direction: row;
+    justify-content: space-evenly; }
+  .serial-part-meta-option {
+    flex-basis: 180px; } }

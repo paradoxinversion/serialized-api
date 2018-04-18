@@ -34,7 +34,8 @@ const getAllUsers = async () =>{
       lastName: 1,
       biography: 1
     });
-  console.log(userList);
+
+
   return userList;
 };
 
@@ -58,7 +59,13 @@ const getUser = async(userName) =>{
 
 /**
  * This function posts a new user to the database
- * @param {Object} requestBody The request from the client with all information for a new user
+ * @param {Object} requestBody - The request from the client with all information for a new user
+ * @param {string} requestBody.email - The email of the user
+ * @param {string} requestBody.username - The user's username
+ * @param {string} requestBody.firstName the user's first name
+ * @param {string} requestBody.lastName the user's last name
+ * @param {string} requestBody.password - The plaintext password the user intends to use
+ * @param {Date} requestBody.birthdate the user's birthdate
  * @returns {Object} an object containing the user searched for (or null)
  */
 const addNewUser = async (requestBody) => {
@@ -102,7 +109,7 @@ const addNewUser = async (requestBody) => {
 
 /**
  * This function updates a user
- * @param {Object} requestBody The request from the client with all information for a new user
+ * @param {Object} requestBody - The request from the client with all information for a new user
  * @param {Object} userId The id of the user to update
  * @returns {Object} an object containing the updated user information
  */

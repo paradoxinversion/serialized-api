@@ -3,9 +3,9 @@ import PropTypes from "prop-types";
 import "./HTMLMarkupContainer.css";
 const HTMLMarkupContainer = (props) => {
   const html = {__html: props.content};
-  const partContainer = <div dangerouslySetInnerHTML={html} />;
+  const partContainer = <div className="text-content" dangerouslySetInnerHTML={html} />;
   return (
-    <div >
+    <div className="container container--centered">
       {partContainer}
     </div>
   );

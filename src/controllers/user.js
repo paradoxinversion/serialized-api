@@ -26,7 +26,7 @@ const postUser = async function postUser(req, res){
     const newUser = await userActions.addNewUser(req.body);
     const response = {
       status: 200
-    }
+    };
     res.json(response);
   } catch (error){
     return res.json({

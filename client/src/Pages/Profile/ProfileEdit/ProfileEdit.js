@@ -20,10 +20,18 @@ class ProfileEdit extends React.Component {
   render() {
     return (
       <div>
-        <h1> Profile Edit </h1>
-        <QuillContainer textChanged={this.handleQuillInput}/>
-        <button className="button" onClick={this.props.handleSubmit}> Submit </button>
-        <button className="button" onClick={this.props.handleCancel}> Cancel </button>
+        <header className="container">
+          <h1> Profile Edit </h1>
+        </header>
+        <section className="container container--centered">
+          <form className="form form--standalone">
+            <QuillContainer textChanged={this.handleQuillInput}/>
+            <section className="form__option-bar">
+              <button className="button button--primary form__button--center" onClick={this.props.handleSubmit}> Submit </button>
+              <button className="button button--warn form__button--end" onClick={this.props.handleCancel}> Cancel </button>
+            </section>
+          </form>
+        </section>
       </div>
     );
   }
