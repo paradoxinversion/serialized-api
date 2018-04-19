@@ -9,7 +9,7 @@
     "client-dev": "node start-client.js",
     "build:server": "rm -rf ./dist && babel ./src -d ./dist",
     "build:client-local": "cd client && rm -rf ./build && npm run build",
-    "build:client-deploy": "cd client && npm install --only-dev && npm install && rm -rf ./build && npm run build",
+    "build:client-deploy": "cd client && npm install --only-dev && npm install && rm -rf ./build && npm run build-css && npm run build",
     "build:all-local": "npm run build:server && npm run build:client-local",
     "build:all-deploy": "npm run build:server && npm run build:client-deploy",
     "start:dev": "node ./dist/app.js",
