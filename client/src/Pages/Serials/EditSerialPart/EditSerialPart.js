@@ -5,7 +5,8 @@ import axiosInstance from "../../../axiosInstance";
 import handleSerialPartEdit from "../../../utilityFunctions/serials/handleSerialPartEdit";
 import {
   InputField,
-  QuillContainer
+  QuillContainer,
+  PellContainer
 } from "../../../Components/Common/Forms/FormComponents";
 class EditSerialPart extends React.Component {
   constructor(props) {
@@ -17,15 +18,20 @@ class EditSerialPart extends React.Component {
     };
     this.handleFormInput = this.handleFormInput.bind(this);
     this.handleQuillInput = this.handleQuillInput.bind(this);
+    this.handlePellInput = this.handlePellInput.bind(this);
+    this.getContent = this.getContent.bind(this);
   }
 
   handleFormInput(event){
-    const target = event.target;
-    const value = target.type === "checkbox" ? target.checked : target.value;
-    const name = target.name;
-    this.setState({
-      [name]: value
-    });
+    if (event.target){
+      const target = event.target;
+      const value = target.type === "checkbox" ? target.checked : target.value;
+      const name = target.name;
+      this.setState({
+        [name]: value
+      });
+    }
+    
   }
   async componentWillMount(){
     if (this.props.currentSerial == null || this.props.currentSerial._id !== this.props.match.params.id){
@@ -55,6 +61,12 @@ class EditSerialPart extends React.Component {
     });
   }
 
+  handlePellInput(pellContent){
+    this.setState({
+      content: pellContent
+    });
+  }
+
   async handleSerialSubmit(event){
     event.preventDefault();
     await handleSerialPartEdit(this.props.currentSerial._id, this.props.match.params.partId, this.state.title, this.state.content);
@@ -63,9 +75,11 @@ class EditSerialPart extends React.Component {
     };
     this.props.history.push(parentSerial);
   }
-
+  getContent(){
+    return this.state.content;
+  }
   render() {
-    const toolbarOptions = [ [{ "indent": "-1"}, { "indent": "+1" }],["bold", "italic", "underline", "strike"]];
+    // const toolbarOptions = [ [{ "indent": "-1"}, { "indent": "+1" }],["bold", "italic", "underline", "strike"]];
     return (
       <React.Fragment>
         <header className="container">
@@ -74,7 +88,9 @@ class EditSerialPart extends React.Component {
         <section className="container container--centered">
           <form className="form form--standalone" onSubmit={this.handleSubmit}>
             <InputField inputType="text" title="Title" name="title" controlFunc={this.handleFormInput} content={this.state.title} isRequired={true} />
-            <QuillContainer value={this.state.content} toolbarOptions={toolbarOptions} textChanged={this.handleQuillInput}/>
+            {/* <QuillContainer value={this.state.content} toolbarOptions={toolbarOptions} textChanged={this.handleQuillInput}/> */}
+       
+            {/* <PellContainer oldContent={this.state.content} textChanged={this.handlePellInput} getContent={this.getContent}/> */}
             <input className="button button--primary"type="submit" value="Submit" onClick={this.handleSerialSubmit.bind(this)} />
           </form>
         </section>

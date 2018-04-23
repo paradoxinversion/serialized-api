@@ -1,13 +1,10 @@
 import * as _ from "lodash";
-import Serial from "../mongo/Serial";
 import SerialPart from "../mongo/SerialPart";
-import Like from "../mongo/Like";
-// these routes all have a query param /:serialId
 
 /**
- * This function returns all parts of a serial belong to serialId
- * @param {ObjectId} serialId The id of the parent serial.
- * @returns {array} an array of serial parts
+ * This function returns all parts of a serial belonging to serialId
+ * @param {string} serialId The id of the parent serial.
+ * @returns {Array} an array of serial parts
  */
 export const readSerialParts = async (serialId) => {
   try{
@@ -19,8 +16,7 @@ export const readSerialParts = async (serialId) => {
 
 /**
  * This function returns a single serial part in a parent serial
- * @param {ObjectId} serialId The id of the parent serial.
- * @param {ObjectId} partId The id of the serial part to be viewed.
+ * @param {string} partId The id of the serial part to be viewed.
  * @returns {Object} The serial part
  */
 export const getSingleSerialPart = async (partId) => {
@@ -31,15 +27,14 @@ export const getSingleSerialPart = async (partId) => {
 };
 
 /**
- * This function adds a new serial to the database and returns it
+ * This function adds a new serial part to the database and returns it
  * @param {Object} requestBody The request body from the client machine
- * @param {ObjectId} parentSerialId The serial to which this part should be added
+ * @param {string} parentSerialId The serial to which this part should be added
  * @returns {Object} a JSON object representing the serial part
  */
 export const createSerialPart = async (requestBody, parentSerialId) => {
   try{
     const serialParts = await readSerialParts(parentSerialId);
-    console.log(serialParts);
     // const serial = await Serial.find({_id: req.params.serialId});
     const newPart = new SerialPart({
       title: requestBody.title,
@@ -83,7 +78,7 @@ export const deleteSerialPart = async (partId, userId) => {
 /**
  * This function updates a serial part and returns the updated entry
  * @param {Object} requestBody The request body from the client machine
- * @param {ObjectId} partId The id of the serial part ot be edited
+ * @param {string} partId The id of the serial part ot be edited
  * @returns {Object} a JSON object representing the serial part
  */
 export const updateSerialPart = async (requestBody, partId) => {
@@ -110,13 +105,16 @@ export const updateSerialPart = async (requestBody, partId) => {
   }
 };
 
+/**
+ * Trades indexes with the next or previous part
+ * @param {string} serialPartId 
+ * @param {boolean} moveUp - Should the index be incremented (true) or decremented (false)?
+ * @param {string} userId 
+ */
 export const updateSerialPartNumber = async(serialPartId, moveUp, userId) => {
   try {
-    const result = {
-
-    }
+    const result = {};
     const serialPartA = await getSingleSerialPart(serialPartId);
-    console.log("SerialPartA::", serialPartA);
 
     if (serialPartA.part.serial_id.author_id != userId){
       const notAuthorizedError = new Error("Not authorized to switch these parts");
@@ -161,32 +159,3 @@ export const updateSerialPartNumber = async(serialPartId, moveUp, userId) => {
     throw e;
   }
 };
-
-// export const toggleLikeSerialPart = async (userId, serialPartId) => {
-//   try{
-//     const existingLike = await Like.findOne({user:userId, serialPart: serialPartId});
-//     if (existingLike){
-//       await Like.remove({user:userId, serialPart:serialPartId});
-//     } else {
-//       const newLike = new Like({
-//         likedEntityId: serialPartId,
-//         user: userId,
-//         likedEntityType: 1
-//       });
-//
-//       await newLike.save();
-//       return newLike;
-//     }
-//   } catch (e){
-//     console.log(e);
-//     throw e;
-//   }
-// }
-// export {
-//   readSerialParts,
-//   createSerialPart,
-//   deleteSerialPart,
-//   updateSerialPart,
-//   getSingleSerialPart,
-//   updateSerialPartNumber
-// };

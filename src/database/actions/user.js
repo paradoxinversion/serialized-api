@@ -4,7 +4,7 @@ import bcrypt from "bcrypt";
 
 /**
  * This function returns a user's role
- * @param {ObjectId} userId The id of the user who's role to get
+ * @param {string} userId The id of the user who's role to get
  * @returns {Object} an object containing the user's role name and access level
  */
 const getRole = async function (userId){
@@ -110,6 +110,9 @@ const addNewUser = async (requestBody) => {
 /**
  * This function updates a user
  * @param {Object} requestBody - The request from the client with all information for a new user
+ * @param {string} requestBody.firsName - A name to replace the user's first name
+ * @param {string} requestBody.lastName - A name to replace the user's last name
+ * @param {string} requestBody.biography - A biography to replace the user's current bio
  * @param {Object} userId The id of the user to update
  * @returns {Object} an object containing the updated user information
  */
@@ -132,7 +135,7 @@ const updateUser = async (requestBody, userId) => {
 
 /**
  * This function deletes a user from the Database
- * @param {Object} userId The id of the user to delete
+ * @param {string} userId The id of the user to delete
  * @returns {Object} an object containing the deleted user information
  */
 const deleteUser = async (userId) => {

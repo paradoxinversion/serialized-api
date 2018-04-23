@@ -4,7 +4,7 @@ import SerialPart from "../mongo/SerialPart";
 import Subscription from "../mongo/Subscription";
 /**
  * This function gets all serials in the database
- * @returns {Array} all serials in the database
+ * @returns {Array} - all serials in the database
  */
 export const getSerials = async () => {
   let serials = await Serial.find();
@@ -13,9 +13,8 @@ export const getSerials = async () => {
 
 /**
  * This function gets all serials by a single author
- * @param {Object} requestBody The client request
- * @param {string} authorId The id of the Author who's Serials to find
- * @returns {Object} the new serial entry
+ * @param {string} authorId - The id of the Author who's Serials to find
+ * @returns {Object} - the new serial entry
  */
 export const getAuthorSerials = async(authorId) => {
   return await Serial.find({author_id: authorId});
@@ -23,9 +22,9 @@ export const getAuthorSerials = async(authorId) => {
 
 /**
  * This function posts a new serial to the database
- * @param {Object} requestBody The client request
- * @param {string} userId The id of the user making the request
- * @returns {Object} the new serial entry
+ * @param {Object} requestBody - The client request
+ * @param {string} userId - The id of the user making the request
+ * @returns {Object} - the new serial entry
  */
 export const postSerial = async(requestBody, userId) => {
   try {
@@ -46,9 +45,10 @@ export const postSerial = async(requestBody, userId) => {
 
 /**
  * This function edits a serial's metadata
- * @param {Object} requestBody The client request
- * @param {string} serialIdQueryString the id of the serial to be edited
- * @param {string} userId The id of the user making the request
+ * @param {Object} requestBody - The client request
+ * @param {string} serialIdQueryString - the id of the serial to be edited
+ * @param {string} userId - The id of the user making the request
+ * @returns {Object} - The updated serial
  */
 export const editSerial = async(requestBody, serialIdQueryString, userId) => {
   const query = {_id: serialIdQueryString};
@@ -76,9 +76,9 @@ export const editSerial = async(requestBody, serialIdQueryString, userId) => {
 /**
  * This function deletes all parts associated with a serial. This should be
  * called when a serial is deleted for proper cleanup
- * @param {Object} serial the serial who's parts to delete
+ * @param {Object} serial - the serial who's parts to delete
  */
-export const deleteSerialParts = async(serial) => {
+export const deleteSerialParts = async (serial) => {
   try {
     const removalResult = await SerialPart.remove({serial_id: serial._id});
     return removalResult;
@@ -89,8 +89,8 @@ export const deleteSerialParts = async(serial) => {
 
 /**
  * This function deletes a serial and all associated parts
- * @param {string} serialIdQueryString the serial id to delete
-* @param {string} userId the id of the requesting user
+ * @param {string} serialIdQueryString - the serial id to delete
+ * @param {string} userId - the id of the requesting user
  */
 export const deleteSerial = async (serialIdQueryString, userId) => {
   if (!serialIdQueryString){
@@ -107,11 +107,15 @@ export const deleteSerial = async (serialIdQueryString, userId) => {
   return deletionResult;
 };
 
+/**
+ * Subscribes a logged in user to a Serial, or removes their sub if they are already subscribed
+ * @param {string} serialId 
+ * @param {string} userId 
+ */
 export const subscribeToSerial = async(serialId, userId) => {
   // check if the user already is subbed
   let userSubscription = await Subscription.findOne({subscriber: userId}).where("subscribed_object").eq(serialId);
-  let result = {
-  }
+  let result = {};
   if (userSubscription === null){
     userSubscription = new Subscription({
       subscriber: userId,
@@ -126,17 +130,29 @@ export const subscribeToSerial = async(serialId, userId) => {
   return result;
 };
 
+/**
+ * Returns all subs for the supplied serial part
+ * @param {string} serialId 
+ */
 export const getSerialSubscriptions = async(serialId) => {
   return await Subscription.find({subscribed_object: serialId});
 };
 
+/**
+ * Checks whether or not the supplied user is a suscribed to the supplied serial (by id)
+ * @param {string} serialId 
+ * @param {string} userId 
+ */
 export const checkForUserSubscription = async(serialId, userId) => {
   const subscription = await Subscription.findOne({subscribed_object: serialId}).where("subscriber").eq(userId);
   const result = subscription;
-  console.log("Sub Check Result::", result);
   return result;
 };
 
+/**
+ * Returns all the subscriptions of a single user
+ * @param {string} userId 
+ */
 export const getUserSerialSubscriptions = async(userId) => {
   const subscriptions = await Subscription.find({subscriber:userId});
   // TODO: Find a more elegant solution for this operation

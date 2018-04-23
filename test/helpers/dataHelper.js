@@ -17,6 +17,17 @@ export const fakeUserSignupRequest = () => {
   return requestBody;
 };
 
+export const fakeUserUpdateRequest = () => {
+
+  const requestBody = {
+    firstName: faker.name.firstName(),
+    lastName: faker.name.lastName(),
+    biography: faker.lorem.paragraph()
+  };
+
+  return requestBody;
+};
+
 export const addSerialHelper = async (user) => {
   const requestBody = {
     title: faker.random.words(),
