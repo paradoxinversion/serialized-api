@@ -13,11 +13,11 @@ const Header = (props) => {
           </div>
 
           <div className="navbar-menu">
-            <div><NavLink className="navbar-item" to={`/users/${props.clientUser.username}`}> Profile </NavLink></div>
-            <div><NavLink className="navbar-item" to="/dashboard"> Dashboard </NavLink></div>
-            <div><NavLink className="navbar-item" to="/serials"> Serials </NavLink></div>
-            <div><NavLink className="navbar-item" to="/users"> Users </NavLink></div>
-            <div><NavLink className="navbar-item" to="/auth/logout"> Log Out </NavLink></div>
+            <NavLink className="navbar-item" to={`/users/${props.clientUser.username}`}> Profile </NavLink>
+            <NavLink className="navbar-item" to="/dashboard"> Dashboard </NavLink>
+            <NavLink className="navbar-item" to="/serials"> Serials </NavLink>
+            <NavLink className="navbar-item" to="/users"> Users </NavLink>
+            <NavLink className="navbar-item" to="/auth/logout"> Log Out </NavLink>
           </div>
         </div>
       ):
@@ -27,11 +27,11 @@ const Header = (props) => {
             <NavLink className="logo" to="/"> Serialized </NavLink>
           </div>
           <div className="navbar-menu">
-            <div><NavLink className="navbar-item" to="/"> Home </NavLink></div>
-            <div><NavLink className="navbar-item" to="/auth/login"> Log In </NavLink></div>
-            <div><NavLink className="navbar-item" to="/auth/register"> Register </NavLink></div>
-            <div><NavLink className="navbar-item" to="/serials"> Serials </NavLink></div>
-            <div><NavLink className="navbar-item" to="/users"> Users </NavLink></div>
+            <NavLink className="navbar-item" to="/"> Home </NavLink>
+            <NavLink className="navbar-item" to="/auth/login"> Log In </NavLink>
+            <NavLink className="navbar-item" to="/auth/register"> Register </NavLink>
+            <NavLink className="navbar-item" to="/serials"> Serials </NavLink>
+            <NavLink className="navbar-item" to="/users"> Users </NavLink>
           </div>
         </div>
       )

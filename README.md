@@ -21,16 +21,31 @@ API_PORT=3001
 
 ```
 
-The following scripts are used to help with dev and deployment
 
-Building
-build:client-local
+## Developing the Project
+
+### start
+
+Uses the concurrency package to run mongod => server-dev => client-dev. This is the most likely way you will work with this repo. When running the project in this manner, project files will be built in-memory by webpack-dev-server. No additional files will be added to the project directory.
+
+### start:dev
+
+Starts the server located in the built app. This method requires the project to be built, such as via `build:all-local`.
+
+### server-dev
+
+Starts the Serialized API only.
+
+### client-dev
+
+Starts the Serialized Client only. 
+
+*Note that without the API, the functionality of the client will be severely limited. Therefore, it is always recommended to use `start` or `start:dev` for the simplest developing experience.*
+
+## Building the Project
+
+### build:client-local
+
 Makes a build of the react client. This is for local testing and not deployment. It is recommended not to use this directly, as it is included in build:all-local
 
-Starting the API & React Front End
-Development
-start
-Uses the concurrency package to run mongod > server-dev > client-dev. This is the most likely way you will work with this repo.
-
-start:dev
-Starts the server located in the built app.
+### build:all-deploy

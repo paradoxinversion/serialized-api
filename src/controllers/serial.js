@@ -1,4 +1,3 @@
-import SerialPart from "../database/mongo/SerialPart";
 import * as serialActions from "../database/actions/serial";
 
 /**

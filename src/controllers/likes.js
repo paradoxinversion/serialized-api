@@ -1,8 +1,6 @@
 import * as likeActions from "../database/actions/likes";
-import * as like from "../database/actions/serialPart";
 export const toggleLike = async (req, res) => {
   try {
-    console.log(req.body)
     let result;
     if (req.body.entityType == 0){
       result = await likeActions.toggleLikeSerial(req.session.passport.user, req.body.entityId, req.body.parentEntityId);

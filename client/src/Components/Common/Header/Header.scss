@@ -31,3 +31,25 @@
   color: $secondary-header-color;
   text-decoration: none;
 }
+
+@media screen and (min-width: 600px){
+  .horizontal-navbar{
+    flex-direction: row;
+    justify-content: space-between;
+    padding: 1rem;
+  }
+  .navbar-menu{
+    margin-bottom: 0;
+    align-items: center;
+  }
+  .navbar-brand{
+    margin: 0;
+  }
+  .navbar-item{
+    margin: 0 1rem 0 0;
+    font-size: 20px;
+  }
+  .logo{
+    font-size: 32px;
+  }
+}

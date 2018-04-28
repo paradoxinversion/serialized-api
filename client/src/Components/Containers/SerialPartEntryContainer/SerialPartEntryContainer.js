@@ -12,23 +12,24 @@ const SerialPartEntryContainer = (props) => {
       <div className="card serial-part-entry-container">
         <h2 className="serial-part-title">{props.serialPart.title}</h2>
         <div className="serial-part-entry-options">
-
-          <button className="button button--primary serial-part-entry-option-item" onClick={()=>{
-            const location = {
-              pathname: props.serialPartUri
-            };
-            props.history.push(location);
-          }}>Read</button>
-          {
-            (props.clientUser && props.clientUser._id === props.currentSerial.author_id._id) ?
-              (<React.Fragment>
-                <Link className="button button--warn serial-part-entry-option-item" to={`/serials/${props.currentSerial._id}/${props.serialPart._id}/edit`}>Edit</Link>
-                <button onClick={()=>{
-                  props.onSerialPartDeleted(props.currentSerial._id, props.serialPart._id);
-                }} className="button button--danger serial-part-entry-option-item">Delete</button>
-              </React.Fragment>) :
-              null
-          }
+          <div className="serial-part-author-options">
+            <button className="button button--primary serial-part-entry-option-item" onClick={()=>{
+              const location = {
+                pathname: props.serialPartUri
+              };
+              props.history.push(location);
+            }}>Read</button>
+            {
+              (props.clientUser && props.clientUser._id === props.currentSerial.author_id._id) ?
+                (<React.Fragment>
+                  <Link className="button button--warn serial-part-entry-option-item" to={`/serials/${props.currentSerial._id}/${props.serialPart._id}/edit`}>Edit</Link>
+                  <button onClick={()=>{
+                    props.onSerialPartDeleted(props.currentSerial._id, props.serialPart._id);
+                  }} className="button button--danger serial-part-entry-option-item">Delete</button>
+                </React.Fragment>) :
+                null
+            }
+          </div>
           <div className="serial-placement-options serial-part-entry-option-item">
             {
               (props.clientUser && props.clientUser._id === props.currentSerial.author_id._id && props.serialPart.part_number > 0) ?
@@ -54,7 +55,7 @@ const SerialPartEntryContainer = (props) => {
       </div>
     );
   } else {
-    return <p> ... </p>
+    return <p> ... </p>;
   }
 
 };
