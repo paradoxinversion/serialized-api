@@ -8,11 +8,26 @@ class QuillContainer extends React.Component {
   constructor(props){
     super(props);
     this.state = {
-      rawContents: null
+      rawContents: null,
+      contentLoaded: false
     };
     this.handleUserInput = this.handleUserInput.bind(this);
     this.convertQuillDelta = this.convertQuillDelta.bind(this);
   }
+
+  // static getDerivedStateFromProps(nextProps, prevState){
+  //   console.log(nextProps);
+  //   console.log(prevState);
+  //   return{
+  //     what: "whaaaaa"
+  //   };
+  //   // if (this.state.rawContents === null){
+  //   //   this.state.quill.clipboard.dangerouslyPasteHTML(this.props.value, "api");
+  //   // }
+
+  // }
+ 
+
   componentDidMount(){
     const quill = new Quill("#editor", {
       theme: "snow",
@@ -20,7 +35,10 @@ class QuillContainer extends React.Component {
         toolbar: this.props.toolbarOptions
       }
     });
+    if (this.props.value){
+      quill.clipboard.dangerouslyPasteHTML(this.props.value, "api");
 
+    }
     quill.on("text-change", () => {
       this.setState({
         rawContents: quill.getContents()
@@ -32,6 +50,7 @@ class QuillContainer extends React.Component {
     this.setState({
       quill
     });
+    
   }
 
   componentWillUnmount(){

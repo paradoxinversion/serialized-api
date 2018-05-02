@@ -7,7 +7,7 @@ const Header = (props) => {
   return (
     props.authStatus && props.clientUser?
       (
-        <div className="horizontal-navbar">
+        <nav className="horizontal-navbar">
           <div className="navbar-brand">
             <NavLink className="logo" to="/"> Serialized </NavLink>
           </div>
@@ -19,10 +19,10 @@ const Header = (props) => {
             <NavLink className="navbar-item" to="/users"> Users </NavLink>
             <NavLink className="navbar-item" to="/auth/logout"> Log Out </NavLink>
           </div>
-        </div>
+        </nav>
       ):
       (
-        <div className="horizontal-navbar">
+        <nav className="horizontal-navbar">
           <div className="navbar-brand">
             <NavLink className="logo" to="/"> Serialized </NavLink>
           </div>
@@ -33,7 +33,7 @@ const Header = (props) => {
             <NavLink className="navbar-item" to="/serials"> Serials </NavLink>
             <NavLink className="navbar-item" to="/users"> Users </NavLink>
           </div>
-        </div>
+        </nav>
       )
   );
 };

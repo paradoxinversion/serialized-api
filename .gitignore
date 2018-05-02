@@ -7,3 +7,4 @@ Documentation
 dist
 client/build
 *.css
+.vscode

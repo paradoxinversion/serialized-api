@@ -10,7 +10,6 @@
 }
 
 .form__link--end{
-  // text-align: right;
   align-self: flex-end;
 }
 
@@ -29,6 +28,10 @@
 .form__option-bar{
   display: flex;
   justify-content: space-between
+}
+
+.form--full-height{
+  height: 100%;
 }
 @media screen and (min-width: 426px){
   .form{

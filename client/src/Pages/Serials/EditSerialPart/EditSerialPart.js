@@ -5,8 +5,7 @@ import axiosInstance from "../../../axiosInstance";
 import handleSerialPartEdit from "../../../utilityFunctions/serials/handleSerialPartEdit";
 import {
   InputField,
-  QuillContainer,
-  PellContainer
+  QuillContainer
 } from "../../../Components/Common/Forms/FormComponents";
 class EditSerialPart extends React.Component {
   constructor(props) {
@@ -14,15 +13,17 @@ class EditSerialPart extends React.Component {
     this.state = {
       part: null,
       title: "",
-      content: ""
+      content: "",
+      newContent: "",
+      contentLoaded: false
     };
     this.handleFormInput = this.handleFormInput.bind(this);
     this.handleQuillInput = this.handleQuillInput.bind(this);
-    this.handlePellInput = this.handlePellInput.bind(this);
-    this.getContent = this.getContent.bind(this);
   }
 
   handleFormInput(event){
+ 
+    console.log("event");
     if (event.target){
       const target = event.target;
       const value = target.type === "checkbox" ? target.checked : target.value;
@@ -33,11 +34,15 @@ class EditSerialPart extends React.Component {
     }
     
   }
-  async componentWillMount(){
+  async componentDidMount(){
     if (this.props.currentSerial == null || this.props.currentSerial._id !== this.props.match.params.id){
       await this.props.getSerialData(this.props.match.params.id);
     }
     await this.getSerialPart();
+    this.setState({
+      contentLoaded: true
+    });
+
   }
 
   // This now exists outside of this function, switch it out
@@ -61,12 +66,6 @@ class EditSerialPart extends React.Component {
     });
   }
 
-  handlePellInput(pellContent){
-    this.setState({
-      content: pellContent
-    });
-  }
-
   async handleSerialSubmit(event){
     event.preventDefault();
     await handleSerialPartEdit(this.props.currentSerial._id, this.props.match.params.partId, this.state.title, this.state.content);
@@ -75,26 +74,44 @@ class EditSerialPart extends React.Component {
     };
     this.props.history.push(parentSerial);
   }
-  getContent(){
-    return this.state.content;
+
+  renderEditForm(){
+    const toolbarOptions = [ [{ "indent": "-1"}, { "indent": "+1" }],["bold", "italic", "underline", "strike"]];
+
+    return (
+      <section className="container container--centered">
+        <h1 className="title"> Edit Serial </h1>
+        <form className="form form--standalone form--full-height" onSubmit={this.handleSubmit}>
+          <InputField inputType="text" title="Title" name="title" controlFunc={this.handleFormInput} content={this.state.title} isRequired={true} />
+          <QuillContainer value={this.state.content} toolbarOptions={toolbarOptions} textChanged={this.handleQuillInput}/>
+          <input className="button button--primary"type="submit" value="Submit" onClick={this.handleSerialSubmit.bind(this)} />
+        </form>
+      </section>
+    );
   }
+
   render() {
     // const toolbarOptions = [ [{ "indent": "-1"}, { "indent": "+1" }],["bold", "italic", "underline", "strike"]];
     return (
       <React.Fragment>
-        <header className="container">
-          <h1> Edit Serial </h1>
-        </header>
-        <section className="container container--centered">
-          <form className="form form--standalone" onSubmit={this.handleSubmit}>
+        {/* <section className="container container--centered">
+
+          <h1 className="title"> Edit Serial </h1>
+          <form className="form form--standalone form--full-height" onSubmit={this.handleSubmit}>
             <InputField inputType="text" title="Title" name="title" controlFunc={this.handleFormInput} content={this.state.title} isRequired={true} />
-            {/* <QuillContainer value={this.state.content} toolbarOptions={toolbarOptions} textChanged={this.handleQuillInput}/> */}
-       
-            {/* <PellContainer oldContent={this.state.content} textChanged={this.handlePellInput} getContent={this.getContent}/> */}
+            <QuillContainer value={this.state.content} toolbarOptions={toolbarOptions} textChanged={this.handleQuillInput}/>
             <input className="button button--primary"type="submit" value="Submit" onClick={this.handleSerialSubmit.bind(this)} />
+
+
           </form>
-        </section>
-        
+        </section> */}
+        {
+          this.state.contentLoaded ?
+            this.renderEditForm() :
+            <section>
+              <p> Loading </p>
+            </section>
+        }
        
       </React.Fragment>
     );
