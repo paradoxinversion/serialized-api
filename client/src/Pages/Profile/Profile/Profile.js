@@ -1,9 +1,6 @@
-import React from "react";
+import React, { Fragment } from "react";
 import PropTypes from "prop-types";
-import {
-  withRouter,
-  Link
-} from "react-router-dom";
+import { withRouter } from "react-router-dom";
 import ProfileEdit from "../ProfileEdit/ProfileEdit";
 import HTMLMarkupContainer from "../../../Components/Containers/HTMLMarkupContainer/HTMLMarkupContainer";
 import SerialList from "../../../Components/Common/SerialList/SerialList";
@@ -29,53 +26,53 @@ class Profile extends React.Component {
     this.getProfileData = this.getProfileData.bind(this);
   }
 
-  async getProfileData (){
-    try{
+  async getProfileData() {
+    try {
       const response = await getProfileData(this.props.match.params.username);
       this.setState({
         queriedUser: response.userData,
         isProfileOwner: response.isQueriedUser
       });
       await this.getUserSerialData();
-    } catch (e){
+    } catch (e) {
       console.error("Something went wrong: \n ", e);
     }
   }
 
-  async getUserSerialData(){
-    try{
+  async getUserSerialData() {
+    try {
       const serialData = await getUserSerialData(this.state.queriedUser._id);
       this.setState({
         userSerials: serialData
       });
-    } catch (e){
+    } catch (e) {
       console.error("Something went wrong: \n ", e);
     }
   }
 
-  async componentWillMount(){
+  async componentWillMount() {
     await this.getProfileData();
   }
 
-  handleQuillInput(quillContent){
+  handleQuillInput(quillContent) {
     this.setState({
       biography: quillContent
     });
   }
 
-  handleEditButtonClick(){
+  handleEditButtonClick() {
     this.setState({
       editMode: true
     });
   }
 
-  handleCancelEdit(){
+  handleCancelEdit() {
     this.setState({
       editMode: false
     });
   }
 
-  async handleProfileSubmit(){
+  async handleProfileSubmit() {
     await handleProfileEdit(this.state.biography);
     this.setState({
       editMode: false
@@ -84,36 +81,46 @@ class Profile extends React.Component {
   }
 
   render() {
-    if (this.state.editMode){
+    if (this.state.editMode) {
       return (
-        <ProfileEdit textChanged={this.handleQuillInput} handleSubmit={this.handleProfileSubmit} handleCancel={this.handleCancelEdit}/>
+        <ProfileEdit
+          textChanged={this.handleQuillInput}
+          handleSubmit={this.handleProfileSubmit}
+          handleCancel={this.handleCancelEdit}
+        />
       );
-    }else {
+    } else {
       return (
-        <div className="profile">
-          <header className="container">
-            <h1 className="title"> {this.state.queriedUser.username} </h1>
+        <main className="profile">
+          <header className="container ">
+            <h1>User Profile</h1>
+            <p className="title"> {this.state.queriedUser.username} </p>
             <HTMLMarkupContainer content={this.state.queriedUser.biography} />
-            {
-              (this.props.clientUser && this.state.queriedUser._id === this.props.clientUser._id) ?
-                (<React.Fragment>
-                  <button className="button right-aligned" onClick={this.handleEditButtonClick.bind(this)}> Edit Profile </button>
-                </React.Fragment>) :
-                null
-            }
+            {this.props.clientUser &&
+            this.state.queriedUser._id === this.props.clientUser._id ? (
+              <Fragment>
+                <button
+                  className="button right-aligned"
+                  onClick={this.handleEditButtonClick.bind(this)}>
+                  Edit Profile
+                </button>
+              </Fragment>
+            ) : null}
             <hr className="horizontal-rule" />
           </header>
-          
+
           <section className="container">
             <SerialList
               clientUser={this.props.clientUser}
-              emptyListMessage={`${this.props.match.params.username} hasn't written any serials yet.`}
+              emptyListMessage={`${
+                this.props.match.params.username
+              } hasn't written any serials yet.`}
               serials={this.state.userSerials}
               getProfileData={this.getProfileData}
-              toggleSerialSubscription={this.props.toggleSerialSubscription} />
+              toggleSerialSubscription={this.props.toggleSerialSubscription}
+            />
           </section>
-          
-        </div>
+        </main>
       );
     }
   }
@@ -121,7 +128,8 @@ class Profile extends React.Component {
 
 Profile.propTypes = {
   clientUser: PropTypes.object,
-  match: PropTypes.object.isRequired
+  match: PropTypes.object.isRequired,
+  toggleSerialSubscription: PropTypes.func.isRequired
 };
 
 export default withRouter(Profile);

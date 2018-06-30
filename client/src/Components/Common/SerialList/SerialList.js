@@ -4,29 +4,30 @@ import deleteSerial from "../../../utilityFunctions/serials/deleteSerial";
 import "./SerialList.css";
 import SerialEntryContainer from "../../Containers/SerialEntryContainer/SerialEntryContainer";
 class SerialList extends React.Component {
-  constructor(props){
+  constructor(props) {
     super(props);
     this.deleteSerial = this.deleteSerial.bind(this);
   }
 
-  async deleteSerial(serialId){
+  async deleteSerial(serialId) {
     await deleteSerial(serialId);
   }
 
-  render(){
+  render() {
     let headerTextElement = null;
-    if (this.props.headerText){
-      headerTextElement = <h1 className="subtitle"> {this.props.headerText} </h1>;
+    if (this.props.headerText) {
+      headerTextElement = <p className="subtitle"> {this.props.headerText} </p>;
     }
-    if (this.props.serials &&  this.props.serials.length > 0){
-      const serials = this.props.serials.map((serial) => {
+    if (this.props.serials && this.props.serials.length > 0) {
+      const serials = this.props.serials.map(serial => {
         return (
           <li className="serial-list-item" key={serial._id}>
             <SerialEntryContainer
               clientUser={this.props.clientUser}
               serial={serial}
               goToSerial={this.props.goToSerial}
-              onSerialDeleted={this.deleteSerial}/>
+              onSerialDeleted={this.deleteSerial}
+            />
           </li>
         );
       });
@@ -36,8 +37,8 @@ class SerialList extends React.Component {
           <ul className="serial-list">{serials}</ul>
         </div>
       );
-    } else{
-      return(
+    } else {
+      return (
         <div className="serial-list-container">
           {headerTextElement}
           <p>{this.props.emptyListMessage}</p>

@@ -1,9 +1,5 @@
 import React, { Component } from "react";
-import {
-  BrowserRouter as Router,
-  Route,
-  Switch
-} from "react-router-dom";
+import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import "./App.css";
 import Home from "./Pages/Home/Home";
 import Profile from "./Pages/Profile/Profile/Profile";
@@ -36,43 +32,40 @@ class App extends Component {
     this.getClientUserSerials = this.getClientUserSerials.bind(this);
   }
 
-  clearUser(){
+  clearUser() {
     this.setState({
       user: null,
       isAuthenticated: false
     });
   }
 
-  setAuthStatus(authenticationResponse){
+  setAuthStatus(authenticationResponse) {
     this.setState({
       isAuthenticated: authenticationResponse
     });
   }
 
-  async componentDidMount(){
-    try{
+  async componentDidMount() {
+    try {
       await this.checkAuthentication();
-    } catch (e){
-      throw e;
-    }
-
-  }
-
-  async checkAuthentication() {
-    try{
-      const authenticationResult = await checkAuthentication();
-      this.setState(authenticationResult);
-      console.log(this.state);
     } catch (e) {
       throw e;
     }
+  }
 
+  async checkAuthentication() {
+    try {
+      const authenticationResult = await checkAuthentication();
+      this.setState(authenticationResult);
+    } catch (e) {
+      throw e;
+    }
   }
 
   /**
     Sets the current serial being viewed/edited and all parts related to it
   **/
-  setSerial(currentSerial, serialParts){
+  setSerial(currentSerial, serialParts) {
     this.setState({
       currentSerial,
       serialParts
@@ -82,23 +75,22 @@ class App extends Component {
   /**
     Get the serial matching the serialId and all parts created for it.
   **/
-  async getSerialAndPartData(serialId){
-    try{
+  async getSerialAndPartData(serialId) {
+    try {
       const result = await getSerialAndPartData(serialId);
       this.setSerial(result.currentSerial, result.serialParts);
     } catch (e) {
       throw e;
     }
-
   }
 
   /**
     Toggle whether or not an authenticated user is subscribed to a serial.
   **/
-  async toggleSerialSubscription(serialId){
-    try{
+  async toggleSerialSubscription(serialId) {
+    try {
       await toggleSerialSubscription(serialId);
-    } catch (e){
+    } catch (e) {
       console.log(e);
       throw e;
     }
@@ -107,10 +99,10 @@ class App extends Component {
   /**
     Get serials owned by the authenticated user
   **/
-  async getClientUserSerials(){
-    try{
+  async getClientUserSerials() {
+    try {
       return await getClientUserSerials(this.state.user._id);
-    } catch (e){
+    } catch (e) {
       console.error("Something went wrong: \n ", e);
     }
   }
@@ -119,35 +111,43 @@ class App extends Component {
     return (
       <Router>
         <div className="main-wrapper">
-          <Header authStatus={this.state.isAuthenticated} clientUser={this.state.user}/>
+          <Header
+            authStatus={this.state.isAuthenticated}
+            clientUser={this.state.user}
+          />
           <Switch>
-            <Route
-              exact path="/"
-              component={Home}/>
+            <Route exact path="/" component={Home} />
 
             <Route
               path="/auth"
               className="test"
-              render={() =>
+              render={() => (
                 <Authorization
                   clearUser={this.clearUser}
                   onSignIn={this.checkAuthentication}
-                  user={this.state.user} />} />
+                  user={this.state.user}
+                />
+              )}
+            />
             <Route
               path="/users/:username"
-              render={ () =>
+              render={() => (
                 <Profile
                   clientUser={this.state.user}
-                  toggleSerialSubscription={this.toggleSerialSubscription}/>} />
+                  toggleSerialSubscription={this.toggleSerialSubscription}
+                />
+              )}
+            />
             <Route
               path="/users"
               authStatus={this.state.isAuthenticated}
               clientUser={this.state.user}
-              component={UserDirectory} />
+              component={UserDirectory}
+            />
 
             <Route
               path="/serials"
-              render={()=>
+              render={() => (
                 <Serials
                   authStatus={this.state.isAuthenticated}
                   clientUser={this.state.user}
@@ -157,7 +157,10 @@ class App extends Component {
                   currentSerial={this.state.currentSerial}
                   serialParts={this.state.serialParts}
                   currentSerialPart={this.state.currentSerialPart}
-                  clearCurrentPart={this.clearCurrentSerialPart}/> } />
+                  clearCurrentPart={this.clearCurrentSerialPart}
+                />
+              )}
+            />
 
             <PrivateRoute
               path="/dashboard"
@@ -165,13 +168,12 @@ class App extends Component {
               authStatus={this.state.isAuthenticated}
               clientUser={this.state.user}
               component={Dashboard}
-              getClientUserSerials={this.getClientUserSerials}/>
+              getClientUserSerials={this.getClientUserSerials}
+            />
             <Route component={NotFound} />
           </Switch>
           {/* <Footer /> */}
         </div>
-          
-        
       </Router>
     );
   }

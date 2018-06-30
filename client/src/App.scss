@@ -1,68 +1,66 @@
 @import "./sass/variables.scss";
 @import "./sass/reset.scss";
 @import "./sass/form.scss";
-*{
+* {
   box-sizing: border-box;
 }
 
-body{
+body {
   font-family: sans-serif;
   background-color: #f7f7f7;
 }
 
-.button{
+.button {
   border: 1px solid rgb(90, 90, 90);
   font: 20px sans-serif;
-  padding: .5rem;
+  padding: 0.5rem;
   background-color: white;
   border-radius: 5px;
   text-decoration: none;
   text-align: center;
 }
 
-.button--primary{
-  
+.button--primary {
   background-color: #0fbb0f;
   color: white;
   border: none;
 }
 
-.button--positive{
+.button--positive {
   border: none;
-  background-color: #72C2EA;
+  background-color: #72c2ea;
   color: white;
 }
 
-.button--danger{
+.button--danger {
   border: none;
   background-color: red;
   color: white;
 }
 
-.button--warn{
+.button--warn {
   border: none;
   background-color: orange;
   color: white;
 }
 
-.title{
+.title {
   font-size: 24px;
   margin-bottom: 1rem;
 }
 
 // Full width being full width of the container
-.is-full-width{
+.is-full-width {
   width: 100%;
 }
 
-.is-full-height{
+.is-full-height {
   height: 100%;
 }
-.content{
-
+.content {
 }
 
-.content--centered{
+.content--centered {
   text-align: center;
 }
 
@@ -70,32 +68,31 @@ body{
   text-align: center;
 }
 
-.main-wrapper{
+.main-wrapper {
   min-height: calc(100vh - 50px);
   display: flex;
   flex-direction: column;
 }
 
-.container{
+.container {
   padding: 1rem;
   // flex-grow: 1;
   display: flex;
   flex-direction: column;
 }
 
-.container--centered{
+.container--centered {
   align-items: center;
 }
-.horizontal-rule{
+.horizontal-rule {
   border-top: 1px solid black;
-  margin: 0;
+  margin: 1rem 0;
 }
 
-.text-editor{
-
+.text-editor {
 }
 
-.card{
+.card {
   display: flex;
   border: 1px solid grey;
   border-radius: 3px;
@@ -103,26 +100,24 @@ body{
   background-color: white;
 }
 
-.card--vertical{
+.card--vertical {
   flex-direction: column;
 }
 
-
-@media screen and (min-width: 426px){
-  .content{
+@media screen and (min-width: 426px) {
+  .content {
     width: 90%;
   }
-  .text-content{
+  .text-content {
     width: 90%;
   }
-
 }
 
-@media screen and (min-width: 769px){
-  .content{
+@media screen and (min-width: 769px) {
+  .content {
     width: 70%;
   }
-  .text-content{
+  .text-content {
     width: 70%;
   }
 }

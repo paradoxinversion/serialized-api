@@ -2,10 +2,7 @@ import React from "react";
 import axiosInstance from "../../../axiosInstance";
 import PropTypes from "prop-types";
 class LogOut extends React.Component {
-  constructor(props){
-    super(props);
-  }
-  componentWillMount(){
+  componentWillMount() {
     axiosInstance.get("/users/auth/logout");
     this.props.clearUser();
   }
@@ -18,7 +15,6 @@ class LogOut extends React.Component {
     );
   }
 }
-
 
 LogOut.propTypes = {
   clearUser: PropTypes.func.isRequired

@@ -1,8 +1,6 @@
 import React from "react";
 import PropTypes from "prop-types";
-import {
-  Link
-} from "react-router-dom";
+import { Link } from "react-router-dom";
 
 import SerialList from "../../Components/Common/SerialList/SerialList";
 import getUserSerialSubscriptions from "../../utilityFunctions/serials/getUserSerialSubscriptions";
@@ -17,7 +15,7 @@ class Dashboard extends React.Component {
     };
   }
 
-  async componentDidMount(){
+  async componentDidMount() {
     await this.props.checkAuthentication();
     await this.getSubscribedSerials();
     const clientSerials = await this.props.getClientUserSerials();
@@ -26,7 +24,7 @@ class Dashboard extends React.Component {
     });
   }
 
-  async getSubscribedSerials(){
+  async getSubscribedSerials() {
     const subscribedSerials = await getUserSerialSubscriptions();
     this.setState({
       subscribedSerials
@@ -34,34 +32,44 @@ class Dashboard extends React.Component {
   }
 
   render() {
-    let createSerial;
-    const newSerialLink = `/serials/create`;
-    createSerial = <Link className="button button--primary dashboard-option" to={newSerialLink}> New Serial </Link>;
-
     return (
-      <div>
+      <main>
         <header className="container">
-          <h1 className="title"> Welcome back, {this.props.clientUser.username} </h1>
+          <h1>User Profile</h1>
+          <p className="title">
+            {" "}
+            Welcome back, {this.props.clientUser.username}{" "}
+          </p>
           <div className="dashboard-options">
-            <Link className="button dashboard-option" to={`/users/${this.props.clientUser.username}`}> Profile </Link>
-            {createSerial}
+            <Link
+              className="button dashboard-option"
+              to={`/users/${this.props.clientUser.username}`}>
+              {" "}
+              Profile{" "}
+            </Link>
+            <Link
+              className="button button--primary dashboard-option"
+              to="/serials/create">
+              New Serial
+            </Link>
           </div>
         </header>
-        
+
         <section className="container">
           <SerialList
             clientUser={this.props.clientUser}
             headerText="Your Serials"
             emptyListMessage="You have not written any serials yet."
-            serials={this.state.clientUserSerials}/>
+            serials={this.state.clientUserSerials}
+          />
           <SerialList
             clientUser={this.props.clientUser}
             headerText="Subscribed Serials"
             emptyListMessage="You have not subscribed to any serials yet."
-            serials={this.state.subscribedSerials}/>
+            serials={this.state.subscribedSerials}
+          />
         </section>
-       
-      </div>
+      </main>
     );
   }
 }

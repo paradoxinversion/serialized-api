@@ -1,17 +1,16 @@
 import React from "react";
 import PropTypes from "prop-types";
-import {QuillContainer} from "../../../Components/Common/Forms/FormComponents";
+import { QuillContainer } from "../../../Components/Common/Forms/FormComponents";
 class ProfileEdit extends React.Component {
   constructor(props) {
     super(props);
-    this.state ={
+    this.state = {
       biography: ""
     };
     this.handleQuillInput = this.handleQuillInput.bind(this);
   }
-  componentDidMount(){
-  }
-  handleQuillInput(quillContent){
+  componentDidMount() {}
+  handleQuillInput(quillContent) {
     this.setState({
       biography: quillContent
     });
@@ -19,20 +18,30 @@ class ProfileEdit extends React.Component {
   }
   render() {
     return (
-      <div>
+      <main>
         <header className="container">
           <h1> Profile Edit </h1>
         </header>
         <section className="container container--centered">
           <form className="form form--standalone">
-            <QuillContainer textChanged={this.handleQuillInput}/>
+            <QuillContainer textChanged={this.handleQuillInput} />
             <section className="form__option-bar">
-              <button className="button button--primary form__button--center" onClick={this.props.handleSubmit}> Submit </button>
-              <button className="button button--warn form__button--end" onClick={this.props.handleCancel}> Cancel </button>
+              <button
+                className="button button--primary form__button--center"
+                onClick={this.props.handleSubmit}>
+                {" "}
+                Submit{" "}
+              </button>
+              <button
+                className="button button--warn form__button--end"
+                onClick={this.props.handleCancel}>
+                {" "}
+                Cancel{" "}
+              </button>
             </section>
           </form>
         </section>
-      </div>
+      </main>
     );
   }
 }

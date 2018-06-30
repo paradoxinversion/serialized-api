@@ -17,54 +17,76 @@ class CreateSerialPart extends React.Component {
     this.handleFormInput = this.handleFormInput.bind(this);
     this.handleQuillInput = this.handleQuillInput.bind(this);
   }
-  async componentDidMount(){
-    if (this.props.currentSerial === null || this.props.currentSerial._id !== this.props.match.params.id){
+  async componentDidMount() {
+    if (
+      this.props.currentSerial === null ||
+      this.props.currentSerial._id !== this.props.match.params.id
+    ) {
       await this.props.getSerialData(this.props.match.params.id);
     }
   }
-  handleFormInput(event){
+  handleFormInput(event) {
     const target = event.target;
     const value = target.type === "checkbox" ? target.checked : target.value;
     const name = target.name;
     this.setState({
       [name]: value
-
     });
   }
 
-  handleQuillInput(quillContent){
+  handleQuillInput(quillContent) {
     this.setState({
       content: quillContent
     });
   }
 
-  async handleSerialPartSubmit(event){
+  async handleSerialPartSubmit(event) {
     event.preventDefault();
-    await handleSerialPartSubmission(this.props.currentSerial._id, this.state.title, this.state.content);
+    await handleSerialPartSubmission(
+      this.props.currentSerial._id,
+      this.state.title,
+      this.state.content
+    );
     const serial = {
       pathname: `/serials/${this.props.currentSerial._id}`
     };
     this.props.history.push(serial);
-
   }
 
   render() {
-    const toolbarOptions = [ [{ "indent": "-1"}, { "indent": "+1" }],["bold", "italic", "underline", "strike"]];
+    const toolbarOptions = [
+      [{ indent: "-1" }, { indent: "+1" }],
+      ["bold", "italic", "underline", "strike"]
+    ];
 
     return (
-      <div className="is-full-width">
-          
-        <section className="container container--centered" >
+      <main className="is-full-width">
+        <section className="container container--centered">
           <h1 className="title"> New Serial Part</h1>
-          <form className="form form--standalone form--full-height" onSubmit={this.handleSubmit}>
-            <InputField inputType="text" title="Title" name="title" controlFunc={this.handleFormInput} content={this.state.title} isRequired={true} />
-            <button className="button is-primary" type="submit"  onClick={this.handleSerialPartSubmit.bind(this)}>Submit</button>
-            <QuillContainer toolbarOptions={toolbarOptions} textChanged={this.handleQuillInput}/>
+          <form
+            className="form form--standalone form--full-height"
+            onSubmit={this.handleSubmit}>
+            <InputField
+              inputType="text"
+              title="Title"
+              name="title"
+              controlFunc={this.handleFormInput}
+              content={this.state.title}
+              isRequired={true}
+            />
+            <button
+              className="button is-primary"
+              type="submit"
+              onClick={this.handleSerialPartSubmit.bind(this)}>
+              Submit
+            </button>
+            <QuillContainer
+              toolbarOptions={toolbarOptions}
+              textChanged={this.handleQuillInput}
+            />
           </form>
         </section>
-       
-      </div>
-
+      </main>
     );
   }
 }

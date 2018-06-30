@@ -1,25 +1,23 @@
 import React from "react";
 import PropTypes from "prop-types";
 import toggleLike from "../../../utilityFunctions/likes/toggleLike";
-import checkForUserLike from "../../../utilityFunctions/likes/checkForUserLike";
 class LikeButton extends React.Component {
-  constructor(props){
-    super(props);
-  }
-  async toggleLike(){
-    try{
-      await toggleLike(this.props.entityType, this.props.entityId, this.props.parentEntityId);
-    } catch (e){
+  async toggleLike() {
+    try {
+      await toggleLike(
+        this.props.entityType,
+        this.props.entityId,
+        this.props.parentEntityId
+      );
+    } catch (e) {
       console.log(e);
       throw e;
     }
   }
 
-  render(){
-    console.log(this);
+  render() {
     return (
-      
-      <i className="fas fa-heart"></i>
+      <i className="fas fa-heart" />
 
       // <button className="button" onClick={async () => {
       //   await Promise.all[
@@ -40,6 +38,7 @@ class LikeButton extends React.Component {
 LikeButton.propTypes = {
   entityType: PropTypes.number.isRequired,
   entityId: PropTypes.number.isRequired,
+  parentEntityId: PropTypes.number,
   match: PropTypes.object.isRequired
 };
 export default LikeButton;

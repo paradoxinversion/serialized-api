@@ -1,10 +1,6 @@
 import React from "react";
 import PropTypes from "prop-types";
-import {
-  Route,
-  withRouter,
-  Switch
-} from "react-router-dom";
+import { Route, withRouter, Switch } from "react-router-dom";
 import "./Serials.css";
 // ;
 import CreateSerial from "../CreateSerial/CreateSerial";
@@ -18,46 +14,49 @@ import PrivateRoute from "../../../Components/PrivateRoute/PrivateRoute";
 import NotFound from "../../NotFound/NotFound";
 import getAllSerials from "../../../utilityFunctions/serials/getAllSerials";
 
-
 class Serials extends React.Component {
-  constructor(props){
+  constructor(props) {
     super(props);
     this.state = {
-      serialDirectoryLookup: null,
+      serialDirectoryLookup: null
     };
     this.getUserSerialData = this.getUserSerialData.bind(this);
   }
 
-  async getUserSerialData(){
-    try{
+  async getUserSerialData() {
+    try {
       const serialData = await getAllSerials();
       this.setState({
         serialDirectoryLookup: serialData.serials
       });
-    } catch (e){
+    } catch (e) {
       console.error("Something went wrong: \n ", e);
     }
   }
 
-  render(){
+  render() {
     return (
-
       <div className="serials-container">
         <Switch>
           <Route
-            exact path={`${this.props.match.path}/`}
-            render={() =>
+            exact
+            path={`${this.props.match.path}/`}
+            render={() => (
               <SerialDirectory
                 lookupSerials={this.getUserSerialData}
                 serials={this.state.serialDirectoryLookup}
                 currentSerial={this.props.currentSerial}
-                clientUser={this.props.clientUser} />} />
+                clientUser={this.props.clientUser}
+              />
+            )}
+          />
 
           <PrivateRoute
             path={`${this.props.match.path}/create`}
             authStatus={this.props.authStatus}
             clientUser={this.props.clientUser}
-            component={CreateSerial} />
+            component={CreateSerial}
+          />
 
           <PrivateRoute
             path={`${this.props.match.path}/:id/:partId/edit`}
@@ -66,28 +65,30 @@ class Serials extends React.Component {
             currentSerial={this.props.currentSerial}
             serialParts={this.props.serialParts}
             currentSerialPart={this.props.currentSerialPart}
-            component={EditSerialPart} />
+            component={EditSerialPart}
+          />
 
           <PrivateRoute
             path={`${this.props.match.path}/:id/edit`}
             authStatus={this.props.authStatus}
             clientUser={this.props.clientUser}
             currentSerial={this.props.currentSerial}
-            component={EditSerial} />
+            component={EditSerial}
+          />
 
           <PrivateRoute
             path={`${this.props.match.path}/:id/new`}
             authStatus={this.props.authStatus}
             clientUser={this.props.clientUser}
             getSerialData={this.props.getSerialData}
-            component={CreateSerialPart}
             currentSerial={this.props.currentSerial}
             serialParts={this.props.serialParts}
-            currentSerialPart={this.props.currentSerialPart}/>
+            currentSerialPart={this.props.currentSerialPart}
+            component={CreateSerialPart}
+          />
           <Route
-
             path={`${this.props.match.path}/:id/:partId`}
-            component={()=>
+            component={() => (
               <ViewSerialPart
                 getSerialData={this.props.getSerialData}
                 clientUser={this.props.clientUser}
@@ -95,22 +96,25 @@ class Serials extends React.Component {
                 serialParts={this.props.serialParts}
                 setCurrentPart={this.props.setCurrentPart}
                 currentSerialPart={this.props.currentSerialPart}
-              />} />
+              />
+            )}
+          />
 
           <Route
             path={`${this.props.match.path}/:id`}
-            render={()=>
+            render={() => (
               <SerialOverview
                 getSerialData={this.props.getSerialData}
                 serial={this.props.currentSerial}
                 serialParts={this.props.serialParts}
                 clientUser={this.props.clientUser}
                 currentSerial={this.props.currentSerial}
-              />} />
+              />
+            )}
+          />
 
           <Route component={NotFound} />
         </Switch>
-
       </div>
     );
   }
