@@ -22,7 +22,7 @@ class SerialOverview extends React.Component {
             <div className="serial-metadata">
               <div className="serial-metadata-info">
                 <h1 className="title"> {this.props.currentSerial.title}</h1>
-                <h2 className="subtitle">
+                <p className="subtitle">
                   By{" "}
                   <Link
                     to={`/users/${
@@ -30,7 +30,7 @@ class SerialOverview extends React.Component {
                     }`}>
                     {this.props.currentSerial.author_id.username}
                   </Link>
-                </h2>
+                </p>
                 <p className="genre">
                   {this.props.currentSerial.genre}
                   {nsfw}

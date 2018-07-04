@@ -15,7 +15,7 @@ const UserList = props => {
         />
       );
     });
-    return <div className="user-list">{users}</div>;
+    return <section className="user-list">{users}</section>;
   } else {
     return (
       <p>

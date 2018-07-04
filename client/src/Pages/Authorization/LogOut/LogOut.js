@@ -9,9 +9,9 @@ class LogOut extends React.Component {
 
   render() {
     return (
-      <div>
+      <main>
         <p>Thanks for coming!</p>
-      </div>
+      </main>
     );
   }
 }

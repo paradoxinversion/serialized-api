@@ -87,8 +87,8 @@ class EditSerialPart extends React.Component {
     ];
 
     return (
-      <section className="container container--centered">
-        <h1 className="title"> Edit Serial </h1>
+      <main className="container container--centered">
+        <h1> Edit Serial </h1>
         <form
           className="form form--standalone form--full-height"
           onSubmit={this.handleSubmit}>
@@ -112,7 +112,7 @@ class EditSerialPart extends React.Component {
             onClick={this.handleSerialSubmit.bind(this)}
           />
         </form>
-      </section>
+      </main>
     );
   }
 
@@ -120,17 +120,6 @@ class EditSerialPart extends React.Component {
     // const toolbarOptions = [ [{ "indent": "-1"}, { "indent": "+1" }],["bold", "italic", "underline", "strike"]];
     return (
       <React.Fragment>
-        {/* <section className="container container--centered">
-
-          <h1 className="title"> Edit Serial </h1>
-          <form className="form form--standalone form--full-height" onSubmit={this.handleSubmit}>
-            <InputField inputType="text" title="Title" name="title" controlFunc={this.handleFormInput} content={this.state.title} isRequired={true} />
-            <QuillContainer value={this.state.content} toolbarOptions={toolbarOptions} textChanged={this.handleQuillInput}/>
-            <input className="button button--primary"type="submit" value="Submit" onClick={this.handleSerialSubmit.bind(this)} />
-
-
-          </form>
-        </section> */}
         {this.state.contentLoaded ? (
           this.renderEditForm()
         ) : (

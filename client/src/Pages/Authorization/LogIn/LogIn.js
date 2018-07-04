@@ -40,15 +40,14 @@ class LogIn extends React.Component {
 
   render() {
     return (
-      <div className="log-in">
+      <main className="log-in">
         <header className="container">
-          <h1 className="title"> Welcome Back! </h1>
+          <h1> Log In </h1>
         </header>
         <section className="container container--centered">
           <form
             className="log-in-form form form--standalone"
-            onSubmit={this.handleSubmit}
-          >
+            onSubmit={this.handleSubmit}>
             <InputField
               name="email"
               inputType="email"
@@ -77,7 +76,7 @@ class LogIn extends React.Component {
             />
           </form>
         </section>
-      </div>
+      </main>
     );
   }
 }

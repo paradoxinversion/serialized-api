@@ -67,11 +67,11 @@ class ViewSerialPart extends React.Component {
           <header className="container">
             <div className="serial-part-metadata">
               <div className="serial-part-metadata-info">
-                <h1 className="title"> {this.state.part.title}</h1>
-                <h1 className="subtitle">
+                <h1> {this.state.part.title}</h1>
+                <p className="subtitle">
                   {" "}
                   By {this.props.currentSerial.author_id.username}
-                </h1>
+                </p>
                 <p>
                   {`Part ${this.state.part.part_number + 1}`} of{" "}
                   {`${this.props.serialParts.length} in ${

@@ -35,11 +35,8 @@ class Dashboard extends React.Component {
     return (
       <main>
         <header className="container">
-          <h1>User Profile</h1>
-          <p className="title">
-            {" "}
-            Welcome back, {this.props.clientUser.username}{" "}
-          </p>
+          <h1>Dashboard</h1>
+          <p> Welcome back, {this.props.clientUser.username} </p>
           <div className="dashboard-options">
             <Link
               className="button dashboard-option"

@@ -62,7 +62,7 @@ class CreateSerialPart extends React.Component {
     return (
       <main className="is-full-width">
         <section className="container container--centered">
-          <h1 className="title"> New Serial Part</h1>
+          <h1> New Serial Part</h1>
           <form
             className="form form--standalone form--full-height"
             onSubmit={this.handleSubmit}>

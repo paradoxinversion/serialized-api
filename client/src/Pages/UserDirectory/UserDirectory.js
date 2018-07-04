@@ -29,9 +29,9 @@ class UserDirectory extends React.Component {
   }
   render() {
     return (
-      <div>
+      <main>
         <header className="container">
-          <h1 className="title">Serialized Users</h1>
+          <h1>Serialized Users</h1>
         </header>
         <section className="container">
           <UserList
@@ -39,7 +39,7 @@ class UserDirectory extends React.Component {
             users={this.state.users}
           />
         </section>
-      </div>
+      </main>
     );
   }
 }
