@@ -6,7 +6,7 @@ const HTMLMarkupContainer = props => {
   const partContainer = (
     <div className="text-content" dangerouslySetInnerHTML={html} />
   );
-  return <Fragment className="container">{partContainer}</Fragment>;
+  return <Fragment>{partContainer}</Fragment>;
 };
 
 HTMLMarkupContainer.propTypes = {

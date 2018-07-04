@@ -6,6 +6,7 @@ import SerialStepper from "../../../Components/SerialStepper/SerialStepper";
 import LikeButton from "../../../Components/Common/LikeButton/LikeButton";
 import LikeCounter from "../../../Components/Common/LikeCounter/LikeCounter";
 import getLikes from "../../../utilityFunctions/getLikes";
+import checkForUserLike from "../../../utilityFunctions/likes/checkForUserLike";
 import getSerialPart from "../../../utilityFunctions/serials/getSerialPart";
 import "./ViewSerialPart.css";
 
@@ -14,7 +15,8 @@ class ViewSerialPart extends React.Component {
     super(props);
     this.state = {
       part: null,
-      likes: []
+      likes: [],
+      likedByUser: false
     };
     this.getLikes = this.getLikes.bind(this);
   }
@@ -40,10 +42,19 @@ class ViewSerialPart extends React.Component {
 
   async getLikes() {
     try {
-      const likes = await getLikes(1, this.props.match.params.partId);
-      this.setState({
-        likes: likes.data
+      const likes = await getLikes(this.props.match.params.partId);
+      await this.setState({
+        likes: likes.data.likes
       });
+      if (this.props.clientUser !== null) {
+        const userLike = checkForUserLike(
+          this.props.clientUser._id,
+          this.state.likes
+        );
+        await this.setState({
+          likedByUser: userLike
+        });
+      }
     } catch (e) {
       throw e;
     }
@@ -74,11 +85,10 @@ class ViewSerialPart extends React.Component {
                   {this.props.clientUser && this.props.clientUser._id ? (
                     <LikeButton
                       clientUser={this.props.clientUser}
-                      entityType="1"
-                      entityId={this.state.part._id}
-                      parentEntityId={this.props.currentSerial._id}
+                      serialPartId={this.state.part._id}
                       getLikes={this.getLikes}
                       likes={this.state.likes}
+                      isLiked={this.state.likedByUser}
                     />
                   ) : null}
                 </div>

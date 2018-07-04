@@ -13,7 +13,7 @@
     "build:all-local": "npm run build:server && npm run build:client-local",
     "build:all-deploy": "npm run build:server && npm run build:client-deploy",
     "start:dev": "node ./dist/app.js",
-    "start": "concurrently \"mongod\" \"npm run server-dev\" \"npm run client-dev\"",
+    "start": "concurrently \"npm run server-dev\" \"npm run client-dev\"",
     "start:heroku": "node ./dist/app.js",
     "heroku-postbuild": "npm run build:all-deploy"
   },
@@ -36,7 +36,7 @@
     "express-session": "^1.15.6",
     "lodash": "^4.17.10",
     "minimatch": "^3.0.4",
-    "mongoose": "^4.13.14",
+    "mongoose": "^5.2.0",
     "passport": "^0.4.0",
     "passport-http": "^0.3.0",
     "passport-local": "^1.0.0"

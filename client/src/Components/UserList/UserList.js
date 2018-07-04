@@ -3,21 +3,27 @@ import UserCard from "../../Components/UserCard/UserCard";
 // import "./UserDirectory.css";
 import "./UserList.css";
 
-
-const UserList =(props) => {
-  if (props.users.length > 0){
-    const users = props.users.map((user) => {
+const UserList = props => {
+  if (props.users.length > 0) {
+    const users = props.users.map(user => {
       return (
-        <UserCard user={user} key={user._id} classes="user-list-item"/>
+        <UserCard
+          clientUser={props.clientUser}
+          user={user}
+          key={user._id}
+          classes="user-list-item"
+        />
       );
     });
+    return <div className="user-list">{users}</div>;
+  } else {
     return (
-
-      <div className="user-list">{users}</div>
-
+      <p>
+        {" "}
+        No one has signed up yet. Be the first one to register and tell your
+        story.{" "}
+      </p>
     );
-  } else{
-    return <p> No one has signed up yet. Be the first one to register and tell your story. </p>;
   }
 };
 

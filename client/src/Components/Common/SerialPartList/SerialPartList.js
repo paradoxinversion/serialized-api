@@ -72,7 +72,7 @@ class SerialPartList extends React.Component {
 SerialPartList.propTypes = {
   currentSerial: PropTypes.object,
   getSerialData: PropTypes.func.isRequired,
-  serialParts: PropTypes.object,
+  serialParts: PropTypes.array,
   clientUser: PropTypes.object
 };
 

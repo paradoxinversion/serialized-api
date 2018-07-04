@@ -5,39 +5,40 @@ import getUserData from "../../utilityFunctions/users/getUserData";
 import UserList from "../../Components/UserList/UserList";
 import "./UserDirectory.css";
 
-
-class UserDirectory extends React.Component{
-  constructor(props){
+class UserDirectory extends React.Component {
+  constructor(props) {
     super(props);
     this.state = {
       users: {}
     };
   }
 
-  async getUserData(){
-    try{
+  async getUserData() {
+    try {
       const userData = await getUserData();
       this.setState({
         users: userData.data.userData
       });
-    } catch (e){
+    } catch (e) {
       console.error("Something went wrong: \n ", e);
     }
   }
 
-  componentWillMount(){
+  componentDidMount() {
     this.getUserData();
   }
-  render () {
+  render() {
     return (
       <div>
         <header className="container">
           <h1 className="title">Serialized Users</h1>
         </header>
         <section className="container">
-          <UserList users={this.state.users} />
+          <UserList
+            clientUser={this.props.clientUser}
+            users={this.state.users}
+          />
         </section>
-        
       </div>
     );
   }

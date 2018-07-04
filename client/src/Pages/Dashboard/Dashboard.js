@@ -76,7 +76,7 @@ class Dashboard extends React.Component {
 
 Dashboard.propTypes = {
   checkAuthentication: PropTypes.func.isRequired,
-  clientUser: PropTypes.object.isRequred,
+  clientUser: PropTypes.object.isRequired,
   history: PropTypes.object.isRequired,
   getClientUserSerials: PropTypes.func
 };

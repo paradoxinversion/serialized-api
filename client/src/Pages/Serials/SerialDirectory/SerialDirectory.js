@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import SerialList from "../../../Components/Common/SerialList/SerialList";
 import "./SerialDirectory.css";
 class SerialDirectory extends React.Component {
-  async componentWillMount() {
+  async componentDidMount() {
     await this.props.lookupSerials();
   }
 

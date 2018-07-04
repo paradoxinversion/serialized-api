@@ -1,32 +1,54 @@
 import User from "../mongo/User";
 import Role from "../mongo/Role";
 import bcrypt from "bcrypt";
-
 /**
  * This function returns a user's role
  * @param {string} userId The id of the user who's role to get
  * @returns {Object} an object containing the user's role name and access level
  */
-const getRole = async function (userId){
-  const user = await User.findOne({_id:userId}).populate("role");
-  if (!user){
+const getRole = async function(userId) {
+  const user = await User.findOne({ _id: userId }).populate("role");
+  if (!user) {
     const userNotFoundError = new Error("User Not Found");
     throw userNotFoundError;
   }
   return {
     role: user.role.role,
-    access: user.role.accessLevel
+    accessLevel: user.role.accessLevel
   };
 };
+/**
+ * Changes the User's role
+ * 0: Reader; 1: Writer; 2: Admin
+ * @param {string} userId The id of the user who's role to get
+ * @returns {boolean} true if successful, false if something went wrong
+ */
+const changeUserRole = async function(userId, newAccessLevel) {
+  try {
+    const updatedUserRole = await Role.findOne({ accessLevel: newAccessLevel });
+    const user = await User.findOneAndUpdate(
+      { _id: userId },
+      { role: updatedUserRole._id },
+      { new: true }
+    );
 
+    await user.save();
+    if (!user) {
+      const userNotFoundError = new Error("User Not Found");
+      throw userNotFoundError;
+    }
+    return true;
+  } catch (e) {
+    console.log(e);
+    return false;
+  }
+};
 /**
  * This function returns all users from the database
  * @returns {Array} an array of users
  */
-const getAllUsers = async () =>{
-
-  const userList = await User
-    .find()
+const getAllUsers = async () => {
+  const userList = await User.find()
     .populate("role")
     .select({
       username: 1,
@@ -34,7 +56,6 @@ const getAllUsers = async () =>{
       lastName: 1,
       biography: 1
     });
-
 
   return userList;
 };
@@ -44,9 +65,8 @@ const getAllUsers = async () =>{
  * @param {string} userName the username of the user to find
  * @returns {Object} an object containing the user searched for (or null)
  */
-const getUser = async(userName) =>{
-  const user = await User
-    .findOne({username:userName})
+const getUser = async userName => {
+  const user = await User.findOne({ username: userName })
     .populate("role")
     .select({
       username: 1,
@@ -68,16 +88,18 @@ const getUser = async(userName) =>{
  * @param {Date} requestBody.birthdate the user's birthdate
  * @returns {Object} an object containing the user searched for (or null)
  */
-const addNewUser = async (requestBody) => {
+const addNewUser = async requestBody => {
   let hashedPassword;
-  if (requestBody.password){
+  if (requestBody.password) {
     hashedPassword = await bcrypt.hash(requestBody.password, 10);
-  } else{
-    const noPasswordError = new Error("No password was included in the signup request");
+  } else {
+    const noPasswordError = new Error(
+      "No password was included in the signup request"
+    );
     noPasswordError.statusCode = 400;
     throw noPasswordError;
   }
-  const role = await Role.findOne({accessLevel: 0});
+  const role = await Role.findOne({ accessLevel: 0 });
   const lowercaseUsername = requestBody.username.toLowerCase();
   const newUser = new User({
     email: requestBody.email,
@@ -90,16 +112,18 @@ const addNewUser = async (requestBody) => {
     role: role._id
   });
 
-  try{
+  try {
     await newUser.save();
     return newUser;
-  } catch (e){
+  } catch (e) {
     // Handle validation/duplicate user errors here
-    if (e.name === "MongoError" || e.code === 11000){
-      const duplicateEmailError = new Error("User already exists with that email");
+    if (e.name === "MongoError" || e.code === 11000) {
+      const duplicateEmailError = new Error(
+        "User already exists with that email"
+      );
       duplicateEmailError.statusCode = 409;
       throw duplicateEmailError;
-    } else if (e.name === "ValidationError"){
+    } else if (e.name === "ValidationError") {
       const validatorError = new Error(e.message);
       validatorError.statusCode = 400;
       throw validatorError;
@@ -121,15 +145,21 @@ const updateUser = async (requestBody, userId) => {
   if (requestBody.firstName) valuesToUpdate.firstName = requestBody.firstName;
   if (requestBody.lastName) valuesToUpdate.lastName = requestBody.lastName;
   if (requestBody.biography) valuesToUpdate.biography = requestBody.biography;
-  if (Object.keys(valuesToUpdate).length === 0){
-    const noUpdateError = new Error("No valid fields were included in the update request");
+  if (Object.keys(valuesToUpdate).length === 0) {
+    const noUpdateError = new Error(
+      "No valid fields were included in the update request"
+    );
     throw noUpdateError;
   }
-  const query = {_id: userId};
+  const query = { _id: userId };
   const updateOptions = {
     new: true
   };
-  const update = await User.findOneAndUpdate(query, valuesToUpdate, updateOptions);
+  const update = await User.findOneAndUpdate(
+    query,
+    valuesToUpdate,
+    updateOptions
+  );
   return update;
 };
 
@@ -138,8 +168,8 @@ const updateUser = async (requestBody, userId) => {
  * @param {string} userId The id of the user to delete
  * @returns {Object} an object containing the deleted user information
  */
-const deleteUser = async (userId) => {
-  return await User.remove({_id: userId});
+const deleteUser = async userId => {
+  return await User.remove({ _id: userId });
 };
 export {
   getRole,
@@ -147,5 +177,6 @@ export {
   addNewUser,
   updateUser,
   deleteUser,
-  getUser
+  getUser,
+  changeUserRole
 };

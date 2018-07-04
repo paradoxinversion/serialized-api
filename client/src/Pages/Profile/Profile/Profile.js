@@ -50,7 +50,7 @@ class Profile extends React.Component {
     }
   }
 
-  async componentWillMount() {
+  async componentDidMount() {
     await this.getProfileData();
   }
 

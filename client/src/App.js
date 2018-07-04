@@ -140,9 +140,12 @@ class App extends Component {
             />
             <Route
               path="/users"
-              authStatus={this.state.isAuthenticated}
-              clientUser={this.state.user}
-              component={UserDirectory}
+              render={() => (
+                <UserDirectory
+                  clientUser={this.state.user}
+                  authStatus={this.state.isAuthenticated}
+                />
+              )}
             />
 
             <Route

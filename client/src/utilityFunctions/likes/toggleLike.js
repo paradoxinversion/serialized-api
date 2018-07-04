@@ -1,13 +1,15 @@
 import axiosInstance from "../../axiosInstance";
-const toggleLike = async (entityType, entityId, parentEntityId) => {
-  try{
+/**
+ * Toggles the liked state of the specified entity type
+ * @param {*} serialPartId
+ */
+const toggleLike = async serialPartId => {
+  try {
     const likeToggle = await axiosInstance.post(`/like`, {
-      entityType,
-      entityId,
-      parentEntityId
+      serialPartId
     });
     return likeToggle;
-  } catch (e){
+  } catch (e) {
     console.log(e);
     throw e;
   }

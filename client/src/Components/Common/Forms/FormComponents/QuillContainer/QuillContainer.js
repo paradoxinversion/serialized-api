@@ -5,7 +5,7 @@ import "./quill.snow.css";
 import QuillDeltaToHtmlConverter from "quill-delta-to-html";
 import "./QuillContainer.css";
 class QuillContainer extends React.Component {
-  constructor(props){
+  constructor(props) {
     super(props);
     this.state = {
       rawContents: null,
@@ -15,29 +15,15 @@ class QuillContainer extends React.Component {
     this.convertQuillDelta = this.convertQuillDelta.bind(this);
   }
 
-  // static getDerivedStateFromProps(nextProps, prevState){
-  //   console.log(nextProps);
-  //   console.log(prevState);
-  //   return{
-  //     what: "whaaaaa"
-  //   };
-  //   // if (this.state.rawContents === null){
-  //   //   this.state.quill.clipboard.dangerouslyPasteHTML(this.props.value, "api");
-  //   // }
-
-  // }
- 
-
-  componentDidMount(){
+  componentDidMount() {
     const quill = new Quill("#editor", {
       theme: "snow",
       modules: {
         toolbar: this.props.toolbarOptions
       }
     });
-    if (this.props.value){
+    if (this.props.value) {
       quill.clipboard.dangerouslyPasteHTML(this.props.value, "api");
-
     }
     quill.on("text-change", () => {
       this.setState({
@@ -50,32 +36,29 @@ class QuillContainer extends React.Component {
     this.setState({
       quill
     });
-    
   }
 
-  componentWillUnmount(){
+  componentWillUnmount() {
     this.state.quill.off("text-change");
   }
-  convertQuillDelta(){
+  convertQuillDelta() {
     const deltaOps = this.state.rawContents.ops;
     const c = {};
     const converter = new QuillDeltaToHtmlConverter(deltaOps, c);
     const html = converter.convert();
     this.props.textChanged(html);
   }
-  handleUserInput(){
-
-  }
-  render(){
+  handleUserInput() {}
+  render() {
     return (
-      <div className="text-editor" >
-        <div id="editor" ></div>
+      <div className="text-editor">
+        <div id="editor" />
       </div>
     );
   }
 }
 
-QuillContainer.propTypes ={
+QuillContainer.propTypes = {
   textChanged: PropTypes.func.isRequired,
   toolbarOptions: PropTypes.array
 };

@@ -1,28 +1,28 @@
 import Like from "../mongo/Like";
 /**
  * Adds a new "like" entry to the DB-- or removes it if one exists
- * @param {string} userId - The user's ID 
+ * @param {string} userId - The user's ID
  * @param {string} serialPartId - The serial part's ID
- * @param {string} parentSerialId - The parent of the serial part
  * @returns {Object} - The new like entry, if toggling a like 'on'
  */
-export const toggleLikeSerialPart = async (userId, serialPartId, parentSerialId) => {
-  try{
-    const existingPartLike = await Like.findOne({user:userId, likedEntityId: serialPartId});
-    if (existingPartLike){
-      await Like.remove({user:userId, likedEntityId:serialPartId});
+export const toggleLikeSerialPart = async (userId, serialPartId) => {
+  try {
+    const existingPartLike = await Like.findOne({
+      user: userId,
+      serialPart: serialPartId
+    });
+    if (existingPartLike) {
+      await Like.remove({ user: userId, likedEntityId: serialPartId });
     } else {
       const newPartLike = new Like({
         likedEntityId: serialPartId,
-        user: userId,
-        parentEntityId: parentSerialId,
-        likedEntityType: 1
+        user: userId
       });
 
       await newPartLike.save();
       return newPartLike;
     }
-  } catch (e){
+  } catch (e) {
     throw e;
   }
 };
@@ -30,24 +30,26 @@ export const toggleLikeSerialPart = async (userId, serialPartId, parentSerialId)
 /**
  * Adds a new "like" entry to the DB-- or removes it if one exists
  * @param {string} userId - The toggling user's ID
- * @param {string} serialId - The ID of the serial to be toggled
+ * @param {string} serialPartId - The ID of the serial part to be toggled
  */
-export const toggleLikeSerial = async (userId, serialId) => {
-  try{
-    const existingSerialLike = await Like.findOne({user:userId, likedEntityId: serialId});
-    if (existingSerialLike){
-      await Like.remove({user:userId, likedEntityId:serialId});
+export const toggleLikeSerial = async (userId, serialPartId) => {
+  try {
+    const existingSerialLike = await Like.findOne({
+      user: userId,
+      serialPart: serialPartId
+    });
+    if (existingSerialLike) {
+      await Like.remove({ user: userId, serialPart: serialPartId });
     } else {
       const newSerialLike = new Like({
-        likedEntityId: serialId,
-        user: userId,
-        likedEntityType: 0
+        serialPart: serialPartId,
+        user: userId
       });
 
       await newSerialLike.save();
       return newSerialLike;
     }
-  } catch (e){
+  } catch (e) {
     console.log(e);
     throw e;
   }
@@ -58,13 +60,32 @@ export const toggleLikeSerial = async (userId, serialId) => {
  * @param {*} serialPartId - The serialPartId to match
  * @returns {Array} - An array of likes for the supplied serial part
  */
-export const getSerialPartLikes = async (serialPartId) => {
+export const getSerialPartLikes = async serialPartId => {
   try {
-    const serialPartLikes = await Like.find({likedEntityId: serialPartId}).select({
-      user:1
+    const serialPartLikes = await Like.find({
+      serialPart: serialPartId
+    }).select({
+      user: 1
     });
-    return serialPartLikes;
-  } catch (e){
+    return { likes: serialPartLikes };
+  } catch (e) {
+    throw e;
+  }
+};
+
+export const checkDoesUserLikePart = async (userId, serialPartId) => {
+  try {
+    const userLike = await Like.findOne({
+      serialPart: serialPartId,
+      user: userId
+    });
+
+    if (userLike !== null) {
+      return true;
+    } else {
+      return false;
+    }
+  } catch (e) {
     throw e;
   }
 };

@@ -2,7 +2,7 @@ import React from "react";
 import axiosInstance from "../../../axiosInstance";
 import PropTypes from "prop-types";
 class LogOut extends React.Component {
-  componentWillMount() {
+  componentDidMount() {
     axiosInstance.get("/users/auth/logout");
     this.props.clearUser();
   }
