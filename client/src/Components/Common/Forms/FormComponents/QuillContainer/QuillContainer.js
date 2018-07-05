@@ -60,7 +60,8 @@ class QuillContainer extends React.Component {
 
 QuillContainer.propTypes = {
   textChanged: PropTypes.func.isRequired,
-  toolbarOptions: PropTypes.array
+  toolbarOptions: PropTypes.array,
+  value: PropTypes.string
 };
 
 export default QuillContainer;

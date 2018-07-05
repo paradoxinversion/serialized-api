@@ -1,9 +1,9 @@
-import React from "react";
+import React, { Fragment } from "react";
 import PropTypes from "prop-types";
 import axiosInstance from "../../../axiosInstance";
 import moveSerialPart from "../../../utilityFunctions/moveSerialPart";
 import SerialPartEntryContainer from "../../Containers/SerialPartEntryContainer/SerialPartEntryContainer";
-
+import "./SerialPartList.css";
 /// A list representing all parts of a serial story
 class SerialPartList extends React.Component {
   constructor(props) {
@@ -38,34 +38,34 @@ class SerialPartList extends React.Component {
   }
 
   render() {
-    if (this.props.serialParts.length > 0) {
-      const serials = this.props.serialParts.map(serialPart => {
-        const uri = `/serials/${this.props.currentSerial._id}/${
-          serialPart._id
-        }`;
-        return (
-          <li key={serialPart.part_number}>
-            <SerialPartEntryContainer
-              onSerialPartDeleted={this.deleteSerialPart}
-              onPartMoved={this.movePart}
-              clientUser={this.props.clientUser}
-              currentSerial={this.props.currentSerial}
-              serialPart={serialPart}
-              serialPartUri={uri}
-              serialParts={this.props.serialParts}
-            />
-          </li>
-        );
-      });
-      return (
-        <div className="serial-part-list-container">
-          <p className="subtitle"> Parts </p>
-          <ul className="serial-part-list">{serials}</ul>
-        </div>
-      );
-    } else {
-      return <p> There are not any parts for this serial yet. </p>;
-    }
+    return (
+      <div>
+        {this.props.serialParts.length > 0 ? (
+          <Fragment>
+            <p className="title"> Parts </p>
+            <ul className="serial-part-list">
+              {this.props.serialParts.map(serialPart => (
+                <li key={serialPart.part_number}>
+                  <SerialPartEntryContainer
+                    onSerialPartDeleted={this.deleteSerialPart}
+                    onPartMoved={this.movePart}
+                    clientUser={this.props.clientUser}
+                    currentSerial={this.props.currentSerial}
+                    serialPart={serialPart}
+                    serialPartUri={`/serials/${this.props.currentSerial._id}/${
+                      serialPart._id
+                    }`}
+                    serialParts={this.props.serialParts}
+                  />
+                </li>
+              ))}
+            </ul>
+          </Fragment>
+        ) : (
+          <p> There are not any parts for this serial yet. </p>
+        )}
+      </div>
+    );
   }
 }
 

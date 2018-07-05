@@ -1,7 +1,6 @@
 import React from "react";
 import PropTypes from "prop-types";
 import toggleLike from "../../../utilityFunctions/likes/toggleLike";
-import checkForUserLike from "../../../utilityFunctions/likes/checkForUserLike";
 class LikeButton extends React.Component {
   constructor(props) {
     super(props);
@@ -21,10 +20,8 @@ class LikeButton extends React.Component {
 
   render() {
     return (
-      // <i className="fas fa-heart" />
-
       <button
-        className="button"
+        className="button serial-part-meta-option"
         onClick={async () => {
           await Promise.all[
             (await this.toggleLike(), await this.props.getLikes())
@@ -38,6 +35,8 @@ class LikeButton extends React.Component {
 
 LikeButton.propTypes = {
   serialPartId: PropTypes.string.isRequired,
-  match: PropTypes.object.isRequired
+  match: PropTypes.object.isRequired,
+  isLiked: PropTypes.bool.isRequired,
+  getLikes: PropTypes.func.isRequired
 };
 export default LikeButton;

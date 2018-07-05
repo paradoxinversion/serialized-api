@@ -121,7 +121,10 @@ class ViewSerialPart extends React.Component {
 
           <section className="container">
             <article className="serial-part-content-area">
-              <HTMLMarkupContainer content={this.state.part.content} />
+              <HTMLMarkupContainer
+                isStoryContent={true}
+                content={this.state.part.content}
+              />
             </article>
 
             <SerialStepper

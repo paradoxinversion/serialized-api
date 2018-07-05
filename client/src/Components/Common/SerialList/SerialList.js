@@ -14,44 +14,34 @@ class SerialList extends React.Component {
   }
 
   render() {
-    let headerTextElement = null;
-    if (this.props.headerText) {
-      headerTextElement = <p className="subtitle"> {this.props.headerText} </p>;
-    }
-    if (this.props.serials && this.props.serials.length > 0) {
-      const serials = this.props.serials.map(serial => {
-        return (
-          <li className="serial-list-item" key={serial._id}>
-            <SerialEntryContainer
-              clientUser={this.props.clientUser}
-              serial={serial}
-              goToSerial={this.props.goToSerial}
-              onSerialDeleted={this.deleteSerial}
-            />
-          </li>
-        );
-      });
-      return (
-        <div className="serial-list-container">
-          {headerTextElement}
-          <ul className="serial-list">{serials}</ul>
-        </div>
-      );
-    } else {
-      return (
-        <div className="serial-list-container">
-          {headerTextElement}
+    return (
+      <div className="serial-list-container">
+        {this.props.serials && this.props.serials.length > 0 ? (
+          <ul className="serial-list">
+            {this.props.serials.map(serial => (
+              <li className="serial-list-item" key={serial._id}>
+                <SerialEntryContainer
+                  clientUser={this.props.clientUser}
+                  serial={serial}
+                  goToSerial={this.props.goToSerial}
+                  onSerialDeleted={this.deleteSerial}
+                />
+              </li>
+            ))}
+          </ul>
+        ) : (
           <p>{this.props.emptyListMessage}</p>
-        </div>
-      );
-    }
+        )}
+      </div>
+    );
   }
 }
-
+SerialList.defaultProps = {
+  name: "Stranger"
+};
 SerialList.propTypes = {
   serials: PropTypes.array.isRequired,
   emptyListMessage: PropTypes.string.isRequired,
-  headerText: PropTypes.string,
   getProfileData: PropTypes.func,
   clientUser: PropTypes.object,
   goToSerial: PropTypes.func

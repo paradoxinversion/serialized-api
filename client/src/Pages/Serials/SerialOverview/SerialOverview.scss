@@ -1,29 +1,39 @@
 @import "../../../sass/alignment.scss";
-.serial-overview{
+.serial-overview {
   display: flex;
   flex-direction: column;
   width: 100%;
 }
-.serial-part-title{
+.serial-part-title {
   margin-right: 1rem;
 }
 // .horizontal-rule{
 //   border-top: 1px solid black;
 // }
 
-.serial-metadata{
+.serial-metadata {
   display: flex;
+  flex-direction: column;
   width: 100%;
 }
-.serial-metadata-info{
+.serial-metadata-info {
   flex-grow: 1;
 }
-.serial-metadata-options{
+.serial-metadata-options {
   display: inherit;
   flex-direction: column;
-  align-self: flex-start;
+  width: 100%;
 }
 
-.serial-overview-user-option{
+.serial-overview-user-option {
   margin-bottom: 6px;
+}
+@media screen and (min-width: 426px) {
+  .serial-metadata {
+    flex-direction: row;
+  }
+  .serial-metadata-options {
+    align-self: flex-start;
+    width: unset;
+  }
 }

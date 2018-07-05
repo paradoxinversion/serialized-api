@@ -1,7 +1,6 @@
 import React from "react";
-
+import PropTypes from "prop-types";
 import getUserData from "../../utilityFunctions/users/getUserData";
-// import UserCard from "../../Components/UserCard/UserCard";
 import UserList from "../../Components/UserList/UserList";
 import "./UserDirectory.css";
 
@@ -44,4 +43,7 @@ class UserDirectory extends React.Component {
   }
 }
 
+UserDirectory.propTypes = {
+  clientUser: PropTypes.object
+};
 export default UserDirectory;

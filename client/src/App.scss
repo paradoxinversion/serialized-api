@@ -1,12 +1,16 @@
 @import "./sass/variables.scss";
 @import "./sass/reset.scss";
 @import "./sass/form.scss";
+@import url("https://fonts.googleapis.com/css?family=Roboto:100");
+@import url("https://fonts.googleapis.com/css?family=Montserrat:200,400");
+@import url("https://fonts.googleapis.com/css?family=Crimson+Text");
+
 * {
   box-sizing: border-box;
 }
 
 body {
-  font-family: sans-serif;
+  font-family: "Montserrat", sans-serif;
   background-color: #f7f7f7;
 }
 
@@ -14,41 +18,57 @@ body {
   border: 1px solid rgb(90, 90, 90);
   font: 20px sans-serif;
   padding: 0.5rem;
-  background-color: white;
+  background-color: dimgray;
+  color: white;
   border-radius: 5px;
   text-decoration: none;
   text-align: center;
+  font-family: "Montserrat", sans-serif;
+  font-weight: 400;
 }
-
-.button--primary {
-  background-color: #0fbb0f;
-  color: white;
-  border: none;
+.button > p {
+  margin: 0;
 }
-
-.button--positive {
-  border: none;
-  background-color: #72c2ea;
-  color: white;
+.button:hover {
+  color: dimgray;
+  background-color: white;
 }
+// .button--primary {
+//   background-color: black;
+//   color: white;
+//   border: none;
+// }
 
-.button--danger {
-  border: none;
-  background-color: red;
-  color: white;
+// .button--positive {
+//   border: none;
+//   background-color: grey;
+//   color: white;
+// }
+
+// .button--danger {
+//   border: none;
+//   background-color: dimgray;
+//   color: white;
+// }
+
+// .button--warn {
+//   border: none;
+//   background-color: black;
+//   color: white;
+// }
+.lead {
+  font-family: "Montserrat", sans-serif;
+  font-size: 22px;
+  margin-bottom: 2.5rem;
+  font-weight: 200;
 }
-
-.button--warn {
-  border: none;
-  background-color: orange;
-  color: white;
-}
-
 .title {
   font-size: 24px;
   margin-bottom: 1rem;
 }
-
+.subtitle {
+  font-size: 18px;
+}
 // Full width being full width of the container
 .is-full-width {
   width: 100%;
@@ -104,11 +124,25 @@ body {
   flex-direction: column;
 }
 
+.label {
+  font-family: "Montserrat", sans-serif;
+  font-size: 18px;
+  margin-bottom: 0.5rem;
+}
+
+.story-content {
+  font-family: "Crimson Text", serif;
+}
 @media screen and (min-width: 426px) {
   .content {
     width: 90%;
   }
   .text-content {
+    width: 90%;
+  }
+  .story-content {
+    font-size: 20px;
+    line-height: 1.5rem;
     width: 90%;
   }
 }
@@ -119,5 +153,9 @@ body {
   }
   .text-content {
     width: 70%;
+  }
+  .story-content {
+    width: 70%;
+    margin: 0 auto;
   }
 }

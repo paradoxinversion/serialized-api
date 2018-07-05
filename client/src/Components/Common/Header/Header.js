@@ -1,16 +1,16 @@
 import React from "react";
 import PropTypes from "prop-types";
-import { NavLink } from "react-router-dom";
+import { NavLink, Link } from "react-router-dom";
 import "./Header.css";
 
 const Header = props => {
   return props.authStatus && props.clientUser ? (
     <div className="horizontal-navbar">
       <div className="navbar-brand">
-        <NavLink className="logo" to="/">
+        <Link className="logo" to="/">
           {" "}
           Serialized{" "}
-        </NavLink>
+        </Link>
       </div>
 
       <nav className="navbar-menu">

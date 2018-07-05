@@ -63,46 +63,47 @@ class Register extends React.Component {
               inputType="email"
               content={this.state.email}
               controlFunc={this.handleFormInput}
-              placeholder="email"
               isRequired={true}
+              title="Email"
             />
             <InputField
               name="username"
               inputType="text"
               content={this.state.username}
               controlFunc={this.handleFormInput}
-              placeholder="username"
               isRequired={true}
+              title="Username"
             />
             <InputField
               name="firstName"
               inputType="text"
               content={this.state.firstName}
               controlFunc={this.handleFormInput}
-              placeholder="first name"
               isRequired={true}
+              title="First Name"
             />
             <InputField
               name="lastName"
               inputType="text"
               content={this.state.lastName}
               controlFunc={this.handleFormInput}
-              placeholder="last name"
               isRequired={true}
+              title="Last Name"
             />
             <DatePicker
               name="birthdate"
               date={this.state.birthdate}
               controlFunc={this.handleFormInput}
               required={true}
+              title="Birthdate"
             />
             <InputField
               name="password"
               inputType="password"
               content={this.state.password}
               controlFunc={this.handleFormInput}
-              placeholder="password"
               isRequired={true}
+              title="Password"
             />
             <Link to="/auth/login">Did you mean to Sign In?</Link>
             <input

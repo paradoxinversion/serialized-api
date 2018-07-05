@@ -1,13 +1,13 @@
 import React from "react";
 import PropTypes from "prop-types";
 import "./InputField.css";
-const InputField = (props) => (
+const InputField = props => (
   <React.Fragment>
-    {
-      props.title ?
-        <label className="label">{props.title}</label> :
-        null
-    }
+    {props.title ? (
+      <label className="label" htmlFor={props.name}>
+        {props.title}
+      </label>
+    ) : null}
     <input
       className="input"
       name={props.name}
@@ -20,12 +20,13 @@ const InputField = (props) => (
   </React.Fragment>
 );
 
-InputField.propTypes ={
-  inputType: PropTypes.oneOf(["text", "number", "password", "email"]).isRequired,
+InputField.propTypes = {
+  inputType: PropTypes.oneOf(["text", "number", "password", "email"])
+    .isRequired,
   title: PropTypes.string.isRequired,
   name: PropTypes.string.isRequired,
   controlFunc: PropTypes.func.isRequired,
-  content: PropTypes.oneOfType([ PropTypes.string, PropTypes.number]).isRequired,
+  content: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
   placeholder: PropTypes.string,
   isRequired: PropTypes.bool
 };

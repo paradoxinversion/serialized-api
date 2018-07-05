@@ -25,10 +25,6 @@ class SerialDirectory extends React.Component {
       <main className="serial-directory">
         <header className="directory-header container">
           <h1>Serial Directory</h1>
-          <Link className="button button--primary" to="/serials/create">
-            {" "}
-            Create a Serial{" "}
-          </Link>
         </header>
         <section className="container">{list}</section>
       </main>

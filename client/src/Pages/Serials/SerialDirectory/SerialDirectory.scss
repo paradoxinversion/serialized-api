@@ -1,15 +1,9 @@
-.serial-directory{
+.serial-directory {
   width: 100%;
 }
 
-.directory-header{
-  margin-bottom: 1rem;
-}
-
-
-@media screen and (min-width: 426px){
-  .directory-header{
+@media screen and (min-width: 426px) {
+  .directory-header {
     display: block;
   }
-
 }
