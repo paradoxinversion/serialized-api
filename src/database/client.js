@@ -19,6 +19,8 @@ export default async function startClient() {
       console.log("Initializing the Database with roles and admin user.");
       await databaseInit();
       return mongoose;
+    } else {
+      console.log("got roles...");
     }
   } catch (error) {
     throw error;
