@@ -64,6 +64,10 @@ body {
 //   background-color: black;
 //   color: white;
 // }
+.horizontal-container {
+  display: flex;
+  flex-grow: 1;
+}
 .lead {
   font-family: "Montserrat", sans-serif;
   font-size: 22px;

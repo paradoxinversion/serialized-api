@@ -7,7 +7,7 @@ import Serials from "./Pages/Serials/Serials/Serials";
 import Authorization from "./Pages/Authorization/Authorization/Authorization";
 import Header from "./Components/Common/Header/Header";
 import Footer from "./Components/Common/Footer/Footer";
-import Dashboard from "./Pages/Dashboard/Dashboard";
+import UserOverview from "./Pages/UserOverview/UserOverview";
 import UserDirectory from "./Pages/UserDirectory/UserDirectory";
 import PrivateRoute from "./Components/PrivateRoute/PrivateRoute";
 import NotFound from "./Pages/NotFound/NotFound";
@@ -18,6 +18,7 @@ import getClientUserSerials from "./utilityFunctions/serials/getClientUserSerial
 import TermsOfService from "./Pages/Policies/TermsOfService/TermsOfService";
 import CodeOfConduct from "./Pages/Policies/CodeOfConduct/CodeOfConduct";
 import Administration from "./Pages/Administration/Administration";
+import Dashboard from "./Components/Dashboard/Dashboard";
 class App extends Component {
   constructor(props) {
     super(props);
@@ -168,13 +169,22 @@ class App extends Component {
                   />
                 )}
               />
-
               <PrivateRoute
                 path="/dashboard"
                 checkAuthentication={this.checkAuthentication}
                 authStatus={this.state.isAuthenticated}
                 clientUser={this.state.user}
                 component={Dashboard}
+                commandOptions={[
+                  {
+                    text: "Overview",
+                    section: "user-overview"
+                  }
+                ]}
+                dashboardSections={{
+                  ["user-overview"]: UserOverview
+                }}
+                initialMode="user-overview"
                 getClientUserSerials={this.getClientUserSerials}
               />
 

@@ -2,24 +2,24 @@
   margin-right: 1rem;
 }
 
-.dashboard-options{
+.user-overview-options {
   display: flex;
   flex-direction: column;
   text-align: center;
   margin-bottom: 1rem;
 }
 
-.dashboard-option{
+.user-overview-option {
   margin-bottom: 0.5rem;
   text-decoration: none;
 }
 
-@media screen and (min-width: 426px){
-  .dashboard-options{
+@media screen and (min-width: 426px) {
+  .user-overview-options {
     flex-direction: row;
   }
 
-  .dashboard-option{
+  .user-overview-option {
     margin-right: 0.5rem;
   }
 }

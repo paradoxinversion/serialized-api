@@ -1,7 +1,8 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
-import CommandPanel from "./CommandPanel/CommandPanel";
+// import CommandPanel from "./CommandPanel/CommandPanel";
 import Genres from "./Genres/Genres";
+import Dashboard from "../../Components/Dashboard/Dashboard";
 const adminSections = {
   ["genres"]: Genres
 };
@@ -9,24 +10,20 @@ const adminSections = {
 class Administration extends Component {
   constructor(props) {
     super(props);
-    this.state = {
-      mode: "genres"
-    };
-    this.setMode = this.setMode.bind(this);
   }
-  async setMode(mode) {
-    await this.setState({
-      mode
-    });
-  }
-  render() {
-    const CurrentWorkspace = adminSections[this.state.mode];
 
+  render() {
     return (
-      <div>
-        <CommandPanel />
-        <CurrentWorkspace />
-      </div>
+      <Dashboard
+        dashboardSections={adminSections}
+        initialMode="genres"
+        commandOptions={[
+          {
+            text: "Genres",
+            section: "genres"
+          }
+        ]}
+      />
     );
   }
 }

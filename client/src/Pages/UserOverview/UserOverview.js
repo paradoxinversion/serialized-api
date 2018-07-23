@@ -4,9 +4,9 @@ import { Link } from "react-router-dom";
 
 import SerialList from "../../Components/Common/SerialList/SerialList";
 import getUserSerialSubscriptions from "../../utilityFunctions/serials/getUserSerialSubscriptions";
-import "./Dashboard.css";
+import "./UserOverview.css";
 
-class Dashboard extends React.Component {
+class UserOverview extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -37,15 +37,15 @@ class Dashboard extends React.Component {
         <header className="container">
           <h1>Dashboard</h1>
           <p> Welcome back, {this.props.clientUser.username} </p>
-          <div className="dashboard-options">
+          <div className="user-overview-options">
             <Link
-              className="button dashboard-option"
+              className="button user-overview-option"
               to={`/users/${this.props.clientUser.username}`}>
               {" "}
               Profile{" "}
             </Link>
             <Link
-              className="button button--primary dashboard-option"
+              className="button button--primary user-overview-option"
               to="/serials/create">
               New Serial
             </Link>
@@ -71,11 +71,11 @@ class Dashboard extends React.Component {
   }
 }
 
-Dashboard.propTypes = {
+UserOverview.propTypes = {
   checkAuthentication: PropTypes.func.isRequired,
   clientUser: PropTypes.object.isRequired,
   history: PropTypes.object.isRequired,
   getClientUserSerials: PropTypes.func
 };
 
-export default Dashboard;
+export default UserOverview;
