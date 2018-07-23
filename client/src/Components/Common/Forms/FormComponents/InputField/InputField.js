@@ -16,9 +16,20 @@ const InputField = props => (
       onChange={props.controlFunc}
       placeholder={props.placeholder}
       required={props.isRequired}
+      onBlur={props.blurFunc}
+      minLength={props.minLength}
+      maxLength={props.maxLength}
+      min={props.min}
+      max={props.max}
     />
   </React.Fragment>
 );
+
+InputField.defaultProps = {
+  blurFunc: null,
+  minLength: 1,
+  maxLength: 500
+};
 
 InputField.propTypes = {
   inputType: PropTypes.oneOf(["text", "number", "password", "email"])
@@ -26,9 +37,14 @@ InputField.propTypes = {
   title: PropTypes.string.isRequired,
   name: PropTypes.string.isRequired,
   controlFunc: PropTypes.func.isRequired,
+  blurFunc: PropTypes.func,
   content: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
   placeholder: PropTypes.string,
-  isRequired: PropTypes.bool
+  isRequired: PropTypes.bool,
+  min: PropTypes.number,
+  max: PropTypes.number,
+  minLength: PropTypes.number,
+  maxLength: PropTypes.number
 };
 
 export default InputField;

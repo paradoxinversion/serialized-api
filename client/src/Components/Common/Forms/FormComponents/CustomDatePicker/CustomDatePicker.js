@@ -6,7 +6,7 @@ const DatePicker = props => (
     <input
       className="input"
       name={props.name}
-      type="date"
+      type=""
       value={props.date}
       onChange={props.controlFunc}
       required={props.required}

@@ -15,6 +15,9 @@ import checkAuthentication from "./utilityFunctions/authentication/checkAuthenti
 import getSerialAndPartData from "./utilityFunctions/serials/getSerialAndPartData";
 import toggleSerialSubscription from "./utilityFunctions/serials/toggleSerialSubscription";
 import getClientUserSerials from "./utilityFunctions/serials/getClientUserSerials";
+import TermsOfService from "./Pages/Policies/TermsOfService/TermsOfService";
+import CodeOfConduct from "./Pages/Policies/CodeOfConduct/CodeOfConduct";
+import Administration from "./Pages/Administration/Administration";
 class App extends Component {
   constructor(props) {
     super(props);
@@ -110,73 +113,85 @@ class App extends Component {
   render() {
     return (
       <Router>
-        <div className="main-wrapper">
-          <Header
-            authStatus={this.state.isAuthenticated}
-            clientUser={this.state.user}
-          />
-          <Switch>
-            <Route exact path="/" component={Home} />
-
-            <Route
-              path="/auth"
-              className="test"
-              render={() => (
-                <Authorization
-                  clearUser={this.clearUser}
-                  onSignIn={this.checkAuthentication}
-                  user={this.state.user}
-                />
-              )}
-            />
-            <Route
-              path="/users/:username"
-              render={() => (
-                <Profile
-                  clientUser={this.state.user}
-                  toggleSerialSubscription={this.toggleSerialSubscription}
-                />
-              )}
-            />
-            <Route
-              path="/users"
-              render={() => (
-                <UserDirectory
-                  clientUser={this.state.user}
-                  authStatus={this.state.isAuthenticated}
-                />
-              )}
-            />
-
-            <Route
-              path="/serials"
-              render={() => (
-                <Serials
-                  authStatus={this.state.isAuthenticated}
-                  clientUser={this.state.user}
-                  setSerial={this.setSerial}
-                  getSerialData={this.getSerialAndPartData}
-                  setCurrentPart={this.setCurrentSerialPart}
-                  currentSerial={this.state.currentSerial}
-                  serialParts={this.state.serialParts}
-                  currentSerialPart={this.state.currentSerialPart}
-                  clearCurrentPart={this.clearCurrentSerialPart}
-                />
-              )}
-            />
-
-            <PrivateRoute
-              path="/dashboard"
-              checkAuthentication={this.checkAuthentication}
+        <React.Fragment>
+          <div className="main-wrapper">
+            <Header
               authStatus={this.state.isAuthenticated}
               clientUser={this.state.user}
-              component={Dashboard}
-              getClientUserSerials={this.getClientUserSerials}
             />
-            <Route component={NotFound} />
-          </Switch>
-          {/* <Footer /> */}
-        </div>
+            <Switch>
+              <Route exact path="/" component={Home} />
+
+              <Route
+                path="/auth"
+                className="test"
+                render={() => (
+                  <Authorization
+                    clearUser={this.clearUser}
+                    onSignIn={this.checkAuthentication}
+                    user={this.state.user}
+                  />
+                )}
+              />
+              <Route
+                path="/users/:username"
+                render={() => (
+                  <Profile
+                    clientUser={this.state.user}
+                    toggleSerialSubscription={this.toggleSerialSubscription}
+                  />
+                )}
+              />
+              <Route
+                path="/users"
+                render={() => (
+                  <UserDirectory
+                    clientUser={this.state.user}
+                    authStatus={this.state.isAuthenticated}
+                  />
+                )}
+              />
+
+              <Route
+                path="/serials"
+                render={() => (
+                  <Serials
+                    authStatus={this.state.isAuthenticated}
+                    clientUser={this.state.user}
+                    setSerial={this.setSerial}
+                    getSerialData={this.getSerialAndPartData}
+                    setCurrentPart={this.setCurrentSerialPart}
+                    currentSerial={this.state.currentSerial}
+                    serialParts={this.state.serialParts}
+                    currentSerialPart={this.state.currentSerialPart}
+                    clearCurrentPart={this.clearCurrentSerialPart}
+                  />
+                )}
+              />
+
+              <PrivateRoute
+                path="/dashboard"
+                checkAuthentication={this.checkAuthentication}
+                authStatus={this.state.isAuthenticated}
+                clientUser={this.state.user}
+                component={Dashboard}
+                getClientUserSerials={this.getClientUserSerials}
+              />
+
+              <PrivateRoute
+                path="/admin-dashboard"
+                clientUser={this.state.user}
+                authStatus={this.state.isAuthenticated}
+                component={Administration}
+              />
+              <Route path="/terms-of-service" component={TermsOfService} />
+              <Route path="/code-of-conduct" component={CodeOfConduct} />
+
+              <Route component={NotFound} />
+            </Switch>
+          </div>
+          <Footer />
+        </React.Fragment>
       </Router>
     );
   }

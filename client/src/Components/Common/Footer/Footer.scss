@@ -1,14 +1,20 @@
-.footer{
+.footer {
   align-items: center;
-  background-color: grey;
+  background-color: #212121;
   display: flex;
-  height: 1.5rem;
+  height: 50px;
   padding-top: 1rem;
   padding-bottom: 1rem;
 }
 
-.footer > p{
+.footer > p {
   justify-content: center;
   align-items: center;
   margin: 0 1rem;
+  color: white;
+}
+
+.footer > a {
+  color: white;
+  margin-left: 1rem;
 }

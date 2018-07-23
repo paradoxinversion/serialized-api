@@ -4,8 +4,10 @@ import { withRouter } from "react-router-dom";
 import handleSerialSubmission from "../../../utilityFunctions/serials/handleSerialSubmission";
 import {
   InputField,
-  CheckBox
+  CheckBox,
+  Select
 } from "../../../Components/Common/Forms/FormComponents";
+import getGenres from "../../../utilityFunctions/genres/getGenres";
 import "./CreateSerial.css";
 class CreateSerial extends React.Component {
   constructor(props) {
@@ -14,7 +16,8 @@ class CreateSerial extends React.Component {
       title: "",
       synopsis: "",
       genre: "",
-      nsfw: false
+      nsfw: false,
+      genreList: []
     };
     this.handleFormInput = this.handleFormInput.bind(this);
   }
@@ -29,19 +32,26 @@ class CreateSerial extends React.Component {
   }
 
   async handleSerialSubmit(event) {
-    event.preventDefault();
-    await handleSerialSubmission(
-      this.state.title,
-      this.state.synopsis,
-      this.state.genre,
-      this.state.nsfw
-    );
-    const profile = {
-      pathname: `/users/${this.props.clientUser.username}`
-    };
-    this.props.history.push(profile);
+    if (this.state.genre !== "") {
+      event.preventDefault();
+      await handleSerialSubmission(
+        this.state.title,
+        this.state.synopsis,
+        this.state.genre,
+        this.state.nsfw
+      );
+      const profile = {
+        pathname: `/users/${this.props.clientUser.username}`
+      };
+      this.props.history.push(profile);
+    }
   }
-
+  async componentDidMount() {
+    const genreListFetchResponse = await getGenres();
+    this.setState({
+      genreList: genreListFetchResponse.data.genres
+    });
+  }
   render() {
     return (
       <main className="is-full-width">
@@ -66,13 +76,13 @@ class CreateSerial extends React.Component {
               content={this.state.synopsis}
               isRequired={true}
             />
-            <InputField
+            <Select
               inputType="text"
               title="Genre"
               name="genre"
               controlFunc={this.handleFormInput}
-              content={this.state.genre}
               isRequired={true}
+              options={this.state.genreList}
             />
             <CheckBox
               title="NSFW"

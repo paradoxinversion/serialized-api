@@ -33,6 +33,14 @@ body {
   color: dimgray;
   background-color: white;
 }
+
+.terms-of-service > .container > p {
+  color: dimgray;
+}
+.terms-of-service > .container > p > strong {
+  color: black;
+  font-weight: bolder;
+}
 // .button--primary {
 //   background-color: black;
 //   color: white;

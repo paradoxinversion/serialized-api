@@ -4,6 +4,8 @@ import * as serialController from "../controllers/serial";
 import * as serialPartController from "../controllers/serialPart";
 import * as authController from "../controllers/auth";
 import * as likesController from "../controllers/likes";
+import * as genreController from "../controllers/genre";
+import userIsAdministrator from "../middleware/userIsAdministrator";
 // import logSession from "../middleware/logSession";
 const ensureLoggedIn = require("connect-ensure-login").ensureLoggedIn;
 
@@ -15,6 +17,10 @@ router
   .post(userController.postUser) // Post New
   .put(ensureLoggedIn(), userController.updateUser) // Update User
   .delete(ensureLoggedIn(), userController.deleteUser); // Delete User
+
+router
+  .route("/users/register/check")
+  .get(authController.checkUserRegistrationData);
 
 router
   .route("/users/auth")
@@ -62,4 +68,10 @@ router
   .get(likesController.getLikes)
   .post(ensureLoggedIn(), likesController.toggleLike);
 
+router
+  .route("/genre")
+  .get(genreController.getAll)
+  .post(ensureLoggedIn(), userIsAdministrator, genreController.create)
+  .put(ensureLoggedIn(), userIsAdministrator, genreController.update)
+  .delete(ensureLoggedIn(), userIsAdministrator, genreController.deleteOne);
 module.exports = router;

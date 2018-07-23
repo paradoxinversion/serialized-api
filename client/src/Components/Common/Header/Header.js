@@ -14,6 +14,12 @@ const Header = props => {
       </div>
 
       <nav className="navbar-menu">
+        {props.clientUser.role.accessLevel === 2 ? (
+          <NavLink className="navbar-item" to="/admin-dashboard">
+            {" "}
+            Admin Panel{" "}
+          </NavLink>
+        ) : null}
         <NavLink
           className="navbar-item"
           to={`/users/${props.clientUser.username}`}>

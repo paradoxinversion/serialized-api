@@ -1,6 +1,6 @@
 import React from "react";
 import PropTypes from "prop-types";
-const InputField = (props) => (
+const InputField = props => (
   <div>
     <label className="label">{props.title}</label>
     <input
@@ -9,11 +9,12 @@ const InputField = (props) => (
       type="checkbox"
       value={props.checked}
       onChange={props.controlFunc}
+      required={props.isRequired}
     />
   </div>
 );
 
-InputField.propTypes ={
+InputField.propTypes = {
   title: PropTypes.string.isRequired,
   name: PropTypes.string.isRequired,
   controlFunc: PropTypes.func.isRequired,
