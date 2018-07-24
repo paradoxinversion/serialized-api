@@ -1,22 +1,30 @@
 import * as serialActions from "../database/actions/serial";
-
+import User from "../database/mongo/User";
 /**
  * Get a list of serials. If there is a userId query, gets only serials by that user.
  */
 export const getSerials = async (req, res) => {
-  try{
+  try {
     let serials;
-    if (req.query.userId){
+    if (req.query.userId) {
       serials = await serialActions.getAuthorSerials(req.query.userId);
-      if (req.session.passport && req.session.passport.user === req.query.userId){
+      if (
+        req.session.passport &&
+        req.session.passport.user === req.query.userId
+      ) {
         serials.clientOwnsSerials = true;
       }
     } else {
-      serials = await serialActions.getSerials();
+      if (!req.session.passport) {
+        serials = await serialActions.getSerials(false);
+      } else {
+        const user = await User.findOne({ _id: req.session.passport.user });
+        serials = await serialActions.getSerials(user.viewNSFW);
+      }
       serials.clientOwnsSerials = false;
     }
     res.json(serials);
-  } catch (error){
+  } catch (error) {
     return res.json({
       status: "400",
       error: {
@@ -31,10 +39,13 @@ export const getSerials = async (req, res) => {
  * Post a new serial
  */
 export const postSerial = async (req, res) => {
-  try{
-    const newSerial = await serialActions.postSerial(req.body, req.session.passport.user);
+  try {
+    const newSerial = await serialActions.postSerial(
+      req.body,
+      req.session.passport.user
+    );
     res.json(newSerial);
-  } catch(error){
+  } catch (error) {
     return res.json({
       status: "400",
       error: {
@@ -49,10 +60,12 @@ export const postSerial = async (req, res) => {
  * Return a list of Serials by author id
  */
 export const getSerialsByAuthorId = async (req, res) => {
-  try{
-    const authorSerials = await serialActions.getAuthorSerials(req.query.userId);
+  try {
+    const authorSerials = await serialActions.getAuthorSerials(
+      req.query.userId
+    );
     res.json(authorSerials);
-  } catch (error){
+  } catch (error) {
     return res.json({
       status: "400",
       error: {
@@ -67,10 +80,13 @@ export const getSerialsByAuthorId = async (req, res) => {
  *
  */
 export const deleteSerial = async (req, res) => {
-  try{
-    const deletionResult = await serialActions.deleteSerial(req.query.serialId, req.session.passport.user);
+  try {
+    const deletionResult = await serialActions.deleteSerial(
+      req.query.serialId,
+      req.session.passport.user
+    );
     res.json(deletionResult);
-  } catch(error){
+  } catch (error) {
     return res.json({
       status: "400",
       error: {
@@ -82,10 +98,13 @@ export const deleteSerial = async (req, res) => {
 };
 
 export const editSerial = async (req, res) => {
-  try{
-    const update = await serialActions.editSerial(req.body, req.query.serialId, req.session.passport.user);
+  try {
+    const update = await serialActions.editSerial(
+      req.body,
+      req.query.serialId,
+      req.session.passport.user
+    );
     res.json(update);
-
   } catch (error) {
     return res.json({
       status: "400",
@@ -98,10 +117,13 @@ export const editSerial = async (req, res) => {
 };
 
 export const toggleSerialSubscription = async (req, res) => {
-  try{
-    const result = await serialActions.subscribeToSerial(req.params.serialId, req.session.passport.user);
+  try {
+    const result = await serialActions.subscribeToSerial(
+      req.params.serialId,
+      req.session.passport.user
+    );
     res.json(result);
-  } catch( e){
+  } catch (e) {
     return res.json({
       status: "400",
       error: {
@@ -113,16 +135,19 @@ export const toggleSerialSubscription = async (req, res) => {
 };
 
 export const checkForUserSubscription = async (req, res) => {
-  try{
+  try {
     let response;
-    if (req.session.passport){
-      response = await serialActions.checkForUserSubscription(req.params.serialId, req.session.passport.user);
+    if (req.session.passport) {
+      response = await serialActions.checkForUserSubscription(
+        req.params.serialId,
+        req.session.passport.user
+      );
     } else {
       const noUserError = new Error("No user supplied");
       throw noUserError;
     }
     res.json(response);
-  } catch (e){
+  } catch (e) {
     console.log(e);
     return res.json({
       status: "400",
@@ -135,16 +160,18 @@ export const checkForUserSubscription = async (req, res) => {
 };
 
 export const getUserSerialSubscriptions = async (req, res) => {
-  try{
+  try {
     let response;
-    if (req.session.passport){
-      response = await serialActions.getUserSerialSubscriptions(req.session.passport.user);
+    if (req.session.passport) {
+      response = await serialActions.getUserSerialSubscriptions(
+        req.session.passport.user
+      );
     } else {
       const noUserError = new Error("No user supplied");
       throw noUserError;
     }
     res.json(response);
-  } catch (e){
+  } catch (e) {
     console.log(e);
     return res.json({
       status: "400",

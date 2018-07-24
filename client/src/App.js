@@ -19,6 +19,7 @@ import TermsOfService from "./Pages/Policies/TermsOfService/TermsOfService";
 import CodeOfConduct from "./Pages/Policies/CodeOfConduct/CodeOfConduct";
 import Administration from "./Pages/Administration/Administration";
 import Dashboard from "./Components/Dashboard/Dashboard";
+import UserSettings from "./Pages/UserSettings/UserSettings";
 class App extends Component {
   constructor(props) {
     super(props);
@@ -179,10 +180,15 @@ class App extends Component {
                   {
                     text: "Overview",
                     section: "user-overview"
+                  },
+                  {
+                    text: "Settings",
+                    section: "user-settings"
                   }
                 ]}
                 dashboardSections={{
-                  ["user-overview"]: UserOverview
+                  ["user-overview"]: UserOverview,
+                  ["user-settings"]: UserSettings
                 }}
                 initialMode="user-overview"
                 getClientUserSerials={this.getClientUserSerials}

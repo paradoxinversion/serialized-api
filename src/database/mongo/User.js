@@ -47,6 +47,10 @@ const UserSchema = new Schema({
   likes: {
     type: Schema.Types.ObjectId,
     ref: "Like"
+  },
+  viewNSFW: {
+    type: Boolean,
+    default: false
   }
 });
 

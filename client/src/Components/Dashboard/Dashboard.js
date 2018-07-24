@@ -12,7 +12,6 @@ class Dashboard extends Component {
       mode: "uninitialized",
       loaded: false
     };
-    console.log(this.props);
     this.setMode = this.setMode.bind(this);
   }
   async setMode(mode) {
@@ -23,7 +22,6 @@ class Dashboard extends Component {
 
   async setDashboardSections(dashboardSectionsObject) {
     dashboardSections = dashboardSectionsObject;
-    console.log("DS:", dashboardSections);
     this.setState({
       loaded: true
     });
@@ -33,9 +31,7 @@ class Dashboard extends Component {
     await this.setState({
       mode: this.props.initialMode
     });
-    console.log("Dashboard Sections: ", this.props.dashboardSections);
     await this.setDashboardSections(this.props.dashboardSections);
-    console.log(Object.getOwnPropertyNames(dashboardSections).length);
   }
   render() {
     let CurrentWorkspace;
@@ -52,11 +48,13 @@ class Dashboard extends Component {
               setMode={this.setMode}
               commandOptions={this.props.commandOptions}
             />
-            <CurrentWorkspace
-              clientUser={this.props.clientUser}
-              getClientUserSerials={this.props.getClientUserSerials}
-              checkAuthentication={this.props.checkAuthentication}
-            />
+            <div className="dashboard-section">
+              <CurrentWorkspace
+                clientUser={this.props.clientUser}
+                getClientUserSerials={this.props.getClientUserSerials}
+                checkAuthentication={this.props.checkAuthentication}
+              />
+            </div>
           </Fragment>
         ) : (
           <p>No dashboard sections</p>

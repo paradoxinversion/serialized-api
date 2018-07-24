@@ -142,9 +142,12 @@ const addNewUser = async requestBody => {
  */
 const updateUser = async (requestBody, userId) => {
   const valuesToUpdate = {};
+  if (requestBody.viewNSFW !== "undefined")
+    valuesToUpdate.viewNSFW = requestBody.viewNSFW;
   if (requestBody.firstName) valuesToUpdate.firstName = requestBody.firstName;
   if (requestBody.lastName) valuesToUpdate.lastName = requestBody.lastName;
   if (requestBody.biography) valuesToUpdate.biography = requestBody.biography;
+  console.log(requestBody);
   if (Object.keys(valuesToUpdate).length === 0) {
     const noUpdateError = new Error(
       "No valid fields were included in the update request"
