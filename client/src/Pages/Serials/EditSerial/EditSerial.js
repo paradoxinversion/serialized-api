@@ -4,16 +4,20 @@ import { withRouter } from "react-router-dom";
 import handleSerialEdit from "../../../utilityFunctions/serials/handleSerialEdit";
 import {
   InputField,
-  CheckBox
+  CheckBox,
+  Select
 } from "../../../Components/Common/Forms/FormComponents";
+import getGenres from "../../../utilityFunctions/genres/getGenres";
 class EditSerial extends React.Component {
   constructor(props) {
     super(props);
+    console.log(props);
     this.state = {
       title: props.currentSerial.title,
-      synopsis: props.currentSerial.synpopsis,
+      synopsis: props.currentSerial.synopsis,
       genre: props.currentSerial.genre,
-      nsfw: props.currentSerial.nsfw
+      nsfw: props.currentSerial.nsfw,
+      genreList: []
     };
     this.handleFormInput = this.handleFormInput.bind(this);
   }
@@ -41,7 +45,12 @@ class EditSerial extends React.Component {
     };
     this.props.history.push(profile);
   }
-
+  async componentDidMount() {
+    const genreListFetchResponse = await getGenres();
+    await this.setState({
+      genreList: genreListFetchResponse.data.genres
+    });
+  }
   render() {
     return (
       <main className="is-full-width">
@@ -66,13 +75,14 @@ class EditSerial extends React.Component {
               content={this.state.synopsis}
               isRequired={true}
             />
-            <InputField
+
+            <Select
               inputType="text"
               title="Genre"
               name="genre"
               controlFunc={this.handleFormInput}
-              content={this.state.genre}
               isRequired={true}
+              options={this.state.genreList}
             />
             <CheckBox
               title="NSFW"
@@ -96,7 +106,8 @@ class EditSerial extends React.Component {
 EditSerial.propTypes = {
   clientUser: PropTypes.object.isRequired,
   history: PropTypes.object.isRequired,
-  match: PropTypes.object.isRequired
+  match: PropTypes.object.isRequired,
+  currentSerial: PropTypes.object.isRequired
 };
 
 export default withRouter(EditSerial);
