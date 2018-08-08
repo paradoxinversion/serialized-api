@@ -53,12 +53,14 @@ class UserOverview extends React.Component {
         </header>
 
         <section className="container">
+          <p>Your Serials</p>
           <SerialList
             clientUser={this.props.clientUser}
             headerText="Your Serials"
             emptyListMessage="You have not written any serials yet."
             serials={this.state.clientUserSerials}
           />
+          <p>Your Subscriptions</p>
           <SerialList
             clientUser={this.props.clientUser}
             headerText="Subscribed Serials"

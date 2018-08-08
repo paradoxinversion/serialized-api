@@ -5,12 +5,11 @@ import * as serialPartController from "../controllers/serialPart";
 import * as authController from "../controllers/auth";
 import * as likesController from "../controllers/likes";
 import * as genreController from "../controllers/genre";
+import * as moderationController from "../controllers/moderation";
 import userIsAdministrator from "../middleware/userIsAdministrator";
-// import logSession from "../middleware/logSession";
 const ensureLoggedIn = require("connect-ensure-login").ensureLoggedIn;
 
 const router = express.Router();
-// router.use(logSession);
 router
   .route("/users")
   .get(userController.getUsers) //Get all
@@ -74,4 +73,10 @@ router
   .post(ensureLoggedIn(), userIsAdministrator, genreController.create)
   .put(ensureLoggedIn(), userIsAdministrator, genreController.update)
   .delete(ensureLoggedIn(), userIsAdministrator, genreController.deleteOne);
+
+router
+  .route("/report")
+  .get(ensureLoggedIn(), userIsAdministrator, moderationController.getReports)
+  .post(ensureLoggedIn(), moderationController.createReport);
+
 module.exports = router;

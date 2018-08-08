@@ -20,6 +20,7 @@ import CodeOfConduct from "./Pages/Policies/CodeOfConduct/CodeOfConduct";
 import Administration from "./Pages/Administration/Administration";
 import Dashboard from "./Components/Dashboard/Dashboard";
 import UserSettings from "./Pages/UserSettings/UserSettings";
+import FileReport from "./Pages/FileReport/FileReport";
 class App extends Component {
   constructor(props) {
     super(props);
@@ -44,8 +45,8 @@ class App extends Component {
     });
   }
 
-  setAuthStatus(authenticationResponse) {
-    this.setState({
+  async setAuthStatus(authenticationResponse) {
+    await this.setState({
       isAuthenticated: authenticationResponse
     });
   }
@@ -61,7 +62,9 @@ class App extends Component {
   async checkAuthentication() {
     try {
       const authenticationResult = await checkAuthentication();
+      console.log("AUTH", authenticationResult);
       this.setState(authenticationResult);
+      return checkAuthentication.isAuthenticated;
     } catch (e) {
       throw e;
     }
@@ -199,6 +202,12 @@ class App extends Component {
                 clientUser={this.state.user}
                 authStatus={this.state.isAuthenticated}
                 component={Administration}
+              />
+              <PrivateRoute
+                path="/file-report"
+                clientUser={this.state.user}
+                authStatus={this.state.isAuthenticated}
+                component={FileReport}
               />
               <Route path="/terms-of-service" component={TermsOfService} />
               <Route path="/code-of-conduct" component={CodeOfConduct} />

@@ -80,6 +80,7 @@ class CreateSerial extends React.Component {
               inputType="text"
               title="Genre"
               name="genre"
+              defaultOption="Select a Genre"
               controlFunc={this.handleFormInput}
               isRequired={true}
               options={this.state.genreList}

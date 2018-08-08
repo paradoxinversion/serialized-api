@@ -7,6 +7,7 @@ import SerialList from "../../../Components/Common/SerialList/SerialList";
 import getProfileData from "../../../utilityFunctions/profile/getProfileData";
 import getUserSerialData from "../../../utilityFunctions/serials/getUserSerialData";
 import handleProfileEdit from "../../../utilityFunctions/profile/handleProfileEdit";
+import ReportButton from "../../../Components/ReportButton/ReportButton";
 import "./Profile.css";
 
 class Profile extends React.Component {
@@ -120,6 +121,11 @@ class Profile extends React.Component {
               toggleSerialSubscription={this.props.toggleSerialSubscription}
             />
           </section>
+          <ReportButton
+            user={this.state.queriedUser._id}
+            serial={null}
+            serialPart={null}
+          />
         </main>
       );
     }
