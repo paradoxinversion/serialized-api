@@ -64,18 +64,6 @@ app.use(function (req, res, next) {
 // app.use(userLoggedIn);
 app.use("/api/v1", api);
 
-if (process.env.NODE_ENV === "production") {
-  app.get("*", (req, res) => {
-    res.sendFile(path.join(__dirname, "../client/build/index.html"));
-  });
-} else {
-  app.use(function (req, res, next) {
-    const err = new Error("Resource not Found");
-    err.status = 404;
-    next(err);
-  });
-}
-
 app.use(function (error, req, res, next) {
   res.status(error.status || 500);
   res.json({
