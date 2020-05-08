@@ -1,12 +1,12 @@
-import User from "../mongo/User";
-import Role from "../mongo/Role";
-import bcrypt from "bcrypt";
+const User = require("../mongo/User");
+const Role = require("../mongo/Role");
+const bcrypt = require("bcrypt");
 /**
  * This function returns a user's role
  * @param {string} userId The id of the user who's role to get
  * @returns {Object} an object containing the user's role name and access level
  */
-const getRole = async function(userId) {
+const getRole = async function (userId) {
   const user = await User.findOne({ _id: userId }).populate("role");
   if (!user) {
     const userNotFoundError = new Error("User Not Found");
@@ -14,7 +14,7 @@ const getRole = async function(userId) {
   }
   return {
     role: user.role.role,
-    accessLevel: user.role.accessLevel
+    accessLevel: user.role.accessLevel,
   };
 };
 /**
@@ -23,7 +23,7 @@ const getRole = async function(userId) {
  * @param {string} userId The id of the user who's role to get
  * @returns {boolean} true if successful, false if something went wrong
  */
-const changeUserRole = async function(userId, newAccessLevel) {
+const changeUserRole = async function (userId, newAccessLevel) {
   try {
     const updatedUserRole = await Role.findOne({ accessLevel: newAccessLevel });
     const user = await User.findOneAndUpdate(
@@ -48,14 +48,12 @@ const changeUserRole = async function(userId, newAccessLevel) {
  * @returns {Array} an array of users
  */
 const getAllUsers = async () => {
-  const userList = await User.find()
-    .populate("role")
-    .select({
-      username: 1,
-      firstName: 1,
-      lastName: 1,
-      biography: 1
-    });
+  const userList = await User.find().populate("role").select({
+    username: 1,
+    firstName: 1,
+    lastName: 1,
+    biography: 1,
+  });
 
   return userList;
 };
@@ -65,14 +63,14 @@ const getAllUsers = async () => {
  * @param {string} userName the username of the user to find
  * @returns {Object} an object containing the user searched for (or null)
  */
-const getUser = async userName => {
+const getUser = async (userName) => {
   const user = await User.findOne({ username: userName })
     .populate("role")
     .select({
       username: 1,
       firstName: 1,
       lastName: 1,
-      biography: 1
+      biography: 1,
     });
   return user;
 };
@@ -88,7 +86,7 @@ const getUser = async userName => {
  * @param {Date} requestBody.birthdate the user's birthdate
  * @returns {Object} an object containing the user searched for (or null)
  */
-const addNewUser = async requestBody => {
+const addNewUser = async (requestBody) => {
   let hashedPassword;
   if (requestBody.password) {
     hashedPassword = await bcrypt.hash(requestBody.password, 10);
@@ -109,7 +107,7 @@ const addNewUser = async requestBody => {
     lastName: requestBody.lastName,
     birthdate: requestBody.birthdate,
     joinDate: Date.now(),
-    role: role._id
+    role: role._id,
   });
 
   try {
@@ -156,7 +154,7 @@ const updateUser = async (requestBody, userId) => {
   }
   const query = { _id: userId };
   const updateOptions = {
-    new: true
+    new: true,
   };
   const update = await User.findOneAndUpdate(
     query,
@@ -171,15 +169,15 @@ const updateUser = async (requestBody, userId) => {
  * @param {string} userId The id of the user to delete
  * @returns {Object} an object containing the deleted user information
  */
-const deleteUser = async userId => {
+const deleteUser = async (userId) => {
   return await User.remove({ _id: userId });
 };
-export {
+module.exports = {
   getRole,
   getAllUsers,
   addNewUser,
   updateUser,
   deleteUser,
   getUser,
-  changeUserRole
+  changeUserRole,
 };

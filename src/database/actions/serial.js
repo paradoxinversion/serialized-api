@@ -1,12 +1,12 @@
-import * as _ from "lodash";
-import Serial from "../mongo/Serial";
-import SerialPart from "../mongo/SerialPart";
-import Subscription from "../mongo/Subscription";
+const _ = require("lodash");
+const Serial = require("../mongo/Serial");
+const SerialPart = require("../mongo/SerialPart");
+const Subscription = require("../mongo/Subscription");
 /**
  * This function gets all serials in the database
  * @returns {Array} - all serials in the database
  */
-export const getSerials = async includeNSFW => {
+const getSerials = async (includeNSFW) => {
   let serials;
   if (includeNSFW) {
     serials = await Serial.find();
@@ -21,7 +21,7 @@ export const getSerials = async includeNSFW => {
  * @param {string} authorId - The id of the Author who's Serials to find
  * @returns {Object} - the new serial entry
  */
-export const getAuthorSerials = async authorId => {
+const getAuthorSerials = async (authorId) => {
   return await Serial.find({ author_id: authorId });
 };
 
@@ -31,7 +31,7 @@ export const getAuthorSerials = async authorId => {
  * @param {string} userId - The id of the user making the request
  * @returns {Object} - the new serial entry
  */
-export const postSerial = async (requestBody, userId) => {
+const postSerial = async (requestBody, userId) => {
   try {
     const newSerial = new Serial({
       title: requestBody.title,
@@ -40,7 +40,7 @@ export const postSerial = async (requestBody, userId) => {
       nsfw: requestBody.nsfw,
       creation_date: Date.now(),
       author_id: userId,
-      slug: _.kebabCase(requestBody.title)
+      slug: _.kebabCase(requestBody.title),
     });
     return await newSerial.save();
   } catch (error) {
@@ -55,7 +55,7 @@ export const postSerial = async (requestBody, userId) => {
  * @param {string} userId - The id of the user making the request
  * @returns {Object} - The updated serial
  */
-export const editSerial = async (requestBody, serialIdQueryString, userId) => {
+const editSerial = async (requestBody, serialIdQueryString, userId) => {
   const query = { _id: serialIdQueryString };
   if (!serialIdQueryString) {
     const noIdError = new Error("No serial ID supplied for edit operation.");
@@ -75,7 +75,7 @@ export const editSerial = async (requestBody, serialIdQueryString, userId) => {
   if (requestBody.synopsis) valuesToUpdate.synopsis = requestBody.synopsis;
   if (requestBody.genre) valuesToUpdate.genre = requestBody.genre;
   const updateOptions = {
-    new: true
+    new: true,
   };
   return await Serial.findOneAndUpdate(query, valuesToUpdate, updateOptions);
 };
@@ -85,7 +85,7 @@ export const editSerial = async (requestBody, serialIdQueryString, userId) => {
  * called when a serial is deleted for proper cleanup
  * @param {Object} serial - the serial who's parts to delete
  */
-export const deleteSerialParts = async serial => {
+const deleteSerialParts = async (serial) => {
   try {
     const removalResult = await SerialPart.remove({ serial_id: serial._id });
     return removalResult;
@@ -99,7 +99,7 @@ export const deleteSerialParts = async serial => {
  * @param {string} serialIdQueryString - the serial id to delete
  * @param {string} userId - the id of the requesting user
  */
-export const deleteSerial = async (serialIdQueryString, userId) => {
+const deleteSerial = async (serialIdQueryString, userId) => {
   if (!serialIdQueryString) {
     const noIdError = new Error("No serial ID supplied for delete operation.");
     throw noIdError;
@@ -121,7 +121,7 @@ export const deleteSerial = async (serialIdQueryString, userId) => {
  * @param {string} serialId
  * @param {string} userId
  */
-export const subscribeToSerial = async (serialId, userId) => {
+const subscribeToSerial = async (serialId, userId) => {
   // check if the user already is subbed
   let userSubscription = await Subscription.findOne({ subscriber: userId })
     .where("subscribed_object")
@@ -130,7 +130,7 @@ export const subscribeToSerial = async (serialId, userId) => {
   if (userSubscription === null) {
     userSubscription = new Subscription({
       subscriber: userId,
-      subscribed_object: serialId
+      subscribed_object: serialId,
     });
     await userSubscription.save();
     result.subscription = userSubscription;
@@ -145,7 +145,7 @@ export const subscribeToSerial = async (serialId, userId) => {
  * Returns all subs for the supplied serial part
  * @param {string} serialId
  */
-export const getSerialSubscriptions = async serialId => {
+const getSerialSubscriptions = async (serialId) => {
   return await Subscription.find({ subscribed_object: serialId });
 };
 
@@ -154,9 +154,9 @@ export const getSerialSubscriptions = async serialId => {
  * @param {string} serialId
  * @param {string} userId
  */
-export const checkForUserSubscription = async (serialId, userId) => {
+const checkForUserSubscription = async (serialId, userId) => {
   const subscription = await Subscription.findOne({
-    subscribed_object: serialId
+    subscribed_object: serialId,
   })
     .where("subscriber")
     .eq(userId);
@@ -168,15 +168,28 @@ export const checkForUserSubscription = async (serialId, userId) => {
  * Returns all the subscriptions of a single user
  * @param {string} userId
  */
-export const getUserSerialSubscriptions = async userId => {
+const getUserSerialSubscriptions = async (userId) => {
   const subscriptions = await Subscription.find({ subscriber: userId });
   // TODO: Find a more elegant solution for this operation
   const result = [];
   while (result.length < subscriptions.length) {
     const subscribedSerial = await Serial.findOne({
-      _id: subscriptions[result.length].subscribed_object
+      _id: subscriptions[result.length].subscribed_object,
     });
     result.push(subscribedSerial);
   }
   return result;
+};
+
+module.exports = {
+  checkForUserSubscription,
+  deleteSerial,
+  deleteSerialParts,
+  editSerial,
+  getSerials,
+  getAuthorSerials,
+  getSerialSubscriptions,
+  getUserSerialSubscriptions,
+  postSerial,
+  subscribeToSerial,
 };

@@ -1,9 +1,9 @@
-import * as serialActions from "../database/actions/serial";
-import User from "../database/mongo/User";
+const serialActions = require("../database/actions/serial");
+const User = require("../database/mongo/User");
 /**
  * Get a list of serials. If there is a userId query, gets only serials by that user.
  */
-export const getSerials = async (req, res) => {
+const getSerials = async (req, res) => {
   try {
     let serials;
     if (req.query.userId) {
@@ -18,8 +18,12 @@ export const getSerials = async (req, res) => {
       if (!req.session.passport) {
         serials = await serialActions.getSerials(false);
       } else {
-        const user = await User.findOne({ _id: req.session.passport.user });
-        serials = await serialActions.getSerials(user.viewNSFW);
+        try {
+          const user = await User.findOne({ _id: req.session.passport.user });
+          serials = await serialActions.getSerials(user.viewNSFW);
+        } catch (e) {
+          serials = await serialActions.getSerials(false);
+        }
       }
       serials.clientOwnsSerials = false;
     }
@@ -29,8 +33,8 @@ export const getSerials = async (req, res) => {
       status: "400",
       error: {
         name: error.name,
-        message: error.message
-      }
+        message: error.message,
+      },
     });
   }
 };
@@ -38,7 +42,7 @@ export const getSerials = async (req, res) => {
 /**
  * Post a new serial
  */
-export const postSerial = async (req, res) => {
+const postSerial = async (req, res) => {
   try {
     const newSerial = await serialActions.postSerial(
       req.body,
@@ -50,8 +54,8 @@ export const postSerial = async (req, res) => {
       status: "400",
       error: {
         name: error.name,
-        message: error.message
-      }
+        message: error.message,
+      },
     });
   }
 };
@@ -59,7 +63,7 @@ export const postSerial = async (req, res) => {
 /**
  * Return a list of Serials by author id
  */
-export const getSerialsByAuthorId = async (req, res) => {
+const getSerialsByAuthorId = async (req, res) => {
   try {
     const authorSerials = await serialActions.getAuthorSerials(
       req.query.userId
@@ -70,8 +74,8 @@ export const getSerialsByAuthorId = async (req, res) => {
       status: "400",
       error: {
         name: error.name,
-        message: error.message
-      }
+        message: error.message,
+      },
     });
   }
 };
@@ -79,7 +83,7 @@ export const getSerialsByAuthorId = async (req, res) => {
 /**
  *
  */
-export const deleteSerial = async (req, res) => {
+const deleteSerial = async (req, res) => {
   try {
     const deletionResult = await serialActions.deleteSerial(
       req.query.serialId,
@@ -91,13 +95,13 @@ export const deleteSerial = async (req, res) => {
       status: "400",
       error: {
         name: error.name,
-        message: error.message
-      }
+        message: error.message,
+      },
     });
   }
 };
 
-export const editSerial = async (req, res) => {
+const editSerial = async (req, res) => {
   try {
     const update = await serialActions.editSerial(
       req.body,
@@ -110,13 +114,13 @@ export const editSerial = async (req, res) => {
       status: "400",
       error: {
         name: error.name,
-        message: error.message
-      }
+        message: error.message,
+      },
     });
   }
 };
 
-export const toggleSerialSubscription = async (req, res) => {
+const toggleSerialSubscription = async (req, res) => {
   try {
     const result = await serialActions.subscribeToSerial(
       req.params.serialId,
@@ -128,13 +132,13 @@ export const toggleSerialSubscription = async (req, res) => {
       status: "400",
       error: {
         name: e.name,
-        message: e.message
-      }
+        message: e.message,
+      },
     });
   }
 };
 
-export const checkForUserSubscription = async (req, res) => {
+const checkForUserSubscription = async (req, res) => {
   try {
     let response;
     if (req.session.passport) {
@@ -153,13 +157,13 @@ export const checkForUserSubscription = async (req, res) => {
       status: "400",
       error: {
         name: e.name,
-        message: e.message
-      }
+        message: e.message,
+      },
     });
   }
 };
 
-export const getUserSerialSubscriptions = async (req, res) => {
+const getUserSerialSubscriptions = async (req, res) => {
   try {
     let response;
     if (req.session.passport) {
@@ -177,8 +181,18 @@ export const getUserSerialSubscriptions = async (req, res) => {
       status: "400",
       error: {
         name: e.name,
-        message: e.message
-      }
+        message: e.message,
+      },
     });
   }
+};
+module.exports = {
+  checkForUserSubscription,
+  deleteSerial,
+  editSerial,
+  getSerials,
+  getSerialsByAuthorId,
+  getUserSerialSubscriptions,
+  postSerial,
+  toggleSerialSubscription,
 };

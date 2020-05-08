@@ -1,12 +1,11 @@
-import "babel-polyfill";
-import path from "path";
-import express from "express";
-import morgan from "morgan";
-import * as bodyParser from "body-parser";
-import passport from "passport";
-import cookieParser from "cookie-parser";
+const path = require("path");
+const express = require("express");
+const morgan = require("morgan");
+const bodyParser = require("body-parser");
+const passport = require("passport");
+const cookieParser = require("cookie-parser");
 
-import mongoClient from "./database/client";
+const mongoClient = require("./database/client");
 const session = require("express-session");
 const MongoStore = require("connect-mongo")(session);
 
@@ -37,21 +36,21 @@ app.use(
     store: new MongoStore({
       url:
         process.env.MONGODB_URI ||
-        `mongodb://${Config.db.host}/${Config.db.database}`
-    })
+        `mongodb://${Config.db.host}/${Config.db.database}`,
+    }),
   })
 );
 app.use(passport.initialize());
 app.use(passport.session());
 
-app.use(function(req, res, next) {
+app.use(function (req, res, next) {
   if (!req.secure) {
     next();
   } else {
     res.redirect("https://" + req.headers.host + req.url);
   }
 });
-app.use(function(req, res, next) {
+app.use(function (req, res, next) {
   res.header("Access-Control-Allow-Origin", "http://localhost:3000");
   res.header(
     "Access-Control-Allow-Headers",
@@ -70,19 +69,19 @@ if (process.env.NODE_ENV === "production") {
     res.sendFile(path.join(__dirname, "../client/build/index.html"));
   });
 } else {
-  app.use(function(req, res, next) {
+  app.use(function (req, res, next) {
     const err = new Error("Resource not Found");
     err.status = 404;
     next(err);
   });
 }
 
-app.use(function(error, req, res, next) {
+app.use(function (error, req, res, next) {
   res.status(error.status || 500);
   res.json({
     error: {
-      message: error.message
-    }
+      message: error.message,
+    },
   });
   next(error);
 });

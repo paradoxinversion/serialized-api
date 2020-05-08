@@ -1,6 +1,6 @@
-import * as likeActions from "../database/actions/likes";
+const likeActions = require("../database/actions/likes");
 
-export const toggleLike = async (req, res) => {
+const toggleLike = async (req, res) => {
   try {
     const result = await likeActions.toggleLikeSerial(
       req.session.passport.user,
@@ -13,11 +13,16 @@ export const toggleLike = async (req, res) => {
     throw e;
   }
 };
-export const getLikes = async (req, res) => {
+const getLikes = async (req, res) => {
   try {
     const result = await likeActions.getSerialPartLikes(req.query.serialPartId);
     return res.json(result);
   } catch (e) {
     throw e;
   }
+};
+
+module.exports = {
+  toggleLike,
+  getLikes,
 };

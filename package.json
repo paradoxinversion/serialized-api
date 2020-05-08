@@ -4,28 +4,20 @@
   "description": "",
   "main": "app.js",
   "scripts": {
-    "test": "mocha --reporter spec --require babel-register --require babel-polyfill",
-    "server-dev": "nodemon ./src/app.js --exec babel-node",
-    "client-dev": "node start-client.js",
-    "build:server": "rm -rf ./dist && babel ./src -d ./dist",
-    "build:client-local": "cd client && rm -rf ./build && npm run build",
-    "build:client-deploy": "cd client && npm install --only-dev && npm install && rm -rf ./build && npm run build-css && npm run build",
-    "build:all-local": "npm run build:server && npm run build:client-local",
-    "build:all-deploy": "npm run build:server && npm run build:client-deploy",
-    "start:dev": "node ./dist/app.js",
-    "start": "concurrently \"npm run server-dev\" \"npm run client-dev\"",
+    "test": "mocha --reporter spec",
+    "start:dev": "nodemon ./src/app.js",
+    "start": "node ./src/app.js",
     "start:heroku": "node ./dist/app.js",
     "heroku-postbuild": "npm run build:all-deploy"
   },
   "engines": {
-    "node": "8.9.3"
+    "node": "12.8.1"
   },
   "keywords": [],
   "author": "Jedai Saboteur",
   "license": "ISC",
   "dependencies": {
-    "babel-polyfill": "^6.26.0",
-    "bcrypt": "^1.0.3",
+    "bcrypt": "^3.0.6",
     "body-parser": "^1.18.3",
     "concurrently": "^3.6.0",
     "connect-ensure-login": "^0.1.1",
@@ -41,14 +33,9 @@
     "passport-local": "^1.0.0"
   },
   "devDependencies": {
-    "babel-cli": "^6.26.0",
-    "babel-plugin-transform-regenerator": "^6.26.0",
-    "babel-preset-env": "^1.7.0",
-    "babel-register": "^6.26.0",
     "chai": "^4.1.2",
     "chai-as-promised": "^7.1.1",
     "eslint": "^4.19.1",
-    "eslint-plugin-react": "^7.10.0",
     "faker": "^4.1.0",
     "mocha": "^4.1.0",
     "morgan": "^1.9.0",

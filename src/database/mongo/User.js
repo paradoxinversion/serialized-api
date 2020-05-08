@@ -1,60 +1,61 @@
-// import {Schema} from "mongoose";
-import mongoose, { Schema } from "mongoose";
-import bcrypt from "bcrypt";
+const mongoose = require("mongoose");
+const Schema = mongoose.Schema;
+// const mongoose, { Schema } = require("mongoose");
+const bcrypt = require("bcrypt");
 const UserSchema = new Schema({
   email: {
     type: String,
     required: true,
-    unique: true
+    unique: true,
   },
   username: {
     type: String,
-    required: true
+    required: true,
   },
   firstName: {
     type: String,
-    required: true
+    required: true,
   },
   lastName: {
     type: String,
-    required: true
+    required: true,
   },
   password: {
     type: String,
-    required: true
+    required: true,
   },
   birthdate: {
     type: Date,
-    required: true
+    required: true,
   },
   joinDate: {
     type: Date,
-    required: true
+    required: true,
   },
   biography: {
     type: String,
-    required: false
+    required: false,
   },
   token: {
     type: String,
-    required: false
+    required: false,
   },
   role: {
     type: Schema.Types.ObjectId,
     ref: "Role",
-    required: true
+    required: true,
   },
   likes: {
     type: Schema.Types.ObjectId,
-    ref: "Like"
+    ref: "Like",
   },
   viewNSFW: {
     type: Boolean,
-    default: false
-  }
+    default: false,
+  },
 });
 
-UserSchema.methods.validatePassword = async function(password) {
+UserSchema.methods.validatePassword = async function (password) {
   try {
     return await bcrypt.compare(password, this.password);
   } catch (error) {
@@ -62,4 +63,4 @@ UserSchema.methods.validatePassword = async function(password) {
   }
 };
 
-export default mongoose.model("User", UserSchema);
+module.exports = mongoose.model("User", UserSchema);

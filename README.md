@@ -23,11 +23,9 @@ API_PORT=3001
 
 ### start
 
-Uses the concurrency package to run mongod => server-dev => client-dev. This is the most likely way you will work with this repo. When running the project in this manner, project files will be built in-memory by webpack-dev-server. No additional files will be added to the project directory.
-
 ### start:dev
 
-Starts the server located in the built app. This method requires the project to be built, such as via `build:all-local`.
+Starts the server located in the built app.
 
 ### server-dev
 

@@ -1,5 +1,5 @@
 // config.js
-import path from "path";
+const path = require("path");
 
 module.exports = (() => {
   let config = {};
@@ -15,7 +15,7 @@ module.exports = (() => {
     config = {
       db: {
         host: process.env.DB_HOST,
-        database: process.env.DB_NAME
+        database: process.env.DB_NAME,
       },
       security: {
         sessionSecret: process.env.SESSION_SECRET,
@@ -23,11 +23,11 @@ module.exports = (() => {
         adminPassword: process.env.ADMIN_PASS,
         adminName: process.env.ADMIN_NAME,
         adminEmail: process.env.ADMIN_EMAIL,
-        adminBirthdate: process.env.ADMIN_BIRTHDATE
+        adminBirthdate: process.env.ADMIN_BIRTHDATE,
       },
       server: {
-        port: process.env.API_PORT
-      }
+        port: process.env.API_PORT,
+      },
     };
     return config;
   };
@@ -39,6 +39,6 @@ module.exports = (() => {
   makeConfig();
   return {
     getEnv,
-    getConfig
+    getConfig,
   };
 })();

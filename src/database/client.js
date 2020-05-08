@@ -1,7 +1,7 @@
-import mongoose from "mongoose";
-import Role from "./mongo/Role";
-import databaseInit from "./databaseInit";
-export default async function startClient() {
+const mongoose = require("mongoose");
+const Role = require("./mongo/Role");
+const databaseInit = require("./databaseInit");
+const startClient = async () => {
   mongoose.Promise = global.Promise;
   try {
     await mongoose.connect(
@@ -25,4 +25,5 @@ export default async function startClient() {
   } catch (error) {
     throw error;
   }
-}
+};
+module.exports = startClient;

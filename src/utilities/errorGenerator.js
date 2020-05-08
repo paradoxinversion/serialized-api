@@ -1,9 +1,9 @@
-export default (errorName, errorMessage, errorCode) => {
+module.exports = (errorName, errorMessage, errorCode) => {
   return {
-    error : {
+    error: {
       status: errorCode,
       name: errorName,
-      message: errorMessage
-    }
+      message: errorMessage,
+    },
   };
 };

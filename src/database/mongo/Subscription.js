@@ -1,14 +1,13 @@
-// import {Schema} from "mongoose";
-import mongoose, { Schema } from "mongoose";
+const mongoose = require("mongoose");
+const Schema = mongoose.Schema;
 const SubscriptionSchema = new Schema({
   subscriber: {
     type: Schema.Types.ObjectId,
-    required: true
+    required: true,
   },
   subscribed_object: {
     type: Schema.Types.ObjectId,
-    required: true
-  }
+    required: true,
+  },
 });
-
-export default mongoose.model("Subscription", SubscriptionSchema);
+module.exports = mongoose.model("Subscription", SubscriptionSchema);

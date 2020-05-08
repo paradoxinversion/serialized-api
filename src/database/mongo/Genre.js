@@ -1,8 +1,8 @@
-import mongoose, { Schema } from "mongoose";
-
+const mongoose = require("mongoose");
+const Schema = mongoose.Schema;
 const GenreSchema = new Schema({
   name: { type: String },
-  description: { type: String }
+  description: { type: String },
 });
 
-export default mongoose.model("Genre", GenreSchema);
+module.exports = mongoose.model("Genre", GenreSchema);

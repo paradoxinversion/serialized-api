@@ -1,14 +1,16 @@
-import * as _ from "lodash";
-import SerialPart from "../mongo/SerialPart";
+const _ = require("lodash");
+const SerialPart = require("../mongo/SerialPart");
 
 /**
  * This function returns all parts of a serial belonging to serialId
  * @param {string} serialId The id of the parent serial.
  * @returns {Array} an array of serial parts
  */
-export const readSerialParts = async (serialId) => {
-  try{
-    return await SerialPart.find({serial_id: serialId}).sort({part_number: 1});
+const readSerialParts = async (serialId) => {
+  try {
+    return await SerialPart.find({ serial_id: serialId }).sort({
+      part_number: 1,
+    });
   } catch (error) {
     throw error;
   }
@@ -19,10 +21,10 @@ export const readSerialParts = async (serialId) => {
  * @param {string} partId The id of the serial part to be viewed.
  * @returns {Object} The serial part
  */
-export const getSingleSerialPart = async (partId) => {
-  const part = await SerialPart.findOne({_id:partId}).populate("serial_id");
+const getSingleSerialPart = async (partId) => {
+  const part = await SerialPart.findOne({ _id: partId }).populate("serial_id");
   return {
-    part
+    part,
   };
 };
 
@@ -32,8 +34,8 @@ export const getSingleSerialPart = async (partId) => {
  * @param {string} parentSerialId The serial to which this part should be added
  * @returns {Object} a JSON object representing the serial part
  */
-export const createSerialPart = async (requestBody, parentSerialId) => {
-  try{
+const createSerialPart = async (requestBody, parentSerialId) => {
+  try {
     const serialParts = await readSerialParts(parentSerialId);
     // const serial = await Serial.find({_id: req.params.serialId});
     const newPart = new SerialPart({
@@ -42,7 +44,7 @@ export const createSerialPart = async (requestBody, parentSerialId) => {
       creation_date: Date.now(),
       serial_id: parentSerialId,
       slug: _.kebabCase(requestBody.title),
-      part_number: serialParts.length
+      part_number: serialParts.length,
     });
 
     await newPart.save();
@@ -57,20 +59,25 @@ export const createSerialPart = async (requestBody, parentSerialId) => {
  * @param {Object} partId The id of the part to delete
  * @param {ObjectId} userId The requesting user's ID
  */
-export const deleteSerialPart = async (partId, userId) => {
-  try{
-    if (!partId){
-      const noIdError = new Error("No serial part ID supplied for delete operation.");
+const deleteSerialPart = async (partId, userId) => {
+  try {
+    if (!partId) {
+      const noIdError = new Error(
+        "No serial part ID supplied for delete operation."
+      );
       throw noIdError;
     }
-    const serialPart = await SerialPart.findOne({_id: partId}).populate("serial_id");
-    if (userId != serialPart.serial_id.author_id){
-      const wrongOwnerError = new Error("User ID does not match Author ID, aborting delete.");
+    const serialPart = await SerialPart.findOne({ _id: partId }).populate(
+      "serial_id"
+    );
+    if (userId != serialPart.serial_id.author_id) {
+      const wrongOwnerError = new Error(
+        "User ID does not match Author ID, aborting delete."
+      );
       throw wrongOwnerError;
     }
-    return await SerialPart.remove({_id: partId});
-
-  } catch(error){
+    return await SerialPart.remove({ _id: partId });
+  } catch (error) {
     throw error;
   }
 };
@@ -81,81 +88,97 @@ export const deleteSerialPart = async (partId, userId) => {
  * @param {string} partId The id of the serial part ot be edited
  * @returns {Object} a JSON object representing the serial part
  */
-export const updateSerialPart = async (requestBody, partId) => {
-  try{
-    if (!partId){
-      const noPartIdError = new Error("No partId was included in the update request");
+const updateSerialPart = async (requestBody, partId) => {
+  try {
+    if (!partId) {
+      const noPartIdError = new Error(
+        "No partId was included in the update request"
+      );
       throw noPartIdError;
     }
     const valuesToUpdate = {};
-    if (requestBody.title){
+    if (requestBody.title) {
       valuesToUpdate.title = requestBody.title;
       valuesToUpdate.slug = _.kebabCase(requestBody.title);
     }
     if (requestBody.content) valuesToUpdate.content = requestBody.content;
-    if (Object.keys(valuesToUpdate).length === 0){
-      const noUpdateError = new Error("No valid fields were included in the update request");
+    if (Object.keys(valuesToUpdate).length === 0) {
+      const noUpdateError = new Error(
+        "No valid fields were included in the update request"
+      );
       throw noUpdateError;
     }
-    const query = {_id: partId};
+    const query = { _id: partId };
     return await SerialPart.findOneAndUpdate(query, valuesToUpdate);
-
-  } catch (error){
+  } catch (error) {
     throw error;
   }
 };
 
 /**
  * Trades indexes with the next or previous part
- * @param {string} serialPartId 
+ * @param {string} serialPartId
  * @param {boolean} moveUp - Should the index be incremented (true) or decremented (false)?
- * @param {string} userId 
+ * @param {string} userId
  */
-export const updateSerialPartNumber = async(serialPartId, moveUp, userId) => {
+const updateSerialPartNumber = async (serialPartId, moveUp, userId) => {
   try {
     const result = {};
     const serialPartA = await getSingleSerialPart(serialPartId);
 
-    if (serialPartA.part.serial_id.author_id != userId){
-      const notAuthorizedError = new Error("Not authorized to switch these parts");
+    if (serialPartA.part.serial_id.author_id != userId) {
+      const notAuthorizedError = new Error(
+        "Not authorized to switch these parts"
+      );
       throw notAuthorizedError;
     }
     const oldIndexA = serialPartA.part.part_number;
     const serialParts = await readSerialParts(serialPartA.part.serial_id._id);
-    if (serialParts.length > 0){
+    if (serialParts.length > 0) {
       let serialPartB;
       let oldIndexB;
-      if (moveUp){
-        if (serialPartA.part.part_number < serialParts.length){
-          serialPartB = serialParts[serialPartA.part.part_number+1];
+      if (moveUp) {
+        if (serialPartA.part.part_number < serialParts.length) {
+          serialPartB = serialParts[serialPartA.part.part_number + 1];
           oldIndexB = serialPartB.part_number;
           serialPartA.part.part_number = serialPartB.part_number;
           result.resultA = await serialPartA.part.save();
           serialPartB.part_number = oldIndexA;
           result.resultB = await serialPartB.save();
-
         } else {
-          const maxIndexError = new Error("Serial Part is already at the highest index");
+          const maxIndexError = new Error(
+            "Serial Part is already at the highest index"
+          );
           throw maxIndexError;
         }
       } else {
-        if (serialPartA.part.part_number > 0){
-          serialPartB = serialParts[serialPartA.part.part_number-1];
+        if (serialPartA.part.part_number > 0) {
+          serialPartB = serialParts[serialPartA.part.part_number - 1];
           oldIndexB = serialPartB.part_number;
           serialPartA.part.part_number = serialPartB.part_number;
           result.resultA = await serialPartA.part.save();
           serialPartB.part_number = oldIndexA;
           result.resultB = await serialPartB.save();
         } else {
-          const minIndexError = new Error("Serial Part is already at the lowest index");
+          const minIndexError = new Error(
+            "Serial Part is already at the lowest index"
+          );
           throw minIndexError;
         }
       }
-
     }
     return result;
-  } catch (e){
+  } catch (e) {
     console.log(e);
     throw e;
   }
+};
+
+module.exports = {
+  createSerialPart,
+  deleteSerialPart,
+  getSingleSerialPart,
+  readSerialParts,
+  updateSerialPart,
+  updateSerialPartNumber,
 };

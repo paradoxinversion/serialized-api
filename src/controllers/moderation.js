@@ -1,6 +1,6 @@
-import * as moderationActions from "../database/actions/moderation";
+const moderationActions = require("../database/actions/moderation");
 
-export const createReport = async (req, res) => {
+const createReport = async (req, res) => {
   try {
     await moderationActions.createReport(
       req.body.reportDetails.user,
@@ -13,26 +13,31 @@ export const createReport = async (req, res) => {
 
     res.json({
       message: "Report has been successfully filed",
-      reportSuccess: true
+      reportSuccess: true,
     });
   } catch (e) {
     res.json({
       error: e,
       message: "Report filing has failed",
-      reportSuccess: false
+      reportSuccess: false,
     });
   }
 };
 
-export const getReports = async (req, res) => {
+const getReports = async (req, res) => {
   try {
     const reports = await moderationActions.getReports();
     res.json({
-      reports
+      reports,
     });
   } catch (e) {
     res.json({
-      error: e
+      error: e,
     });
   }
+};
+
+module.exports = {
+  createReport,
+  getReports,
 };

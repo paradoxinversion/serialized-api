@@ -1,42 +1,42 @@
-// import {Schema} from "mongoose";
-import mongoose, { Schema } from "mongoose";
+const mongoose = require("mongoose");
+const Schema = mongoose.Schema;
 const SerialSchema = new Schema({
   title: {
     type: String,
-    required: true
+    required: true,
   },
   synopsis: {
     type: String,
-    required: true
+    required: true,
   },
   genre: {
     type: String,
-    required: true
+    required: true,
   },
   nsfw: {
     type: Boolean,
-    required: true
+    required: true,
   },
   creation_date: {
     type: Date,
-    required: true
+    required: true,
   },
   author_id: {
     type: Schema.Types.ObjectId,
     ref: "User",
-    required: true
+    required: true,
   },
   slug: {
     type: String,
-    required: true
+    required: true,
   },
   serialParts: [
     {
       type: Schema.Types.ObjectId,
       ref: "SerialPart",
-      required: false
-    }
-  ]
+      required: false,
+    },
+  ],
 });
 
-export default mongoose.model("Serial", SerialSchema);
+module.exports = mongoose.model("Serial", SerialSchema);

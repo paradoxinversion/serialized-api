@@ -1,5 +1,5 @@
-import Genre from "../mongo/Genre";
-export const createGenre = async (name, description) => {
+const Genre = require("../mongo/Genre");
+const createGenre = async (name, description) => {
   try {
     const doesGenreExist = await Genre.findOne({ name });
     if (doesGenreExist !== null) {
@@ -8,7 +8,7 @@ export const createGenre = async (name, description) => {
     }
     const newGenre = new Genre({
       name,
-      description
+      description,
     });
 
     await newGenre.save();
@@ -19,7 +19,7 @@ export const createGenre = async (name, description) => {
   }
 };
 
-export const getGenres = async () => {
+const getGenres = async () => {
   try {
     const genres = await Genre.find({});
     return genres;
@@ -28,7 +28,7 @@ export const getGenres = async () => {
   }
 };
 
-export const updateGenre = async (id, newName, newDescription) => {
+const updateGenre = async (id, newName, newDescription) => {
   try {
     const update = {};
     if (newName) {
@@ -44,11 +44,18 @@ export const updateGenre = async (id, newName, newDescription) => {
   }
 };
 
-export const deleteGenre = async name => {
+const deleteGenre = async (name) => {
   try {
     const genre = await Genre.deleteOne({ name });
     return genre;
   } catch (e) {
     throw e;
   }
+};
+
+module.exports = {
+  createGenre,
+  deleteGenre,
+  getGenres,
+  updateGenre,
 };

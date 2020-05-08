@@ -1,12 +1,12 @@
-import express from "express";
-import * as userController from "../controllers/user";
-import * as serialController from "../controllers/serial";
-import * as serialPartController from "../controllers/serialPart";
-import * as authController from "../controllers/auth";
-import * as likesController from "../controllers/likes";
-import * as genreController from "../controllers/genre";
-import * as moderationController from "../controllers/moderation";
-import userIsAdministrator from "../middleware/userIsAdministrator";
+const express = require("express");
+const userController = require("../controllers/user");
+const serialController = require("../controllers/serial");
+const serialPartController = require("../controllers/serialPart");
+const authController = require("../controllers/auth");
+const likesController = require("../controllers/likes");
+const genreController = require("../controllers/genre");
+const moderationController = require("../controllers/moderation");
+const userIsAdministrator = require("../middleware/userIsAdministrator");
 const ensureLoggedIn = require("connect-ensure-login").ensureLoggedIn;
 
 const router = express.Router();

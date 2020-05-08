@@ -1,4 +1,4 @@
-import Report from "../mongo/Report";
+const Report = require("../mongo/Report");
 
 /**
  *
@@ -6,7 +6,7 @@ import Report from "../mongo/Report";
  * @param {*} serial
  * @param {*} serialPart
  */
-export const createReport = async (
+const createReport = async (
   user,
   serial,
   serialPart,
@@ -16,7 +16,7 @@ export const createReport = async (
 ) => {
   const args = [...arguments];
   let hasReportTarget = false;
-  args.slice(0, 2).forEach(val => {
+  args.slice(0, 2).forEach((val) => {
     if (val !== null && val !== undefined) {
       hasReportTarget = true;
     }
@@ -28,7 +28,7 @@ export const createReport = async (
       serialPart,
       reportType,
       extraDetails,
-      reportingUser
+      reportingUser,
     });
 
     await newReport.save();
@@ -41,7 +41,14 @@ export const createReport = async (
   }
 };
 
-export const getReports = async () => {
-  const reports = await Report.find();
+const getReports = async () => {
+  const reports = await Report.find()
+    .populate("user")
+    .populate("reportingUser");
   return reports;
+};
+
+module.exports = {
+  createReport,
+  getReports,
 };

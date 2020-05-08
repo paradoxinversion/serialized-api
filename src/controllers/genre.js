@@ -1,6 +1,6 @@
-import * as genreActions from "../database/actions/genre";
+const genreActions = require("../database/actions/genre");
 
-export const create = async (req, res) => {
+const create = async (req, res) => {
   try {
     const newGenre = await genreActions.createGenre(
       req.body.name,
@@ -9,25 +9,25 @@ export const create = async (req, res) => {
     res.json(newGenre);
   } catch (e) {
     res.json({
-      error: e
+      error: e,
     });
   }
 };
 
-export const getAll = async (req, res) => {
+const getAll = async (req, res) => {
   try {
     const genres = await genreActions.getGenres();
     res.json({
-      genres: genres
+      genres: genres,
     });
   } catch (e) {
     res.json({
-      error: e
+      error: e,
     });
   }
 };
 
-export const deleteOne = async (req, res) => {
+const deleteOne = async (req, res) => {
   try {
     const newGenre = await genreActions.createGenre(
       req.body.name,
@@ -36,12 +36,12 @@ export const deleteOne = async (req, res) => {
     res.json(newGenre);
   } catch (e) {
     res.json({
-      error: e
+      error: e,
     });
   }
 };
 
-export const update = async (req, res) => {
+const update = async (req, res) => {
   try {
     const newGenre = await genreActions.updateGenre(
       req.body.id,
@@ -51,7 +51,13 @@ export const update = async (req, res) => {
     res.json(newGenre);
   } catch (e) {
     res.json({
-      error: e
+      error: e,
     });
   }
+};
+module.exports = {
+  create,
+  deleteOne,
+  update,
+  getAll,
 };

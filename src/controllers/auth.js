@@ -1,10 +1,10 @@
 const passport = require("passport");
 const LocalStrategy = require("passport-local").Strategy;
-import User from "../database/mongo/User";
-import * as userActions from "../database/actions/user";
-const logUserInLocal = function(email, password, done) {
+const User = require("../database/mongo/User");
+const userActions = require("../database/actions/user");
+const logUserInLocal = function (email, password, done) {
   User.findOne({ email: email })
-    .then(async user => {
+    .then(async (user) => {
       if (!user) {
         return done(null, false);
       } else {
@@ -17,7 +17,7 @@ const logUserInLocal = function(email, password, done) {
         }
       }
     })
-    .catch(e => {
+    .catch((e) => {
       return done(e);
     });
 };
@@ -26,64 +26,64 @@ passport.use(
   "local-login",
   new LocalStrategy({ usernameField: "email" }, logUserInLocal)
 );
-passport.serializeUser(function(user, done) {
+passport.serializeUser(function (user, done) {
   done(null, user.id);
 });
 
-passport.deserializeUser(function(id, done) {
-  User.findById(id, function(err, user) {
+passport.deserializeUser(function (id, done) {
+  User.findById(id, function (err, user) {
     done(err, user);
   });
 });
 
-export const checkAuthentication = async (req, res) => {
+const checkAuthentication = async (req, res) => {
   if (req.session.passport && req.session.passport.user) {
     const user = await User.findOne({
-      _id: req.session.passport.user
+      _id: req.session.passport.user,
     }).populate("role");
     // const userRole = await userActions.getRole(user._id);
     return res.json({ isAuthenticated: true, user });
   }
   res.json({ isAuthenticated: false, user: null });
 };
-export const checkForRegisteredEmail = async (req, res) => {
+const checkForRegisteredEmail = async (req, res) => {
   const email = req.query.email;
   try {
     const existingUser = await User.findOne({ email });
     if (existingUser === null) {
       return res.json({
-        emailAvailable: true
+        emailAvailable: true,
       });
     }
     return res.json({
-      emailAvailable: false
+      emailAvailable: false,
     });
   } catch (e) {
     res.json({
-      error: e
+      error: e,
     });
   }
 };
 
-export const checkForRegisteredUsername = async (req, res) => {
+const checkForRegisteredUsername = async (req, res) => {
   const username = req.query.username;
   try {
     const existingUser = await User.findOne({ username });
     if (existingUser === null) {
       return res.json({
-        usernameAvailable: true
+        usernameAvailable: true,
       });
     }
     return res.json({
-      usernameAvailable: false
+      usernameAvailable: false,
     });
   } catch (e) {
     res.json({
-      error: e
+      error: e,
     });
   }
 };
-export const checkUserRegistrationData = async (req, res) => {
+const checkUserRegistrationData = async (req, res) => {
   if (req.query.email) {
     await checkForRegisteredEmail(req, res);
   } else if (req.query.username) {
@@ -91,4 +91,12 @@ export const checkUserRegistrationData = async (req, res) => {
   }
 };
 
-export const tryAuthenticateLocal = passport.authenticate("local-login");
+const tryAuthenticateLocal = passport.authenticate("local-login");
+
+module.exports = {
+  checkAuthentication,
+  checkForRegisteredEmail,
+  checkForRegisteredUsername,
+  checkUserRegistrationData,
+  tryAuthenticateLocal,
+};

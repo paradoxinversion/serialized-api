@@ -1,5 +1,5 @@
-import Role from "./mongo/Role";
-import * as userActions from "./actions/user";
+const Role = require("./mongo/Role");
+const userActions = require("./actions/user");
 const Config = require("../config/config").getConfig();
 
 /**
@@ -12,7 +12,7 @@ const databaseInit = async () => {
     const roles = [
       { role: "Reader", accessLevel: 0 },
       { role: "Author", accessLevel: 1 },
-      { role: "Administrator", accessLevel: 2 }
+      { role: "Administrator", accessLevel: 2 },
     ];
     await Role.insertMany(roles);
 
@@ -22,7 +22,7 @@ const databaseInit = async () => {
       firstName: Config.security.adminName || process.env.ADMIN_NAME,
       lastName: Config.security.adminName || process.env.ADMIN_NAME,
       password: Config.security.adminPassword || process.env.ADMIN_PASS,
-      birthdate: Config.security.adminBirthdate || process.env.ADMIN_BIRTHDATE
+      birthdate: Config.security.adminBirthdate || process.env.ADMIN_BIRTHDATE,
     });
     await adminUser.save();
     const adminUpdateAction = await userActions.changeUserRole(
@@ -39,4 +39,4 @@ const databaseInit = async () => {
   }
 };
 
-export default databaseInit;
+module.exports = databaseInit;

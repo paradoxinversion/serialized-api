@@ -1,12 +1,12 @@
-import mongoose, { Schema } from "mongoose";
-
+const mongoose = require("mongoose");
+const Schema = mongoose.Schema;
 const ReportSchema = new Schema({
   serialPart: { type: Schema.Types.ObjectId, ref: "SerialPart" },
   user: { type: Schema.Types.ObjectId, ref: "User" },
   serial: { type: Schema.Types.ObjectId, ref: "Serial" },
   reportType: { type: Number, required: true },
   extraDetails: { type: String },
-  reportingUser: { type: Schema.Types.ObjectId, ref: "User" }
+  reportingUser: { type: Schema.Types.ObjectId, ref: "User" },
 });
 
-export default mongoose.model("Report", ReportSchema);
+module.exports = mongoose.model("Report", ReportSchema);
