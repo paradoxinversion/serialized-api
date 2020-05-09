@@ -28,12 +28,14 @@ const changeUserRole = async function (userId, newAccessLevel) {
 };
 /**
  * This function returns all users from the database
+ * @param {Number} start - the amount of users to skip when gettign users (for paging)
  * @returns {Array} an array of users
  */
-const getAllUsers = async () => {
+const getAllUsers = async (start, usersToGet = 25) => {
   const userList = await User.find()
-    .populate({ path: "role", select: "role accessLevel" })
-    .select("username biography");
+    .select("username biography")
+    .skip(start)
+    .limit(usersToGet);
 
   return userList;
 };
@@ -44,9 +46,9 @@ const getAllUsers = async () => {
  * @returns {Object} an object containing the user searched for (or null)
  */
 const getUser = async (userName) => {
-  const user = await User.findOne({ username: userName })
-    .populate({ path: "role", select: "role accessLevel" })
-    .select("username biography");
+  const user = await User.findOne({ username: userName }).select(
+    "username biography"
+  );
   return user;
 };
 
@@ -59,6 +61,15 @@ const getUser = async (userName) => {
  * @returns {Object} an object containing the user searched for (or null)
  */
 const addNewUser = async ({ username, password, birthdate, role }) => {
+  const user = await User.findOne({ username });
+  if (user) {
+    const duplicateEmailError = new Error(
+      "User already exists with username",
+      username
+    );
+    duplicateEmailError.statusCode = 409;
+    throw duplicateEmailError;
+  }
   let hashedPassword;
   if (password) {
     hashedPassword = await bcrypt.hash(password, 10);
@@ -107,9 +118,8 @@ const addNewUser = async ({ username, password, birthdate, role }) => {
  */
 const updateUser = async ({ biography, viewNSFW, userId }) => {
   const valuesToUpdate = {};
-  if (requestBody.viewNSFW !== "undefined")
-    valuesToUpdate.viewNSFW = requestBody.viewNSFW;
-  if (requestBody.biography) valuesToUpdate.biography = requestBody.biography;
+  if (viewNSFW !== "undefined") valuesToUpdate.viewNSFW = viewNSFW;
+  if (biography) valuesToUpdate.biography = biography;
 
   if (Object.keys(valuesToUpdate).length === 0) {
     const noUpdateError = new Error(
@@ -121,8 +131,8 @@ const updateUser = async ({ biography, viewNSFW, userId }) => {
   const updateOptions = {
     new: true,
   };
-  const update = await User.findOneAndUpdate(
-    query,
+  const update = await User.findByIdAndUpdate(
+    userId,
     valuesToUpdate,
     updateOptions
   );
@@ -135,7 +145,18 @@ const updateUser = async ({ biography, viewNSFW, userId }) => {
  * @returns {Object} an object containing the deleted user information
  */
 const deleteUser = async (userId) => {
-  return await User.findOneAndRemove({ _id: userId });
+  const deletion = await User.findOneAndRemove({ _id: userId });
+  if (deletion) {
+    return {
+      result: 1,
+      message: `User ${userId} deleted`,
+    };
+  } else {
+    return {
+      result: 0,
+      message: "No user found with that ID",
+    };
+  }
 };
 module.exports = {
   getAllUsers,

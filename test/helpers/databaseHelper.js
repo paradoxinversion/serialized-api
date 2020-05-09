@@ -8,7 +8,6 @@ const prepareTestDB = async () => {
     useNewUrlParser: true,
     useUnifiedTopology: true,
   });
-  await databaseInit();
 };
 
 const closeTestDBConnection = async () => {
