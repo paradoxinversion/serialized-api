@@ -1,12 +1,16 @@
 const userActions = require("../database/actions/user");
 
+/**
+ * Returns all users
+ * @param {*} req
+ * @param {*} res
+ */
 const getUsers = async function getUsers(req, res) {
-  const queryResult = await userActions.getAllUsers(req.query.user);
-  let response = {
-    userData: queryResult,
-    isQueriedUser: false,
+  const users = await userActions.getAllUsers(req.query.user);
+  const response = {
+    users: users,
   };
-  res.json(response);
+  res.status(200).json(response);
 };
 
 const getUser = async function getUser(req, res) {

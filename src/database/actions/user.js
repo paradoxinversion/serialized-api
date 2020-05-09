@@ -1,22 +1,6 @@
 const User = require("../mongo/User");
-const Role = require("../mongo/Role");
 const bcrypt = require("bcrypt");
-/**
- * This function returns a user's role
- * @param {string} userId The id of the user who's role to get
- * @returns {Object} an object containing the user's role name and access level
- */
-const getRole = async function (userId) {
-  const user = await User.findOne({ _id: userId }).populate("role");
-  if (!user) {
-    const userNotFoundError = new Error("User Not Found");
-    throw userNotFoundError;
-  }
-  return {
-    role: user.role.role,
-    accessLevel: user.role.accessLevel,
-  };
-};
+
 /**
  * Changes the User's role
  * 0: Reader; 1: Writer; 2: Admin
@@ -25,18 +9,17 @@ const getRole = async function (userId) {
  */
 const changeUserRole = async function (userId, newAccessLevel) {
   try {
-    const updatedUserRole = await Role.findOne({ accessLevel: newAccessLevel });
     const user = await User.findOneAndUpdate(
       { _id: userId },
-      { role: updatedUserRole._id },
+      { role: newAccessLevel },
       { new: true }
     );
 
-    await user.save();
     if (!user) {
       const userNotFoundError = new Error("User Not Found");
       throw userNotFoundError;
     }
+    await user.save();
     return true;
   } catch (e) {
     console.log(e);
@@ -48,12 +31,9 @@ const changeUserRole = async function (userId, newAccessLevel) {
  * @returns {Array} an array of users
  */
 const getAllUsers = async () => {
-  const userList = await User.find().populate("role").select({
-    username: 1,
-    firstName: 1,
-    lastName: 1,
-    biography: 1,
-  });
+  const userList = await User.find()
+    .populate({ path: "role", select: "role accessLevel" })
+    .select("username biography");
 
   return userList;
 };
@@ -65,31 +45,23 @@ const getAllUsers = async () => {
  */
 const getUser = async (userName) => {
   const user = await User.findOne({ username: userName })
-    .populate("role")
-    .select({
-      username: 1,
-      firstName: 1,
-      lastName: 1,
-      biography: 1,
-    });
+    .populate({ path: "role", select: "role accessLevel" })
+    .select("username biography");
   return user;
 };
 
 /**
  * This function posts a new user to the database
  * @param {Object} requestBody - The request from the client with all information for a new user
- * @param {string} requestBody.email - The email of the user
- * @param {string} requestBody.username - The user's username
- * @param {string} requestBody.firstName the user's first name
- * @param {string} requestBody.lastName the user's last name
- * @param {string} requestBody.password - The plaintext password the user intends to use
- * @param {Date} requestBody.birthdate the user's birthdate
+ * @param {string} username - The user's username
+ * @param {string} password - The plaintext password the user intends to use
+ * @param {Date} birthdate the user's birthdate
  * @returns {Object} an object containing the user searched for (or null)
  */
-const addNewUser = async (requestBody) => {
+const addNewUser = async ({ username, password, birthdate, role }) => {
   let hashedPassword;
-  if (requestBody.password) {
-    hashedPassword = await bcrypt.hash(requestBody.password, 10);
+  if (password) {
+    hashedPassword = await bcrypt.hash(password, 10);
   } else {
     const noPasswordError = new Error(
       "No password was included in the signup request"
@@ -97,17 +69,12 @@ const addNewUser = async (requestBody) => {
     noPasswordError.statusCode = 400;
     throw noPasswordError;
   }
-  const role = await Role.findOne({ accessLevel: 0 });
-  const lowercaseUsername = requestBody.username.toLowerCase();
   const newUser = new User({
-    email: requestBody.email,
-    username: lowercaseUsername,
+    username,
     password: hashedPassword,
-    firstName: requestBody.firstName,
-    lastName: requestBody.lastName,
-    birthdate: requestBody.birthdate,
+    birthdate,
     joinDate: Date.now(),
-    role: role._id,
+    role: role,
   });
 
   try {
@@ -138,14 +105,12 @@ const addNewUser = async (requestBody) => {
  * @param {Object} userId The id of the user to update
  * @returns {Object} an object containing the updated user information
  */
-const updateUser = async (requestBody, userId) => {
+const updateUser = async ({ biography, viewNSFW, userId }) => {
   const valuesToUpdate = {};
   if (requestBody.viewNSFW !== "undefined")
     valuesToUpdate.viewNSFW = requestBody.viewNSFW;
-  if (requestBody.firstName) valuesToUpdate.firstName = requestBody.firstName;
-  if (requestBody.lastName) valuesToUpdate.lastName = requestBody.lastName;
   if (requestBody.biography) valuesToUpdate.biography = requestBody.biography;
-  console.log(requestBody);
+
   if (Object.keys(valuesToUpdate).length === 0) {
     const noUpdateError = new Error(
       "No valid fields were included in the update request"
@@ -170,10 +135,9 @@ const updateUser = async (requestBody, userId) => {
  * @returns {Object} an object containing the deleted user information
  */
 const deleteUser = async (userId) => {
-  return await User.remove({ _id: userId });
+  return await User.findOneAndRemove({ _id: userId });
 };
 module.exports = {
-  getRole,
   getAllUsers,
   addNewUser,
   updateUser,

@@ -1,5 +1,9 @@
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
+
+/**
+ * Defines a serial story
+ */
 const SerialSchema = new Schema({
   title: {
     type: String,
@@ -10,7 +14,8 @@ const SerialSchema = new Schema({
     required: true,
   },
   genre: {
-    type: String,
+    type: Schema.Types.ObjectId,
+    ref: "Genre",
     required: true,
   },
   nsfw: {
@@ -21,7 +26,11 @@ const SerialSchema = new Schema({
     type: Date,
     required: true,
   },
-  author_id: {
+  last_modified: {
+    type: Date,
+    required: true,
+  },
+  author: {
     type: Schema.Types.ObjectId,
     ref: "User",
     required: true,

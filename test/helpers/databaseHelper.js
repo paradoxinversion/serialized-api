@@ -1,21 +1,18 @@
-import mongoose from "mongoose";
-import Role from "../../src/database/mongo/Role";
-
-export const prepareTestDB = async () => {
+const mongoose = require("mongoose");
+const databaseInit = require("../../src/database/databaseInit");
+const prepareTestDB = async () => {
   const mongooseOptions = {
-    useMongoClient: true
+    useMongoClient: true,
   };
-  mongoose.Promise = global.Promise;
-  mongoose.connect("mongodb://localhost/serialized_api_test", mongooseOptions);
-  const roles = [
-    {role: "Reader", accessLevel: 0},
-    {role: "Author", accessLevel: 1},
-    {role: "Administrator", accessLevel: 2}
-  ];
-  return await Role.insertMany(roles);
+  await mongoose.connect("mongodb://localhost:27017/serialized_api_test", {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+  });
+  await databaseInit();
 };
 
-export const closeTestDBConnection = async () => {
+const closeTestDBConnection = async () => {
   await mongoose.connection.db.dropDatabase();
   mongoose.connection.close();
 };
+module.exports = { prepareTestDB, closeTestDBConnection };

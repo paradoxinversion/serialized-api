@@ -1,5 +1,8 @@
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
+/**
+ * Defines different types of user roles
+ */
 const RoleSchema = new Schema({
   role: {
     type: String,
