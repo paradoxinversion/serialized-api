@@ -31,18 +31,22 @@ const getAuthorSerials = async (authorId) => {
  * @param {string} userId - The id of the user making the request
  * @returns {Object} - the new serial entry
  */
-const postSerial = async (requestBody, userId) => {
+const createSerial = async ({ title, synopsis, genre, nsfw, userId }) => {
   try {
     const newSerial = new Serial({
-      title: requestBody.title,
-      synopsis: requestBody.synopsis,
-      genre: requestBody.genre,
-      nsfw: requestBody.nsfw,
+      title,
+      synopsis,
+      genre,
+      nsfw,
       creation_date: Date.now(),
       author_id: userId,
-      slug: _.kebabCase(requestBody.title),
+      slug: _.kebabCase(title), // should maybe be handled by the model itself
     });
-    return await newSerial.save();
+    const serial = {};
+    await newSerial.save();
+    return {
+      result: 1,
+    };
   } catch (error) {
     throw error;
   }
@@ -190,6 +194,6 @@ module.exports = {
   getAuthorSerials,
   getSerialSubscriptions,
   getUserSerialSubscriptions,
-  postSerial,
+  createSerial,
   subscribeToSerial,
 };

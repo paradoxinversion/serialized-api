@@ -34,8 +34,8 @@ const fakeUserUpdateRequest = () => {
   return requestBody;
 };
 
-const addSerialHelper = async (user) => {
-  const requestBody = {
+const fakeSerialData = async (user) => {
+  const serialData = {
     title: faker.random.words(),
     synopsis: faker.lorem.paragraph(),
     genre: faker.random.word(),
@@ -43,11 +43,7 @@ const addSerialHelper = async (user) => {
     nsfw: false,
   };
 
-  const dbResult = await serialActions.postSerial(requestBody, user.token);
-  return {
-    requestBody,
-    dbResult,
-  };
+  return serialData;
 };
 
 const addSerialPartHelper = (parentSerialId) => {
@@ -69,6 +65,6 @@ module.exports = {
   createTestUsers,
   fakeUserSignupData,
   fakeUserUpdateRequest,
-  addSerialHelper,
+  fakeSerialData,
   addSerialPartHelper,
 };

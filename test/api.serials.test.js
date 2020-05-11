@@ -1,31 +1,41 @@
-// process.env.NODE_ENV = 'testing';
-// import {expect} from "chai";
-// import * as serialActions from "../src/database/actions/serial"
-// import * as serialPartActions from "../src/database/actions/serialPart";
-// import Serial from "../src/database/mongo/Serial";
-// import * as authorization from "../src/controllers/auth";
-// import * as dbHelpers from './helpers/databaseHelper';
-// import * as dataHelper from './helpers/dataHelper';
+const { expect } = require("chai");
+const serialActions = require("../src/database/actions/serial");
+const serialPartActions = require("../src/database/actions/serialPart");
+const Serial = require("../src/database/mongo/Serial");
+const User = require("../src/database/mongo/User");
 
-// /**
-//  * This function is a standin for the done() function utilized by passport.
-//  *
-//  */
-// const d = (error, user) => {
-//   if (error) throw error;
-//   if (user) return user;
-//   return null;
-// };
-// describe('Serial Actions', function(){
-//   let authorizedUser;
-//   let testSerial;
-//   before(async function (){
-//     await dbHelpers.prepareTestDB();
-//     const authorizedUserData = await dataHelper.addUserHelper();
-//     authorizedUser = await authorization.logUserIn(authorizedUserData.requestBody.email, authorizedUserData.requestBody.password, d);
-//   });
+const dbHelpers = require("./helpers/databaseHelper");
+const dataHelper = require("./helpers/dataHelper");
+const databaseInit = require("../src/database/databaseInit");
 
-//   after(async function (){
-//     await dbHelpers.closeTestDBConnection();
-//   });
-// });
+describe("Serial Actions", function () {
+  before(async function () {
+    await dbHelpers.prepareTestDB();
+  });
+  beforeEach(async function () {
+    await databaseInit();
+    const { username, password, birthdate } = dataHelper.fakeUserSignupData();
+    const testUser = new User({
+      username,
+      password,
+      birthdate,
+      joinDate: Date.now(),
+      role: 0,
+    });
+  });
+  afterEach(async function () {
+    await Serial.remove({});
+  });
+  after(async function () {
+    await dbHelpers.closeTestDBConnection();
+  });
+
+  describe("serialActions", function(){
+    describe("createSerial", function(){
+      it("creates a serial", async function(){
+        const serialData = dataHelper.fakeSerialData()
+        serialActions.createSerial()
+      })
+    })
+  })
+});
