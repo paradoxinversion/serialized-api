@@ -21,6 +21,7 @@ router
   .patch(verifyUser, userController.updateUser) // Update User
   .delete(verifyUser, userIsAdministrator, userController.deleteUser); // Delete User
 
+// ! These route might be useless with jwts ---
 router
   .route("/users/register/check")
   .get(authController.checkUserRegistrationData);
@@ -33,6 +34,8 @@ router
   ) //Authenticate User
   .get(authController.checkAuthentication);
 router.route("/users/auth/logout").get(userController.logOut);
+// ! End of possibly useless routes ---
+
 router.route("/users/:username").get(userController.getUser);
 
 router

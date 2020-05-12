@@ -27,18 +27,18 @@ const getUsers = async function getUsers(req, res) {
 
 const getUser = async function getUser(req, res) {
   const queryResult = await userActions.getUser(req.params.username);
-  let response = {
-    userData: queryResult,
-    isQueriedUser: false,
-  };
 
-  if (
-    req.session.passport &&
-    req.session.passport.user == response.userData._id
-  ) {
-    response.isQueriedUser = true;
-  }
-  res.json(response);
+  let response = {
+    data: {
+      type: "user",
+      id: queryResult.id,
+      attributes: {
+        username: queryResult.username,
+        biography: queryResult.biography,
+      },
+    },
+  };
+  res.status(200).type("application/vnd.api+json").json(response);
 };
 
 /**
