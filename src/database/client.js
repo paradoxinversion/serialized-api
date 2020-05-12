@@ -9,7 +9,6 @@ const startClient = async () => {
     );
 
     const user = await User.findOne({ role: 2 });
-    console.log(user);
     if (!user) {
       await databaseInit();
     }

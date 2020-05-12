@@ -73,8 +73,9 @@ describe("User DB Actions", function () {
       expect(updatedUser.viewNSFW).to.equal(true);
     });
   });
+
   describe("deleteUser", async function () {
-    it("Deletes a user", async function () {
+    it("Deletes a user from thhe databse", async function () {
       const { username, password, birthdate } = dataHelper.fakeUserSignupData();
       const testUser = new User({
         username,
@@ -99,11 +100,10 @@ describe("User DB Actions", function () {
       });
       await testUser.save();
 
-      const deletedUser = await userActions.deleteUser(undefined);
-      expect(deletedUser.result).to.equal(0);
+      expect(userActions.deleteUser(undefined)).to.eventually.throw();
     });
   });
-  describe("getAllUsers", async function () {});
+
   describe("getAllUsers", async function () {
     it("Returns a specified amount of users", async function () {
       const testUsers = [];
@@ -124,8 +124,7 @@ describe("User DB Actions", function () {
         await testUser.save();
       }
       const users = await userActions.getAllUsers(0, 30);
-      // expect(users.length).to.be.greaterThan(0);
-      expect(users).to.have.lengthOf(30);
+      expect(users.users).to.have.lengthOf(30);
     });
     it("Returns all registered users", async function () {
       const testUsers = [];
@@ -146,8 +145,7 @@ describe("User DB Actions", function () {
         await testUser.save();
       }
       const users = await userActions.getAllUsers(0, 100);
-      // expect(users.length).to.be.greaterThan(0);
-      expect(users).to.have.lengthOf(100);
+      expect(users.users).to.have.lengthOf(100);
     });
     it("Skips users as directed", async function () {
       const testUsers = [];
@@ -169,7 +167,8 @@ describe("User DB Actions", function () {
       }
       const startIndex = 30;
       const users = await userActions.getAllUsers(startIndex);
-      expect(users[0].username).to.eq(testUsers[startIndex - 1].username);
+
+      expect(users.users[0].username).to.eq(testUsers[startIndex - 1].username);
     });
   });
 

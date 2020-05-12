@@ -8,12 +8,14 @@ const cookieParser = require("cookie-parser");
 const mongoClient = require("./database/client");
 const session = require("express-session");
 const MongoStore = require("connect-mongo")(session);
-
+const TokenManager = require("./tokens/jwt");
 const api = require("./routes/v1");
 
 const app = express();
 require("./middleware/userLoggedIn");
 
+const tokenManager = new TokenManager("test", "test", { expiresIn: "14 days" });
+app.locals.tokenManager = tokenManager;
 app.use(morgan("dev"));
 
 app.use(bodyParser.json());
@@ -50,3 +52,5 @@ app.use(function (error, req, res, next) {
 app.listen(Config.server.port, () => {
   console.log("Server started", Config.server.port);
 });
+
+module.exports = app;

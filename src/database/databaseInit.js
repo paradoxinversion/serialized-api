@@ -14,9 +14,9 @@ const databaseInit = async () => {
       birthdate: Config.security.adminBirthdate,
       role: 2,
     });
-    await adminUser.save();
+    return await adminUser.save();
   } catch (e) {
-    console.log(e);
+    throw e;
   }
 };
 

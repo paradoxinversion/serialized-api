@@ -124,7 +124,6 @@ const updateSerialPartNumber = async (req, res) => {
     );
     res.json(response);
   } catch (e) {
-    console.log(e);
     throw e;
   }
 };

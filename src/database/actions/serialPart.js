@@ -169,7 +169,6 @@ const updateSerialPartNumber = async (serialPartId, moveUp, userId) => {
     }
     return result;
   } catch (e) {
-    console.log(e);
     throw e;
   }
 };

@@ -34,6 +34,10 @@ const UserSchema = new Schema({
     type: Boolean,
     default: false,
   },
+  accountStatus: {
+    type: Number,
+    default: 0,
+  },
 });
 
 UserSchema.methods.validatePassword = async function (password) {

@@ -2,20 +2,20 @@
 
 const jwt = require("jsonwebtoken");
 
-function TokenGenerator(secretOrPrivateKey, secretOrPublicKey, options) {
+function TokenManager(secretOrPrivateKey, secretOrPublicKey, options) {
   this.secretOrPrivateKey = secretOrPrivateKey;
   this.secretOrPublicKey = secretOrPublicKey;
   this.options = options; //algorithm + keyid + noTimestamp + expiresIn + notBefore
 }
 
-TokenGenerator.prototype.sign = function (payload, signOptions) {
+TokenManager.prototype.sign = function (payload, signOptions) {
   const jwtSignOptions = Object.assign({}, signOptions, this.options);
   return jwt.sign(payload, this.secretOrPrivateKey, jwtSignOptions);
 };
 
 // refreshOptions.verify = options you would use with verify function
 // refreshOptions.jwtid = contains the id for the new token
-TokenGenerator.prototype.refresh = function (token, refreshOptions) {
+TokenManager.prototype.refresh = function (token, refreshOptions) {
   const payload = jwt.verify(
     token,
     this.secretOrPublicKey,
@@ -32,4 +32,13 @@ TokenGenerator.prototype.refresh = function (token, refreshOptions) {
   return jwt.sign(payload, this.secretOrPrivateKey, jwtSignOptions);
 };
 
-module.exports = TokenGenerator;
+TokenManager.prototype.verify = function (
+  token,
+  secretOrPublicKey,
+  verifyOptions
+) {
+  const verified = jwt.verify(token, secretOrPublicKey);
+  return verified;
+};
+
+module.exports = TokenManager;

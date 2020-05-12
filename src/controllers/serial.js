@@ -152,7 +152,6 @@ const checkForUserSubscription = async (req, res) => {
     }
     res.json(response);
   } catch (e) {
-    console.log(e);
     return res.json({
       status: "400",
       error: {
@@ -176,7 +175,6 @@ const getUserSerialSubscriptions = async (req, res) => {
     }
     res.json(response);
   } catch (e) {
-    console.log(e);
     return res.json({
       status: "400",
       error: {

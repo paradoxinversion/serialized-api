@@ -4,14 +4,14 @@
   "description": "",
   "main": "app.js",
   "scripts": {
-    "test": "mocha --reporter spec",
+    "test": "mocha --reporter spec --exit",
     "start:dev": "nodemon ./src/app.js",
     "start": "node ./src/app.js",
     "start:heroku": "node ./dist/app.js",
     "heroku-postbuild": "npm run build:all-deploy"
   },
   "engines": {
-    "node": "12.8.1"
+    "node": "12.13.1"
   },
   "keywords": [],
   "author": "Jedai Saboteur",
@@ -19,6 +19,7 @@
   "dependencies": {
     "bcrypt": "^3.0.6",
     "body-parser": "^1.18.3",
+    "chai-http": "^4.3.0",
     "connect-ensure-login": "^0.1.1",
     "connect-mongo": "^2.0.1",
     "cookie-parser": "^1.4.3",

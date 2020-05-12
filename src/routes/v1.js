@@ -7,15 +7,19 @@ const likesController = require("../controllers/likes");
 const genreController = require("../controllers/genre");
 const moderationController = require("../controllers/moderation");
 const userIsAdministrator = require("../middleware/userIsAdministrator");
+const verifyUser = require("../middleware/verifyUser");
 const ensureLoggedIn = require("connect-ensure-login").ensureLoggedIn;
 
 const router = express.Router();
+router.route("/test").get((req, res) => {
+  return res.status(200).send("OK");
+});
 router
   .route("/users")
   .get(userController.getUsers) //Get all
   .post(userController.postUser) // Post New
-  .put(ensureLoggedIn(), userController.updateUser) // Update User
-  .delete(ensureLoggedIn(), userController.deleteUser); // Delete User
+  .patch(verifyUser, userController.updateUser) // Update User
+  .delete(verifyUser, userIsAdministrator, userController.deleteUser); // Delete User
 
 router
   .route("/users/register/check")

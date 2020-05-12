@@ -1,6 +1,9 @@
 const User = require("../mongo/User");
 const bcrypt = require("bcrypt");
-
+const {
+  MissingArgumentError,
+  ValidationError,
+} = require("../../utilities/errorGenerator");
 /**
  * Changes the User's role
  * 0: Reader; 1: Writer; 2: Admin
@@ -20,24 +23,35 @@ const changeUserRole = async function (userId, newAccessLevel) {
       throw userNotFoundError;
     }
     await user.save();
-    return true;
+    return {
+      success: true,
+    };
   } catch (e) {
-    console.log(e);
-    return false;
+    throw e;
   }
 };
 /**
- * This function returns all users from the database
+ * This function returns users from the database. Rename to remove 'all'
  * @param {Number} start - the amount of users to skip when gettign users (for paging)
  * @returns {Array} an array of users
  */
-const getAllUsers = async (start, usersToGet = 25) => {
+const getAllUsers = async (start = 0, usersToGet = 25) => {
   const userList = await User.find()
     .select("username biography")
     .skip(start)
     .limit(usersToGet);
-
-  return userList;
+  // const cursor = await User.findById(
+  //   userList[userList.length - 1]._id
+  // ).cursor();
+  return {
+    users: userList,
+    start,
+    links: {
+      next: start + usersToGet,
+      prev:
+        start === 0 ? null : start - usersToGet > 0 ? start - usersToGet : 0,
+    },
+  };
 };
 
 /**
@@ -61,49 +75,48 @@ const getUser = async (userName) => {
  * @returns {Object} an object containing the user searched for (or null)
  */
 const addNewUser = async ({ username, password, birthdate, role }) => {
-  const user = await User.findOne({ username });
-  if (user) {
-    const duplicateEmailError = new Error(
-      "User already exists with username",
-      username
-    );
-    duplicateEmailError.statusCode = 409;
-    throw duplicateEmailError;
-  }
-  let hashedPassword;
-  if (password) {
-    hashedPassword = await bcrypt.hash(password, 10);
-  } else {
-    const noPasswordError = new Error(
-      "No password was included in the signup request"
-    );
-    noPasswordError.statusCode = 400;
-    throw noPasswordError;
-  }
-  const newUser = new User({
-    username,
-    password: hashedPassword,
-    birthdate,
-    joinDate: Date.now(),
-    role: role,
-  });
-
   try {
+    if (!username) {
+      const error = new MissingArgumentError("Username is missing");
+      throw error;
+    }
+    if (!password) {
+      const error = new MissingArgumentError("Password is missing");
+      throw error;
+    }
+    if (!birthdate) {
+      const error = new MissingArgumentError("Username is missing");
+      throw error;
+    }
+    const user = await User.findOne({ username });
+    if (user) {
+      const message = `User already exists with the username '${username}'`;
+      const duplicateEmailError = new Error(message);
+      duplicateEmailError.statusCode = 409;
+      throw duplicateEmailError;
+    }
+
+    if (!password) {
+      const noPasswordError = new Error(
+        "No password was included in the signup request"
+      );
+      noPasswordError.statusCode = 401;
+      throw noPasswordError;
+    }
+    const hashedPassword = await bcrypt.hash(password, 10);
+
+    const newUser = new User({
+      username,
+      password: hashedPassword,
+      birthdate,
+      joinDate: Date.now(),
+      role: role,
+    });
+
     await newUser.save();
     return newUser;
   } catch (e) {
-    // Handle validation/duplicate user errors here
-    if (e.name === "MongoError" || e.code === 11000) {
-      const duplicateEmailError = new Error(
-        "User already exists with that email"
-      );
-      duplicateEmailError.statusCode = 409;
-      throw duplicateEmailError;
-    } else if (e.name === "ValidationError") {
-      const validatorError = new Error(e.message);
-      validatorError.statusCode = 400;
-      throw validatorError;
-    }
+    throw e;
   }
 };
 
@@ -117,26 +130,27 @@ const addNewUser = async ({ username, password, birthdate, role }) => {
  * @returns {Object} an object containing the updated user information
  */
 const updateUser = async ({ biography, viewNSFW, userId }) => {
-  const valuesToUpdate = {};
-  if (viewNSFW !== "undefined") valuesToUpdate.viewNSFW = viewNSFW;
-  if (biography) valuesToUpdate.biography = biography;
-
-  if (Object.keys(valuesToUpdate).length === 0) {
-    const noUpdateError = new Error(
-      "No valid fields were included in the update request"
+  try {
+    const updateOptions = {
+      new: true,
+      omitUndefined: true,
+    };
+    const update = await User.findByIdAndUpdate(
+      userId,
+      {
+        biography,
+        viewNSFW,
+      },
+      updateOptions
     );
-    throw noUpdateError;
+    if (!update) {
+      return null;
+    }
+
+    return update;
+  } catch (e) {
+    throw e;
   }
-  const query = { _id: userId };
-  const updateOptions = {
-    new: true,
-  };
-  const update = await User.findByIdAndUpdate(
-    userId,
-    valuesToUpdate,
-    updateOptions
-  );
-  return update;
 };
 
 /**
@@ -145,17 +159,32 @@ const updateUser = async ({ biography, viewNSFW, userId }) => {
  * @returns {Object} an object containing the deleted user information
  */
 const deleteUser = async (userId) => {
-  const deletion = await User.findOneAndRemove({ _id: userId });
-  if (deletion) {
-    return {
-      result: 1,
-      message: `User ${userId} deleted`,
-    };
-  } else {
-    return {
-      result: 0,
-      message: "No user found with that ID",
-    };
+  try {
+    if (!userId) {
+      const error = new MissingArgumentError(
+        "No userId present in delete request."
+      );
+      throw error;
+    }
+    const deletion = await User.findOneAndRemove({ _id: userId });
+    if (deletion) {
+      return {
+        result: 1,
+        message: `User ${userId} deleted`,
+        userId,
+      };
+    } else {
+      return {
+        result: 0,
+        message: "No user found with that ID",
+        userId,
+      };
+    }
+  } catch (e) {
+    if (e.name == "CastError") {
+      throw new ValidationError("Delete request received an invalid userId");
+    }
+    throw e;
   }
 };
 module.exports = {

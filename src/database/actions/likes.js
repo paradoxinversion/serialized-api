@@ -50,7 +50,6 @@ const toggleLikeSerial = async (userId, serialPartId) => {
       return newSerialLike;
     }
   } catch (e) {
-    console.log(e);
     throw e;
   }
 };

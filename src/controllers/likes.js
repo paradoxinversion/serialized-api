@@ -9,7 +9,6 @@ const toggleLike = async (req, res) => {
 
     res.json({ likeToggle: result });
   } catch (e) {
-    console.log(e);
     throw e;
   }
 };

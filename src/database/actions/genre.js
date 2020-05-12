@@ -14,7 +14,6 @@ const createGenre = async (name, description) => {
     await newGenre.save();
     return newGenre;
   } catch (e) {
-    console.log(e);
     throw e;
   }
 };
