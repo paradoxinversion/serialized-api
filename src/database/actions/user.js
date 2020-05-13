@@ -166,7 +166,7 @@ const deleteUser = async (userId) => {
       );
       throw error;
     }
-    const deletion = await User.findOneAndRemove({ _id: userId });
+    const deletion = await User.findByIdAndDelete(userId);
     if (deletion) {
       return {
         result: 1,

@@ -12,18 +12,25 @@ const _ = require("lodash");
 describe("Serial Actions", function () {
   before(async function () {
     await dbHelpers.prepareTestDB();
-    const { username, password, birthdate } = dataHelper.fakeUserSignupData();
+    const userOne = dataHelper.fakeUserSignupData();
+    const userTwo = dataHelper.fakeUserSignupData();
     const testUser = new User({
-      username,
-      password,
-      birthdate,
+      username: userOne.username,
+      password: userOne.password,
+      birthdate: userOne.birthdate,
       joinDate: Date.now(),
       role: 0,
     });
-
+    const testUserTwo = new User({
+      username: userTwo.username,
+      password: userTwo.password,
+      birthdate: userTwo.birthdate,
+      joinDate: Date.now(),
+      role: 0,
+    });
     this.admin = await databaseInit();
     this.testUser = await testUser.save();
-
+    this.testUserTwo = await testUserTwo.save();
     const testGenre = new Genre({
       name: "Test Genre",
       description: "A genre for testing.",
@@ -31,7 +38,6 @@ describe("Serial Actions", function () {
     await testGenre.save();
     this.testGenre = testGenre;
   });
-  beforeEach(async function () {});
   afterEach(async function () {
     await Serial.deleteMany({});
   });
@@ -83,30 +89,68 @@ describe("Serial Actions", function () {
 
     describe("update serial", function () {
       before(async function () {
-        const testSerials = [];
-        for (let i = 0; i < 99; i++) {
-          const testSerial = dataHelper.fakeSerialData();
-          testSerials.push(testSerial);
-        }
-        for await (let testSerialData of testSerials) {
-          const { title, synopsis, nsfw } = testSerialData;
-          const testSerial = new Serial({
-            title,
-            synopsis,
-            genre: this.testGenre.id,
-            nsfw,
-            creation_date: Date.now(),
-            author: this.testUser.id,
-            slug: _.kebabCase(title),
-          });
-          this.testSerial = await testSerial.save();
-        }
+        const { title, synopsis, nsfw } = dataHelper.fakeSerialData();
+        const testSerial = new Serial({
+          title,
+          synopsis,
+          genre: this.testGenre.id,
+          nsfw,
+          creation_date: Date.now(),
+          author: this.testUser.id,
+          slug: _.kebabCase(title),
+        });
+        this.testSerial = await testSerial.save();
       });
 
-      it("reads all serial data", async function () {
-        const serialData = dataHelper.fakeSerialData();
-        const serials = await serialActions.getSerials();
-        expect(serials).to.have.length(99);
+      it("Updates a serial with new data", async function () {
+        const testUpdateData = {
+          serialId: this.testSerial.id,
+          userId: this.testUser.id,
+          title: "A new title",
+          synopsis: "A new synopsis",
+        };
+        const updated = await serialActions.editSerial(testUpdateData);
+        expect(updated.title).to.eql("A new title");
+        expect(updated.synopsis).to.eql("A new synopsis");
+      });
+    });
+
+    describe("delete serial", function () {
+      beforeEach(async function () {
+        const { title, synopsis, nsfw } = dataHelper.fakeSerialData();
+        const testSerial = new Serial({
+          title,
+          synopsis,
+          genre: this.testGenre.id,
+          nsfw,
+          creation_date: Date.now(),
+          author: this.testUser.id,
+          slug: _.kebabCase(title),
+        });
+        this.testSerial = await testSerial.save();
+      });
+      this.afterEach(async function () {
+        await Serial.deleteMany({});
+      });
+      it("Deletes a serial, if initiated by the owner", async function () {
+        const deleted = await serialActions.deleteSerial({
+          serialId: this.testSerial.id,
+          userId: this.testUser.id,
+        });
+        expect(deleted.serialId).to.eql(this.testSerial.id);
+      });
+
+      it("Fails if the user is not the owner or an adminn", async function () {
+        // const deleted = await serialActions.deleteSerial({
+        //   serialId: this.testSerial.id,
+        //   userId: this.testUserTwo.id,
+        // });
+        expect(
+          serialActions.deleteSerial({
+            serialId: this.testSerial.id,
+            userId: this.testUserTwo.id,
+          })
+        ).to.eventually.be.rejected;
       });
     });
   });

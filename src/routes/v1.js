@@ -42,28 +42,28 @@ router
   .route("/serials")
   .get(serialController.getSerials) // Get All Serials
   .post(verifyUser, serialController.postSerial)
-  .delete(ensureLoggedIn(), serialController.deleteSerial)
-  .put(ensureLoggedIn(), serialController.editSerial);
+  .delete(verifyUser, serialController.deleteSerial)
+  .patch(verifyUser, serialController.editSerial);
 
 router
   .route("/serials/:serialId")
   .get(serialPartController.getSerialParts)
-  .post(ensureLoggedIn(), serialPartController.postSerialPart)
-  .put(ensureLoggedIn(), serialPartController.editSerialPart);
+  .post(verifyUser, serialPartController.postSerialPart)
+  .put(verifyUser, serialPartController.editSerialPart);
 
 router
   .route("/serials/:serialId/:partId")
   .get(serialPartController.getSingleSerialPart)
-  .delete(ensureLoggedIn(), serialPartController.deleteSerialPart)
-  .put(ensureLoggedIn(), serialPartController.updateSerialPartNumber);
+  .delete(verifyUser, serialPartController.deleteSerialPart)
+  .put(verifyUser, serialPartController.updateSerialPartNumber);
 
 router
   .route("/serial-subscriptions/")
-  .get(ensureLoggedIn(), serialController.getUserSerialSubscriptions);
+  .get(verifyUser, serialController.getUserSerialSubscriptions);
 
 router
   .route("/serial-subscriptions/:serialId/")
-  .get(ensureLoggedIn(), serialController.toggleSerialSubscription);
+  .get(verifyUser, serialController.toggleSerialSubscription);
 
 router
   .route("/serial-subscriptions/:serialId/check")
@@ -72,18 +72,18 @@ router
 router
   .route("/like")
   .get(likesController.getLikes)
-  .post(ensureLoggedIn(), likesController.toggleLike);
+  .post(verifyUser, likesController.toggleLike);
 
 router
   .route("/genre")
   .get(genreController.getAll)
-  .post(ensureLoggedIn(), userIsAdministrator, genreController.create)
-  .put(ensureLoggedIn(), userIsAdministrator, genreController.update)
-  .delete(ensureLoggedIn(), userIsAdministrator, genreController.deleteOne);
+  .post(verifyUser, userIsAdministrator, genreController.create)
+  .put(verifyUser, userIsAdministrator, genreController.update)
+  .delete(verifyUser, userIsAdministrator, genreController.deleteOne);
 
 router
   .route("/report")
-  .get(ensureLoggedIn(), userIsAdministrator, moderationController.getReports)
-  .post(ensureLoggedIn(), moderationController.createReport);
+  .get(verifyUser, userIsAdministrator, moderationController.getReports)
+  .post(verifyUser, moderationController.createReport);
 
 module.exports = router;

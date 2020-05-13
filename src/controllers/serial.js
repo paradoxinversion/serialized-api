@@ -8,26 +8,35 @@ const getSerials = async (req, res) => {
     let serials;
     if (req.query.userId) {
       serials = await serialActions.getAuthorSerials(req.query.userId);
-      if (
-        req.session.passport &&
-        req.session.passport.user === req.query.userId
-      ) {
-        serials.clientOwnsSerials = true;
-      }
     } else {
-      if (!req.session.passport) {
+      if (!req.authenticatedUser) {
         serials = await serialActions.getSerials(false);
       } else {
         try {
-          const user = await User.findOne({ _id: req.session.passport.user });
+          const user = await User.findById(req.authenticatedUser.id);
           serials = await serialActions.getSerials(user.viewNSFW);
         } catch (e) {
           serials = await serialActions.getSerials(false);
         }
       }
-      serials.clientOwnsSerials = false;
     }
-    res.json(serials);
+
+    const response = {
+      data: serials.map((serial) => {
+        return {
+          type: "serial",
+          id: serial.id,
+          attributes: {
+            title: serial.title,
+            synopsis: serial.synopsis,
+            slug: serial.slug,
+            nsfw: serial.nsfw,
+            creation_date: serial.creation_date,
+          },
+        };
+      }),
+    };
+    res.status(200).type("application/vnd.api+json").json(response);
   } catch (error) {
     return res.json({
       status: "400",
@@ -132,20 +141,44 @@ const deleteSerial = async (req, res) => {
 
 const editSerial = async (req, res) => {
   try {
-    const update = await serialActions.editSerial(
-      req.body,
-      req.query.serialId,
-      req.session.passport.user
-    );
-    res.json(update);
-  } catch (error) {
-    return res.json({
-      status: "400",
-      error: {
-        name: error.name,
-        message: error.message,
+    const update = await serialActions.editSerial(req.body);
+    console.log("UUUUUU", update);
+    const response = {
+      data: {
+        type: "serial",
+        id: update.id,
+        attributes: {
+          creation_date: update.creation_date,
+          last_modified: update.last_modified,
+          nsfw: update.nsfw,
+          slug: update.slug,
+          synopsis: update.synopsis,
+          title: update.title,
+        },
+        relationships: {
+          author: {
+            data: {
+              type: "user",
+              id: update.author,
+            },
+          },
+          genre: {
+            data: {
+              type: "genre",
+              id: update.genre,
+            },
+          },
+        },
       },
-    });
+    };
+    res.status(200).type("application/vnd.api+json").json(response);
+  } catch (error) {
+    return res
+      .status(400)
+      .type("application/vnd.api+json")
+      .json({
+        errors: [error],
+      });
   }
 };
 

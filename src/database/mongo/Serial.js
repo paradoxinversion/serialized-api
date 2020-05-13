@@ -24,10 +24,11 @@ const SerialSchema = new Schema({
   },
   creation_date: {
     type: Date,
-    required: true,
+    required: Date.now(),
   },
   last_modified: {
     type: Date,
+    default: Date.now(),
   },
   author: {
     type: Schema.Types.ObjectId,

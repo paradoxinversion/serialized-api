@@ -56,29 +56,41 @@ const createSerial = async ({ title, synopsis, genre, nsfw, userId }) => {
  * @param {string} userId - The id of the user making the request
  * @returns {Object} - The updated serial
  */
-const editSerial = async (requestBody, serialIdQueryString, userId) => {
-  const query = { _id: serialIdQueryString };
-  if (!serialIdQueryString) {
-    const noIdError = new Error("No serial ID supplied for edit operation.");
-    throw noIdError;
-  }
+const editSerial = async ({
+  serialId,
+  title,
+  synopsis,
+  genre,
+  nsfw,
+  userId,
+}) => {
+  try {
+    if (!serialId) {
+      const noIdError = new Error("No serial ID supplied for edit operation.");
+      throw noIdError;
+    }
 
-  const serial = await Serial.findOne(query);
-  if (!serial.author_id === userId) {
-    const wrongOwnerError = new Error(
-      "User ID does not match Author ID, aborting edit."
+    const serial = await Serial.findById(serialId);
+    console.log("SERIAL", serialId, serial);
+    if (!serial.author === userId) {
+      const wrongOwnerError = new Error(
+        "User ID does not match Author ID, aborting edit."
+      );
+      throw wrongOwnerError;
+    }
+    const updateOptions = {
+      new: true,
+      omitUndefined: true,
+    };
+
+    return await Serial.findByIdAndUpdate(
+      serialId,
+      { title, synopsis, genre, nsfw, last_modified: Date.now() },
+      updateOptions
     );
-    throw wrongOwnerError;
+  } catch (e) {
+    throw e;
   }
-
-  const valuesToUpdate = {};
-  if (requestBody.title) valuesToUpdate.title = requestBody.title;
-  if (requestBody.synopsis) valuesToUpdate.synopsis = requestBody.synopsis;
-  if (requestBody.genre) valuesToUpdate.genre = requestBody.genre;
-  const updateOptions = {
-    new: true,
-  };
-  return await Serial.findOneAndUpdate(query, valuesToUpdate, updateOptions);
 };
 
 /**
@@ -100,21 +112,32 @@ const deleteSerialParts = async (serial) => {
  * @param {string} serialIdQueryString - the serial id to delete
  * @param {string} userId - the id of the requesting user
  */
-const deleteSerial = async (serialIdQueryString, userId) => {
-  if (!serialIdQueryString) {
-    const noIdError = new Error("No serial ID supplied for delete operation.");
-    throw noIdError;
+const deleteSerial = async ({ serialId, userId }) => {
+  try {
+    if (!serialId) {
+      const noIdError = new Error(
+        "No serial ID supplied for delete operation."
+      );
+      throw noIdError;
+    }
+    const serial = await Serial.findById(serialId);
+    console.log("TESTO", userId, serial.author);
+    if (userId != serial.author) {
+      const wrongOwnerError = new Error(
+        "User ID does not match Author ID, aborting delete."
+      );
+      throw wrongOwnerError;
+    }
+    await deleteSerialParts(serial);
+    await Serial.findByIdAndDelete(serialId);
+    return {
+      result: 1,
+      message: `Serial ${serialId} deleted`,
+      serialId,
+    };
+  } catch (e) {
+    throw e;
   }
-  const serial = await Serial.findOne({ _id: serialIdQueryString });
-  if (userId != serial.author_id) {
-    const wrongOwnerError = new Error(
-      "User ID does not match Author ID, aborting delete."
-    );
-    throw wrongOwnerError;
-  }
-  await deleteSerialParts(serial);
-  const deletionResult = await Serial.remove({ _id: serial._id });
-  return deletionResult;
 };
 
 /**
