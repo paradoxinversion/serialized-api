@@ -1,7 +1,4 @@
 const TokenManager = require("../src/tokens/jwt");
-const User = require("../src/database/mongo/User");
-const jwt = require("jsonwebtoken");
-
 const faker = require("faker");
 
 const { expect } = require("chai");

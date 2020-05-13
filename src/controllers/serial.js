@@ -44,14 +44,43 @@ const getSerials = async (req, res) => {
  */
 const postSerial = async (req, res) => {
   try {
-    const newSerial = await serialActions.postSerial(
-      req.body,
-      req.session.passport.user
-    );
-    res.json(newSerial);
+    const newSerial = await serialActions.createSerial({
+      ...req.body,
+      userId: req.authenticatedUser.id,
+    });
+
+    const response = {
+      data: {
+        type: "serial",
+        id: newSerial.id,
+        attributes: {
+          title: newSerial.title,
+          synopsis: newSerial.synopsis,
+          slug: newSerial.slug,
+          nsfw: newSerial.nsfw,
+          creation_date: newSerial.creation_date,
+        },
+        relationships: {
+          author: {
+            data: {
+              type: "user",
+              id: newSerial.author,
+            },
+          },
+          genre: {
+            data: {
+              type: "genre",
+              id: newSerial.genre,
+            },
+          },
+          serialParts: [],
+        },
+      },
+    };
+
+    return res.status(201).type("application/vnd.api+json").json(response);
   } catch (error) {
-    return res.json({
-      status: "400",
+    return res.status(400).json({
       error: {
         name: error.name,
         message: error.message,

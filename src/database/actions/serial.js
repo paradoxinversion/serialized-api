@@ -39,14 +39,11 @@ const createSerial = async ({ title, synopsis, genre, nsfw, userId }) => {
       genre,
       nsfw,
       creation_date: Date.now(),
-      author_id: userId,
+      author: userId,
       slug: _.kebabCase(title), // should maybe be handled by the model itself
     });
-    const serial = {};
     await newSerial.save();
-    return {
-      result: 1,
-    };
+    return newSerial;
   } catch (error) {
     throw error;
   }

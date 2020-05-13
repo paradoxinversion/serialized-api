@@ -28,7 +28,6 @@ const SerialSchema = new Schema({
   },
   last_modified: {
     type: Date,
-    required: true,
   },
   author: {
     type: Schema.Types.ObjectId,
@@ -37,7 +36,6 @@ const SerialSchema = new Schema({
   },
   slug: {
     type: String,
-    required: true,
   },
   serialParts: [
     {

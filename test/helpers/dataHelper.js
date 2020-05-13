@@ -34,11 +34,10 @@ const fakeUserUpdateRequest = () => {
   return requestBody;
 };
 
-const fakeSerialData = async (user) => {
+const fakeSerialData = () => {
   const serialData = {
     title: faker.random.words(),
     synopsis: faker.lorem.paragraph(),
-    genre: faker.random.word(),
     description: faker.lorem.paragraph(),
     nsfw: false,
   };

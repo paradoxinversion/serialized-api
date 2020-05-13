@@ -2,7 +2,6 @@ const faker = require("faker");
 const { expect } = require("chai");
 const userActions = require("../src/database/actions/user");
 const User = require("../src/database/mongo/User");
-const authorization = require("../src/controllers/auth");
 const dataHelper = require("./helpers/dataHelper");
 const dbHelpers = require("./helpers/databaseHelper");
 const databaseInit = require("../src/database/databaseInit");
@@ -29,7 +28,7 @@ describe("User DB Actions", function () {
     await databaseInit();
   });
   afterEach(async function () {
-    await User.remove({});
+    await User.deleteMany({});
   });
 
   describe("addNewUser", function () {
@@ -89,7 +88,7 @@ describe("User DB Actions", function () {
       const deletedUser = await userActions.deleteUser(testUser.id);
       expect(deletedUser.result).to.equal(1);
     });
-    it("Deletes a user", async function () {
+    it("Throws a error when a user cannot be deleted", async function () {
       const { username, password, birthdate } = dataHelper.fakeUserSignupData();
       const testUser = new User({
         username,
@@ -100,7 +99,8 @@ describe("User DB Actions", function () {
       });
       await testUser.save();
 
-      expect(userActions.deleteUser(undefined)).to.eventually.throw();
+      // expect(userActions.deleteUser(undefined)).to.eventually.throw;
+      expect(userActions.deleteUser(undefined)).to.be.rejected;
     });
   });
 

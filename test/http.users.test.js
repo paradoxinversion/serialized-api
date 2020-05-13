@@ -56,7 +56,7 @@ describe("User API calls", function () {
           });
       });
       after(async function () {
-        await User.remove({});
+        await User.deleteMany({});
       });
     });
 
@@ -80,7 +80,7 @@ describe("User API calls", function () {
         await testUser.save();
       });
       after(async function () {
-        await User.remove({});
+        await User.deleteMany({});
       });
       it("Returns an array of users", async function () {
         return chai
@@ -126,7 +126,7 @@ describe("User API calls", function () {
         this.token = app.locals.tokenManager.sign(payload, signingOptions);
       });
       after(async function () {
-        await User.remove({});
+        await User.deleteMany({});
       });
       it("Updates a user", async function () {
         return chai
@@ -191,7 +191,7 @@ describe("User API calls", function () {
         this.token = app.locals.tokenManager.sign(payload, signingOptions);
       });
       afterEach(async function () {
-        await User.remove({});
+        await User.deleteMany({});
       });
 
       it("Deletes a user when initiated by an admin", function () {
@@ -246,7 +246,7 @@ describe("User API calls", function () {
         this.testUser = await testUser.save();
       });
       afterEach(async function () {
-        await User.remove({});
+        await User.deleteMany({});
       });
       it("Returns a single user's data", function () {
         return chai

@@ -41,7 +41,7 @@ router.route("/users/:username").get(userController.getUser);
 router
   .route("/serials")
   .get(serialController.getSerials) // Get All Serials
-  .post(ensureLoggedIn(), serialController.postSerial)
+  .post(verifyUser, serialController.postSerial)
   .delete(ensureLoggedIn(), serialController.deleteSerial)
   .put(ensureLoggedIn(), serialController.editSerial);
 
