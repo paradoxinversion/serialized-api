@@ -1,6 +1,5 @@
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
-// FIXME: Change serial_id to parentSerial
 
 /**
  * Defines a single part of a serial story
@@ -20,9 +19,8 @@ const SerialPartSchema = new Schema({
   },
   last_updated: {
     type: Date,
-    required: true,
   },
-  serial_id: {
+  parent_serial: {
     type: Schema.Types.ObjectId,
     ref: "Serial",
     required: true,
@@ -33,6 +31,10 @@ const SerialPartSchema = new Schema({
   },
   part_number: {
     type: Number,
+    required: true,
+  },
+  author: {
+    type: Schema.Types.ObjectId,
     required: true,
   },
 });

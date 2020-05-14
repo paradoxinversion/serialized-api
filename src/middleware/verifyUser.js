@@ -24,7 +24,6 @@ module.exports = async (req, res, next) => {
       throw error;
     }
   } catch (e) {
-    // console.log(e);
     return res
       .type("application/vnd.api+json")
       .status(403)

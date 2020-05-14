@@ -142,7 +142,6 @@ const deleteSerial = async (req, res) => {
 const editSerial = async (req, res) => {
   try {
     const update = await serialActions.editSerial(req.body);
-    console.log("UUUUUU", update);
     const response = {
       data: {
         type: "serial",

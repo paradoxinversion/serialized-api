@@ -8,3 +8,5 @@ dist
 client/build
 *.css
 .vscode
+coverage
+.nyc_output

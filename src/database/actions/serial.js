@@ -71,7 +71,6 @@ const editSerial = async ({
     }
 
     const serial = await Serial.findById(serialId);
-    console.log("SERIAL", serialId, serial);
     if (!serial.author === userId) {
       const wrongOwnerError = new Error(
         "User ID does not match Author ID, aborting edit."
@@ -121,7 +120,6 @@ const deleteSerial = async ({ serialId, userId }) => {
       throw noIdError;
     }
     const serial = await Serial.findById(serialId);
-    console.log("TESTO", userId, serial.author);
     if (userId != serial.author) {
       const wrongOwnerError = new Error(
         "User ID does not match Author ID, aborting delete."

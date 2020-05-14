@@ -1,4 +1,3 @@
-const Role = require("./mongo/Role");
 const userActions = require("./actions/user");
 const Config = require("../config/config").getConfig();
 

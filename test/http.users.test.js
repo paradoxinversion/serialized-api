@@ -65,19 +65,7 @@ describe("User API calls", function () {
         await databaseInit();
       });
       before(async function () {
-        const {
-          username,
-          password,
-          birthdate,
-        } = dataHelper.fakeUserSignupData();
-        const testUser = new User({
-          username,
-          password,
-          birthdate,
-          joinDate: Date.now(),
-          role: 0,
-        });
-        await testUser.save();
+        await dataHelper.seedUser();
       });
       after(async function () {
         await User.deleteMany({});
@@ -100,30 +88,11 @@ describe("User API calls", function () {
     describe("PUT /users", function () {
       before(async function () {
         await databaseInit();
-        const {
-          username,
-          password,
-          birthdate,
-        } = dataHelper.fakeUserSignupData();
-        const testUser = new User({
-          username,
-          password,
-          birthdate,
-          joinDate: Date.now(),
-          role: 0,
-        });
-        this.user = await testUser.save();
-        const payload = {
-          username: this.user.username,
-        };
-        const signingOptions = {
-          jwtid: faker.random.uuid(),
-          expiresIn: "1 day",
-          issuer: "serialized-test",
-          audience: "serialized",
-          subject: this.user.id,
-        };
-        this.token = app.locals.tokenManager.sign(payload, signingOptions);
+        this.user = await dataHelper.seedUser();
+        this.token = dataHelper.signFakeToken(
+          app.locals.tokenManager,
+          this.user
+        );
       });
       after(async function () {
         await User.deleteMany({});
@@ -165,30 +134,11 @@ describe("User API calls", function () {
     describe("DELETE /users", function () {
       beforeEach(async function () {
         this.admin = await databaseInit();
-        const {
-          username,
-          password,
-          birthdate,
-        } = dataHelper.fakeUserSignupData();
-        const testUser = new User({
-          username,
-          password,
-          birthdate,
-          joinDate: Date.now(),
-          role: 0,
-        });
-        this.testUser = await testUser.save();
-        const payload = {
-          username: this.admin.username,
-        };
-        const signingOptions = {
-          jwtid: faker.random.uuid(),
-          expiresIn: "1 day",
-          issuer: "serialized-test",
-          audience: "serialized",
-          subject: this.admin.id,
-        };
-        this.token = app.locals.tokenManager.sign(payload, signingOptions);
+        this.testUser = await dataHelper.seedUser();
+        this.token = dataHelper.signFakeToken(
+          app.locals.tokenManager,
+          this.admin
+        );
       });
       afterEach(async function () {
         await User.deleteMany({});
@@ -231,19 +181,7 @@ describe("User API calls", function () {
   describe("/user", function () {
     describe("GET", function () {
       beforeEach(async function () {
-        const {
-          username,
-          password,
-          birthdate,
-        } = dataHelper.fakeUserSignupData();
-        const testUser = new User({
-          username,
-          password,
-          birthdate,
-          joinDate: Date.now(),
-          role: 0,
-        });
-        this.testUser = await testUser.save();
+        this.testUser = await dataHelper.seedUser();
       });
       afterEach(async function () {
         await User.deleteMany({});
