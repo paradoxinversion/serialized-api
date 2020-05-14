@@ -4,10 +4,14 @@ const prepareTestDB = async () => {
   const mongooseOptions = {
     useMongoClient: true,
   };
-  await mongoose.connect("mongodb://localhost:27017/serialized_api_test", {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-  });
+  const db = await mongoose.connect(
+    "mongodb://localhost:27017/serialized_api_test",
+    {
+      useNewUrlParser: true,
+      useUnifiedTopology: true,
+    }
+  );
+  return db;
 };
 
 const closeTestDBConnection = async () => {

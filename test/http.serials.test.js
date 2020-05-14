@@ -1,18 +1,13 @@
 const chai = require("chai");
 const chaiHttp = require("chai-http");
-
 const { expect } = require("chai");
 const Genre = require("../src/database/mongo/Genre");
-
 const Serial = require("../src/database/mongo/Serial");
-
 const dataHelper = require("./helpers/dataHelper");
 const dbHelpers = require("./helpers/databaseHelper");
 const databaseInit = require("../src/database/databaseInit");
-
 const chaiAsPromised = require("chai-as-promised");
 const _ = require("lodash");
-
 chai.use(chaiHttp);
 chai.use(chaiAsPromised);
 
@@ -27,7 +22,6 @@ describe("Serials API calls", function () {
     await dbHelpers.prepareTestDB();
 
     const [admin, testUser, testUserTwo, testGenre] = await Promise.all([
-      dbHelpers.prepareTestDB(),
       databaseInit(),
       dataHelper.seedUser(),
       dataHelper.seedUser(),

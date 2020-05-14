@@ -34,17 +34,17 @@ const getSingleSerialPart = async (partId) => {
  * @param {string} parentSerialId The serial to which this part should be added
  * @returns {Object} a JSON object representing the serial part
  */
-const createSerialPart = async (requestBody, parentSerialId) => {
+const createSerialPart = async ({ title, content, author, parentSerial }) => {
   try {
-    const serialParts = await readSerialParts(parentSerialId);
-    // const serial = await Serial.find({_id: req.params.serialId});
+    const serialParts = await readSerialParts(parentSerial);
     const newPart = new SerialPart({
-      title: requestBody.title,
-      content: requestBody.content,
+      title,
+      content,
       creation_date: Date.now(),
-      serial_id: parentSerialId,
-      slug: _.kebabCase(requestBody.title),
+      parent_serial: parentSerial,
+      slug: _.kebabCase(title),
       part_number: serialParts.length,
+      author,
     });
 
     await newPart.save();

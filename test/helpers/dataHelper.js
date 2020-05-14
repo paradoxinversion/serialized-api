@@ -131,24 +131,29 @@ const seedSerials = async (authoringUser, genre, amt) => {
 
 /**
  * Create some fake data for a serial part for testing/seeding
+ * @param {Object} - the serial (object) that this part a part of
  */
-const fakeSerialPartData = (serial, partNumber) => {
+const fakeSerialPartData = (serial) => {
+  const title = faker.random.words();
   const serialPartData = {
-    title: faker.random.words(),
+    title,
     content: faker.lorem.paragraphs(5),
     creation_date: Date.now(),
     last_updated: Date.now(),
     parent_serial: serial.id,
     slug: _.kebabCase(title),
-    part_number: partNumber,
     author: serial.author,
   };
   return serialPartData;
 };
 
-const seedSerialPart = async (serial, partNumber) => {
-  const serialPartData = fakeSerialData(serial, partNumber);
-  const serialPart = new SerialPart(serialPartData);
+/**
+ * Seed the db with a serial part for testing
+ * @param {Object} serial - A serial object from the db
+ */
+const seedSerialPart = async (serial, part_number) => {
+  const serialPartData = fakeSerialPartData(serial);
+  const serialPart = new SerialPart({ ...serialPartData, part_number });
   await serialPart.save();
   return serialPart;
 };

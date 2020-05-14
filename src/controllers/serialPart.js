@@ -10,15 +10,54 @@ const _ = require("lodash");
  */
 const getSerialParts = async (req, res) => {
   try {
-    const serial = await Serial.findOne({ _id: req.params.serialId }).populate(
-      "author_id"
-    );
+    const parentSerialId = req.params.serialId;
+    const serial = await Serial.findById(parentSerialId).populate("author");
+
     const serialParts = await SerialPart.find({
-      serial_id: req.params.serialId,
+      parent_serial: parentSerialId,
     }).sort({ part_number: 1 });
-    const response = { serial, serialParts };
-    res.json(response);
+    // const response = { serial, serialParts };
+    const response = {
+      data: serialParts.map((serialPart) => {
+        const {
+          title,
+          content,
+          creation_date,
+          last_updated,
+          slug,
+          part_number,
+        } = serialPart;
+        return {
+          type: "serialPart",
+          id: serialPart.id,
+          attributes: {
+            title,
+            content,
+            creation_date,
+            last_updated,
+            slug,
+            part_number,
+          },
+        };
+      }),
+      relationships: {
+        parent_serial: {
+          data: {
+            id: serial.parent_serial,
+            type: "serial",
+          },
+        },
+        author: {
+          data: {
+            id: serial.author,
+            type: "user",
+          },
+        },
+      },
+    };
+    res.status(200).type("application/vnd.api+json").json(response);
   } catch (error) {
+    console.log("E", error);
     return res.json({
       status: error.statusCode,
       error: {
