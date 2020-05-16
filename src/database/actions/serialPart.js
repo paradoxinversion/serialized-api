@@ -6,9 +6,9 @@ const SerialPart = require("../mongo/SerialPart");
  * @param {string} serialId The id of the parent serial.
  * @returns {Array} an array of serial parts
  */
-const readSerialParts = async (serialId) => {
+const readSerialParts = async (parent_serial) => {
   try {
-    return await SerialPart.find({ serial_id: serialId }).sort({
+    return await SerialPart.find({ parent_serial }).sort({
       part_number: 1,
     });
   } catch (error) {
@@ -22,10 +22,10 @@ const readSerialParts = async (serialId) => {
  * @returns {Object} The serial part
  */
 const getSingleSerialPart = async (partId) => {
-  const part = await SerialPart.findOne({ _id: partId }).populate("serial_id");
-  return {
-    part,
-  };
+  const part = await SerialPart.findById(partId).populate(
+    "parent_serial author"
+  );
+  return part;
 };
 
 /**
@@ -41,6 +41,7 @@ const createSerialPart = async ({ title, content, author, parentSerial }) => {
       title,
       content,
       creation_date: Date.now(),
+      last_modified: Date.now(),
       parent_serial: parentSerial,
       slug: _.kebabCase(title),
       part_number: serialParts.length,
@@ -67,16 +68,8 @@ const deleteSerialPart = async (partId, userId) => {
       );
       throw noIdError;
     }
-    const serialPart = await SerialPart.findOne({ _id: partId }).populate(
-      "serial_id"
-    );
-    if (userId != serialPart.serial_id.author_id) {
-      const wrongOwnerError = new Error(
-        "User ID does not match Author ID, aborting delete."
-      );
-      throw wrongOwnerError;
-    }
-    return await SerialPart.remove({ _id: partId });
+
+    return await SerialPart.findByIdAndRemove(partId);
   } catch (error) {
     throw error;
   }
@@ -88,7 +81,7 @@ const deleteSerialPart = async (partId, userId) => {
  * @param {string} partId The id of the serial part ot be edited
  * @returns {Object} a JSON object representing the serial part
  */
-const updateSerialPart = async (requestBody, partId) => {
+const updateSerialPart = async ({ title, content, partId }) => {
   try {
     if (!partId) {
       const noPartIdError = new Error(
@@ -96,20 +89,16 @@ const updateSerialPart = async (requestBody, partId) => {
       );
       throw noPartIdError;
     }
-    const valuesToUpdate = {};
-    if (requestBody.title) {
-      valuesToUpdate.title = requestBody.title;
-      valuesToUpdate.slug = _.kebabCase(requestBody.title);
-    }
-    if (requestBody.content) valuesToUpdate.content = requestBody.content;
-    if (Object.keys(valuesToUpdate).length === 0) {
-      const noUpdateError = new Error(
-        "No valid fields were included in the update request"
-      );
-      throw noUpdateError;
-    }
-    const query = { _id: partId };
-    return await SerialPart.findOneAndUpdate(query, valuesToUpdate);
+    let slug;
+    if (title) slug = _.kebabCase(title);
+    return await SerialPart.findByIdAndUpdate(
+      partId,
+      { title, content, slug },
+      {
+        omitUndefined: true,
+        new: true,
+      }
+    );
   } catch (error) {
     throw error;
   }
@@ -121,58 +110,47 @@ const updateSerialPart = async (requestBody, partId) => {
  * @param {boolean} moveUp - Should the index be incremented (true) or decremented (false)?
  * @param {string} userId
  */
-const updateSerialPartNumber = async (serialPartId, moveUp, userId) => {
+const updateSerialPartNumber = async ({ serialPartId, moveUp, userId }) => {
   try {
-    const result = {};
-    const serialPartA = await getSingleSerialPart(serialPartId);
+    // how many serial parts are there?
+    const serialPartToUpdate = await SerialPart.findById(serialPartId);
+    const numberA = serialPartToUpdate.part_number;
+    const parentSerial = serialPartToUpdate.parent_serial;
 
-    if (serialPartA.part.serial_id.author_id != userId) {
-      const notAuthorizedError = new Error(
-        "Not authorized to switch these parts"
-      );
-      throw notAuthorizedError;
-    }
-    const oldIndexA = serialPartA.part.part_number;
-    const serialParts = await readSerialParts(serialPartA.part.serial_id._id);
-    if (serialParts.length > 0) {
-      let serialPartB;
-      let oldIndexB;
-      if (moveUp) {
-        if (serialPartA.part.part_number < serialParts.length) {
-          serialPartB = serialParts[serialPartA.part.part_number + 1];
-          oldIndexB = serialPartB.part_number;
-          serialPartA.part.part_number = serialPartB.part_number;
-          result.resultA = await serialPartA.part.save();
-          serialPartB.part_number = oldIndexA;
-          result.resultB = await serialPartB.save();
-        } else {
-          const maxIndexError = new Error(
-            "Serial Part is already at the highest index"
-          );
-          throw maxIndexError;
-        }
-      } else {
-        if (serialPartA.part.part_number > 0) {
-          serialPartB = serialParts[serialPartA.part.part_number - 1];
-          oldIndexB = serialPartB.part_number;
-          serialPartA.part.part_number = serialPartB.part_number;
-          result.resultA = await serialPartA.part.save();
-          serialPartB.part_number = oldIndexA;
-          result.resultB = await serialPartB.save();
-        } else {
-          const minIndexError = new Error(
-            "Serial Part is already at the lowest index"
-          );
-          throw minIndexError;
-        }
+    // how many serial parts are there altogether?
+    const allParts = await SerialPart.find({
+      parent_serial: serialPartToUpdate.parent_serial,
+    });
+    let update;
+    debugger;
+    if (allParts < 2) throw new Error("Only one part!");
+    if (moveUp) {
+      if (serialPartToUpdate.part_number === allParts.length) {
+        throw new Error("Part is alread at the end");
       }
+      await SerialPart.findOneAndUpdate({
+        parent_serial: serialPartToUpdate.parentSerial,
+        part_number: serialPartToUpdate.part_number,
+      });
+      serialPartToUpdate.part_number = serialPartToUpdate.part_number + 1;
+      update = await serialPartToUpdate.save();
+    } else {
+      if (serialPartToUpdate.part_number === 1) {
+        throw new Error("Part is alread at the begining");
+      }
+      await SerialPart.findOneAndUpdate({
+        parent_serial: serialPartToUpdate.parentSerial,
+        part_number: serialPartToUpdate.part_number,
+      });
+      serialPartToUpdate.part_number = serialPartToUpdate.part_number - 1;
+      update = await serialPartToUpdate.save();
     }
-    return result;
+    if (!update) throw new Error("Could not be switched");
+    return update;
   } catch (e) {
     throw e;
   }
 };
-
 module.exports = {
   createSerialPart,
   deleteSerialPart,

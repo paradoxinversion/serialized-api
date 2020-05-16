@@ -3,6 +3,7 @@ const User = require("../../src/database/mongo/User");
 const Genre = require("../../src/database/mongo/Genre");
 const Serial = require("../../src/database/mongo/Serial");
 const SerialPart = require("../../src/database/mongo/SerialPart");
+const Report = require("../../src/database/mongo/Report");
 const _ = require("lodash");
 /**
  * Create use data mimicing a signup
@@ -139,10 +140,23 @@ const fakeSerialPartData = (serial) => {
     title,
     content: faker.lorem.paragraphs(5),
     creation_date: Date.now(),
-    last_updated: Date.now(),
+    last_modified: Date.now(),
     parent_serial: serial.id,
     slug: _.kebabCase(title),
     author: serial.author,
+  };
+  return serialPartData;
+};
+
+/**
+ * Create soem fake data for updating a serial
+ * @param {*} serial
+ */
+const fakeSerialPartUpdateData = (partId) => {
+  const serialPartData = {
+    partId,
+    title: faker.random.words(),
+    content: faker.lorem.paragraphs(5),
   };
   return serialPartData;
 };
@@ -189,6 +203,25 @@ const signFakeToken = (tokenManager, user) => {
   const { payload, signingOptions } = fakeTokenSigningData(user);
   return tokenManager.sign(payload, signingOptions);
 };
+
+/**
+ *
+ * @param {String} reportType - describes what the thing is (ie, serial, user, etc)
+ * @param {String} subject - mongo object id
+ * @param {String} details - user input
+ * @param {String} reporter - mongo objectid
+ */
+const makeFakeReport = async (reportType, subject, details, reporter) => {
+  const fakeReport = new Report({
+    report_type: reportType,
+    reported_item: subject,
+    extra_details: details,
+    reporting_user: reporter,
+  });
+
+  await fakeReport.save();
+  return fakeReport;
+};
 module.exports = {
   createTestUsers,
   fakeUserSignupData,
@@ -203,4 +236,5 @@ module.exports = {
   signFakeToken,
   seedGenre,
   seedSerials,
+  fakeSerialPartUpdateData,
 };

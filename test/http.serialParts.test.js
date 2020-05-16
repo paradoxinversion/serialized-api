@@ -13,7 +13,7 @@ const app = require("../src/app");
 chai.use(chaiHttp);
 chai.use(chaiAsPromised);
 
-describe("Serial Parts HTTP", function () {
+describe("HTTP /serials/:serialId", function () {
   before(async function () {
     this.dbConnection = await dbHelpers.prepareTestDB();
   });
@@ -44,6 +44,7 @@ describe("Serial Parts HTTP", function () {
         .request(app)
         .get(`/api/v1/serials/${this.testSerial.id}`)
         .then(function (res) {
+          debugger;
           expect(res).to.have.status(200);
           expect(res.type).to.eql("application/vnd.api+json");
           expect(res.body).to.have.all.keys("data", "relationships");
@@ -52,12 +53,81 @@ describe("Serial Parts HTTP", function () {
             "slug",
             "creation_date",
             "content",
-            "last_updated",
+            "last_modified",
             "part_number"
           );
         })
         .catch(function (err) {
           throw err;
+        });
+    });
+  });
+
+  describe("POST", function () {
+    it("Creates a serial part", async function () {
+      const token = dataHelper.signFakeToken(
+        app.locals.tokenManager,
+        this.testUser
+      );
+      return chai
+        .request(app)
+        .post(`/api/v1/serials/${this.testSerial.id}`)
+        .set({ Authorization: "Bearer " + token })
+        .send({ title: "Test Serial", content: "Some fake content" })
+        .then(function (res) {
+          expect(res).to.have.status(201);
+          expect(res.type).to.eql("application/vnd.api+json");
+          expect(res.body).to.have.all.keys("data", "relationships");
+          expect(res.body.data.attributes).to.have.all.keys(
+            "title",
+            "slug",
+            "creation_date",
+            "content",
+            "last_modified",
+            "part_number"
+          );
+        })
+        .catch(function (err) {
+          throw err;
+        });
+    });
+  });
+
+  describe("PATCH", function () {
+    it("Updates serial part data", async function () {
+      const serial = await dataHelper.seedSerial(
+        this.testUser.id,
+        this.testGenre
+      );
+      const serialPart = await dataHelper.seedSerialPart(serial, 1);
+      const token = dataHelper.signFakeToken(
+        app.locals.tokenManager,
+        this.testUser
+      );
+
+      return chai
+        .request(app)
+        .patch(`/api/v1/serials/${this.testSerial.id}`)
+        .set({ Authorization: "Bearer " + token })
+        .send({
+          title: "A brand new title",
+          content: "New test content!",
+          partId: serialPart.id,
+        })
+        .then(function (res) {
+          expect(res).to.have.status(200);
+          expect(res.type).to.eql("application/vnd.api+json");
+          expect(res.body.data.type).to.eql("serialPart");
+          expect(res.body.data.attributes).to.have.all.keys(
+            "title",
+            "slug",
+            "creation_date",
+            "content",
+            "last_modified",
+            "part_number"
+          );
+
+          expect(res.body.data.attributes.title).to.eql("A brand new title");
         });
     });
   });

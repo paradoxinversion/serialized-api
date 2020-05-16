@@ -49,13 +49,13 @@ router
   .route("/serials/:serialId")
   .get(serialPartController.getSerialParts)
   .post(verifyUser, serialPartController.postSerialPart)
-  .put(verifyUser, serialPartController.editSerialPart);
+  .patch(verifyUser, serialPartController.editSerialPart);
 
 router
   .route("/serials/:serialId/:partId")
   .get(serialPartController.getSingleSerialPart)
   .delete(verifyUser, serialPartController.deleteSerialPart)
-  .put(verifyUser, serialPartController.updateSerialPartNumber);
+  .patch(verifyUser, serialPartController.updateSerialPartNumber);
 
 router
   .route("/serial-subscriptions/")

@@ -58,7 +58,8 @@ describe("Serials API calls", function () {
               "synopsis",
               "slug",
               "nsfw",
-              "creation_date"
+              "creation_date",
+              "last_modified"
             );
           })
           .catch(function (err) {

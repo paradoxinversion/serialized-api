@@ -32,6 +32,7 @@ const getSerials = async (req, res) => {
             slug: serial.slug,
             nsfw: serial.nsfw,
             creation_date: serial.creation_date,
+            last_modified: serial.last_modified,
           },
         };
       }),

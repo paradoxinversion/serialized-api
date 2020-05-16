@@ -6,38 +6,27 @@ const Report = require("../mongo/Report");
  * @param {*} serial
  * @param {*} serialPart
  */
-const createReport = async (
-  user,
-  serial,
-  serialPart,
-  reportType,
-  extraDetails,
-  reportingUser
-) => {
-  const args = [...arguments];
-  let hasReportTarget = false;
-  args.slice(0, 2).forEach((val) => {
-    if (val !== null && val !== undefined) {
-      hasReportTarget = true;
-    }
-  });
-  if (hasReportTarget) {
-    const newReport = new Report({
-      user,
-      serial,
-      serialPart,
-      reportType,
-      extraDetails,
-      reportingUser,
+const createReport = async ({
+  report_type,
+  reported_item,
+  extra_details,
+  reporting_user,
+}) => {
+  try {
+    if (!report_type) throw new Error("No report type included");
+    if (!reported_item) throw new Error("No report subject included");
+    if (!reporting_user) throw new Error("No report user included");
+    const report = new Report({
+      report_type,
+      reported_item,
+      extra_details,
+      reporting_user,
     });
 
-    await newReport.save();
-    return newReport;
-  } else {
-    const noReportTargetError = new Error(
-      "No Report Target (user, serial, or serial part) in args"
-    );
-    throw noReportTargetError;
+    await report.save();
+    return report;
+  } catch (e) {
+    throw e;
   }
 };
 

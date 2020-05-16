@@ -17,7 +17,7 @@ const SerialPartSchema = new Schema({
     type: Date,
     required: true,
   },
-  last_updated: {
+  last_modified: {
     type: Date,
   },
   parent_serial: {
@@ -35,6 +35,7 @@ const SerialPartSchema = new Schema({
   },
   author: {
     type: Schema.Types.ObjectId,
+    ref: "User",
     required: true,
   },
 });

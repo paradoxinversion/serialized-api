@@ -12,13 +12,11 @@ chai.use(chaiAsPromised);
 
 describe("User DB Actions", function () {
   before(async function () {
-    await dbHelpers.prepareTestDB();
+    this.testDb = await dbHelpers.prepareTestDB();
   });
-  beforeEach(async function () {
-    await databaseInit();
-  });
+
   afterEach(async function () {
-    await User.deleteMany({});
+    await this.testDb.connection.dropDatabase();
   });
 
   describe("addNewUser", function () {
@@ -75,7 +73,7 @@ describe("User DB Actions", function () {
       const testUsers = await dataHelper.seedUsers(100);
       const startIndex = 30;
       const users = await userActions.getAllUsers(startIndex);
-      expect(users.users[0].username).to.eq(testUsers[startIndex - 1].username);
+      expect(users.users[0].username).to.eq(testUsers[startIndex].username);
     });
   });
 

@@ -16,17 +16,17 @@ const getSerialParts = async (req, res) => {
     const serialParts = await SerialPart.find({
       parent_serial: parentSerialId,
     }).sort({ part_number: 1 });
-    // const response = { serial, serialParts };
     const response = {
       data: serialParts.map((serialPart) => {
         const {
           title,
           content,
           creation_date,
-          last_updated,
+          last_modified,
           slug,
           part_number,
         } = serialPart;
+        debugger;
         return {
           type: "serialPart",
           id: serialPart.id,
@@ -34,7 +34,7 @@ const getSerialParts = async (req, res) => {
             title,
             content,
             creation_date,
-            last_updated,
+            last_modified,
             slug,
             part_number,
           },
@@ -73,95 +73,188 @@ const getSingleSerialPart = async (req, res) => {
     const serialPart = await serialPartActions.getSingleSerialPart(
       req.params.partId
     );
-    res.json(serialPart);
-  } catch (error) {
-    return res.json({
-      status: error.statusCode,
-      error: {
-        name: error.name,
-        message: error.message,
-      },
+    res.status(200).type("application/vnd.api+json").json(serialPart);
+  } catch (e) {
+    return res.status(400).json({
+      error: [e],
     });
   }
 };
+
 const postSerialPart = async (req, res) => {
   try {
-    const newPart = await serialPartActions.createSerialPart(
-      req.body,
-      req.params.serialId
-    );
-    res.json(newPart);
-  } catch (error) {
-    return res.json({
-      status: error.statusCode,
-      error: {
-        name: error.name,
-        message: error.message,
-      },
+    const {
+      id,
+      title,
+      content,
+      slug,
+      creation_date,
+      last_modified,
+      part_number,
+      author,
+      parent_serial,
+    } = await serialPartActions.createSerialPart({
+      title: req.body.title,
+      content: req.body.content,
+      parentSerial: req.params.serialId,
+      author: req.authenticatedUser.id,
     });
+    const response = {
+      data: {
+        type: "serialPart",
+        id: id,
+        attributes: {
+          title,
+          content,
+          slug,
+          creation_date,
+          last_modified,
+          part_number,
+        },
+      },
+      relationships: {
+        author: {
+          data: {
+            type: "user",
+            id: author.id,
+          },
+        },
+        parent_serial: {
+          data: {
+            type: "serial",
+            id: parent_serial.id,
+          },
+        },
+      },
+    };
+    res.status(201).type("application/vnd.api+json").json(response);
+  } catch (error) {
+    return res
+      .status(400)
+      .type("application/vnd.api+json")
+      .json({
+        error: [error],
+      });
   }
 };
 
 const deleteSerialPart = async (req, res) => {
   try {
-    const deletionResult = serialPartActions.deleteSerialPart(
+    const deletionResult = await serialPartActions.deleteSerialPart(
       req.params.partId,
-      req.session.passport.user
+      req.authenticatedUser.id
     );
-    res.json(deletionResult);
-  } catch (error) {
-    return res.json({
-      status: "400",
-      error: {
-        name: error.name,
-        message: error.message,
+    debugger;
+    const response = {
+      data: {
+        id: deletionResult.id,
+        type: "serialPart",
       },
+    };
+    res.status(200).type("application/vnd.api+json").json(response);
+  } catch (e) {
+    return res.type(400).json({
+      error: [e],
     });
   }
 };
 
 const editSerialPart = async (req, res) => {
   try {
-    if (!req.query.partId) {
-      const noPartIdError = new Error(
-        "No partId was included in the update request"
-      );
-      throw noPartIdError;
-    }
-    const valuesToUpdate = {};
-    if (req.body.title) {
-      valuesToUpdate.title = req.body.title;
-      valuesToUpdate.slug = _.kebabCase(req.body.title);
-    }
-    if (req.body.content) valuesToUpdate.content = req.body.content;
-    if (Object.keys(valuesToUpdate).length === 0) {
-      const noUpdateError = new Error(
-        "No valid fields were included in the update request"
-      );
-      throw noUpdateError;
-    }
-    const query = { _id: req.query.partId };
-    const update = await SerialPart.findOneAndUpdate(query, valuesToUpdate);
-    res.json(update);
-  } catch (error) {
-    return res.json({
-      status: "400",
-      error: {
-        name: error.name,
-        message: error.message,
-      },
+    // make sure to ensure the authorized user is allowed to do this
+    const { title, content, partId } = req.body;
+    const updateResult = await serialPartActions.updateSerialPart({
+      title,
+      content,
+      partId,
     });
+
+    const response = {
+      data: {
+        type: "serialPart",
+        id: updateResult.id,
+        attributes: {
+          title: updateResult.title,
+          content: updateResult.content,
+          slug: updateResult.slug,
+          creation_date: updateResult.creation_date,
+          last_modified: updateResult.last_modified,
+          part_number: updateResult.part_number,
+        },
+      },
+      relationships: {
+        author: {
+          data: {
+            type: "user",
+            id: updateResult.author.id,
+          },
+        },
+        parent_serial: {
+          data: {
+            type: "serial",
+            id: updateResult.parent_serial.id,
+          },
+        },
+      },
+    };
+    debugger;
+    res.status(200).type("application/vnd.api+json").json(response);
+  } catch (error) {
+    return res
+      .status(400)
+      .type("application/vnd.api+json")
+      .json({
+        error: [e],
+      });
   }
 };
 
 const updateSerialPartNumber = async (req, res) => {
   try {
-    const response = await serialPartActions.updateSerialPartNumber(
-      req.params.partId,
-      req.body.moveUp,
-      req.session.passport.user
-    );
-    res.json(response);
+    const {
+      id,
+      title,
+      content,
+      slug,
+      creation_date,
+      last_modified,
+      part_number,
+      author,
+      parent_serial,
+    } = await serialPartActions.updateSerialPartNumber({
+      serialPartId: req.params.partId,
+      moveUp: req.body.moveUp,
+      userId: req.authenticatedUser.id,
+    });
+    const response = {
+      data: {
+        type: "serialPart",
+        id: id,
+        attributes: {
+          title,
+          content,
+          slug,
+          creation_date,
+          last_modified,
+          part_number,
+        },
+      },
+      relationships: {
+        author: {
+          data: {
+            type: "user",
+            id: author.id,
+          },
+        },
+        parent_serial: {
+          data: {
+            type: "serial",
+            id: parent_serial.id,
+          },
+        },
+      },
+    };
+    res.status(200).type("application/vnd.api+json").json(response);
   } catch (e) {
     throw e;
   }
