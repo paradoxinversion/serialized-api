@@ -1,39 +1,68 @@
 const moderationActions = require("../database/actions/moderation");
 
 const createReport = async (req, res) => {
+  debugger;
   try {
-    await moderationActions.createReport(
-      req.body.reportDetails.user,
-      req.body.reportDetails.serial,
-      req.body.reportDetails.serialPart,
-      req.body.reportDetails.reportType,
-      req.body.reportDetails.extraDetails,
-      req.body.reportDetails.reportingUser
-    );
-
-    res.json({
-      message: "Report has been successfully filed",
-      reportSuccess: true,
+    const {
+      report_type,
+      reported_item,
+      extra_details,
+      reporting_user,
+      id,
+    } = await moderationActions.createReport({
+      reported_item: req.body.reported_item,
+      report_type: req.body.report_type,
+      extra_details: req.body.extra_details,
+      reporting_user: req.body.reporting_user,
     });
+    debugger;
+    const response = {
+      data: {
+        id,
+        type: "report",
+        attributes: {
+          extra_details,
+          report_type,
+        },
+        relationships: {
+          reporting_user: {
+            data: {
+              id: reporting_user._id.toString(),
+              type: "user",
+            },
+          },
+          reported_item: {
+            data: {
+              id: reported_item._id.toString(),
+              type: report_type,
+            },
+          },
+        },
+      },
+    };
+
+    res.status(201).type("application/vnd.api+json").json(response);
   } catch (e) {
-    res.json({
-      error: e,
-      message: "Report filing has failed",
-      reportSuccess: false,
+    res.status(400).json({
+      errors: [e],
     });
   }
 };
 
 const getReports = async (req, res) => {
   try {
+    debugger;
     const reports = await moderationActions.getReports();
-    res.json({
+    res.status(200).type("application/vnd.api+json").json({
       reports,
     });
   } catch (e) {
-    res.json({
-      error: e,
-    });
+    res
+      .status(400)
+      .type("application/vnd.api+json")
+      .json({
+        errors: [e],
+      });
   }
 };
 

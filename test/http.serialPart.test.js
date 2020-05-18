@@ -14,13 +14,11 @@ chai.use(chaiHttp);
 chai.use(chaiAsPromised);
 
 describe("HTTP /serials/:serialId/:partId", function () {
+  // test db is created when the server runs....
   before(async function () {
     this.dbConnection = await dbHelpers.prepareTestDB();
   });
 
-  after(async function () {
-    await dbHelpers.closeTestDBConnection();
-  });
   afterEach(async function () {
     // Drop the database after each test
     await this.dbConnection.connection.db.dropDatabase();
@@ -135,5 +133,9 @@ describe("HTTP /serials/:serialId/:partId", function () {
           );
         });
     });
+  });
+
+  after(async function () {
+    await dbHelpers.closeTestDBConnection();
   });
 });

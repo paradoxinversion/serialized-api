@@ -237,4 +237,5 @@ module.exports = {
   seedGenre,
   seedSerials,
   fakeSerialPartUpdateData,
+  makeFakeReport,
 };

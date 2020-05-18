@@ -1,17 +1,14 @@
-const faker = require("faker");
 const { expect } = require("chai");
 const userActions = require("../src/database/actions/user");
-const User = require("../src/database/mongo/User");
 const dataHelper = require("./helpers/dataHelper");
 const dbHelpers = require("./helpers/databaseHelper");
-const databaseInit = require("../src/database/databaseInit");
 const chai = require("chai");
 const chaiAsPromised = require("chai-as-promised");
 
 chai.use(chaiAsPromised);
 
 describe("User DB Actions", function () {
-  before(async function () {
+  beforeEach(async function () {
     this.testDb = await dbHelpers.prepareTestDB();
   });
 

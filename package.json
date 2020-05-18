@@ -4,7 +4,7 @@
   "description": "",
   "main": "app.js",
   "scripts": {
-    "test": "mocha --reporter spec --exit",
+    "test": "mocha --timeout 3000 --reporter spec --exit",
     "start:dev": "nodemon ./src/app.js",
     "start": "node ./src/app.js",
     "start:heroku": "node ./dist/app.js",

@@ -15,18 +15,15 @@ chai.use(chaiAsPromised);
 
 const app = require("../src/app");
 
-before(function () {
-  this.test = "testo!";
-});
 describe("User API calls", function () {
-  before(async function () {
+  beforeEach(async function () {
     this.testDb = await dbHelpers.prepareTestDB();
   });
   afterEach(async function () {
     this.testDb.connection.dropDatabase();
   });
   describe("/users", function () {
-    describe("POST /users", function () {
+    context("POST /users", function () {
       it("Succeeds with code 201 if all information is properly included", async function () {
         const userSignup = dataHelper.fakeUserSignupData();
         return chai
@@ -58,21 +55,9 @@ describe("User API calls", function () {
             throw err;
           });
       });
-      // after(async function () {
-      //   await User.deleteMany({});
-      // });
     });
 
-    describe("GET /users", function () {
-      // before(async function () {
-      //   await databaseInit();
-      // });
-      // before(async function () {
-      //   await dataHelper.seedUser();
-      // });
-      // after(async function () {
-      //   await User.deleteMany({});
-      // });
+    context("GET /users", function () {
       it("Returns an array of users", async function () {
         await User.deleteMany({});
         await databaseInit();
@@ -90,18 +75,15 @@ describe("User API calls", function () {
       });
     });
 
-    describe("PUT /users", function () {
+    context("PUT /users", function () {
       before(async function () {
-        // await databaseInit();
         this.user = await dataHelper.seedUser();
         this.token = dataHelper.signFakeToken(
           app.locals.tokenManager,
           this.user
         );
       });
-      // after(async function () {
-      //   await User.deleteMany({});
-      // });
+
       it("Updates a user", async function () {
         return chai
           .request(app)
@@ -136,7 +118,7 @@ describe("User API calls", function () {
       });
     });
 
-    describe("DELETE /users", function () {
+    context("DELETE /users", function () {
       beforeEach(async function () {
         this.admin = await databaseInit();
         this.testUser = await dataHelper.seedUser();
@@ -145,9 +127,6 @@ describe("User API calls", function () {
           this.admin
         );
       });
-      // afterEach(async function () {
-      //   await User.deleteMany({});
-      // });
 
       it("Deletes a user when initiated by an admin", function () {
         return chai
@@ -184,13 +163,10 @@ describe("User API calls", function () {
   });
 
   describe("/user", function () {
-    describe("GET", function () {
+    context("GET", function () {
       beforeEach(async function () {
         this.testUser = await dataHelper.seedUser();
       });
-      // afterEach(async function () {
-      //   await User.deleteMany({});
-      // });
       it("Returns a single user's data", function () {
         return chai
           .request(app)
