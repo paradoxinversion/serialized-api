@@ -7,10 +7,15 @@ const Schema = mongoose.Schema;
 const SubscriptionSchema = new Schema({
   subscriber: {
     type: Schema.Types.ObjectId,
+    ref: "User",
     required: true,
   },
   subscribed_object: {
     type: Schema.Types.ObjectId,
+    required: true,
+  },
+  subscription_type: {
+    type: String,
     required: true,
   },
 });

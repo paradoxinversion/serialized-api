@@ -3,7 +3,9 @@ const User = require("../../src/database/mongo/User");
 const Genre = require("../../src/database/mongo/Genre");
 const Serial = require("../../src/database/mongo/Serial");
 const SerialPart = require("../../src/database/mongo/SerialPart");
+const Like = require("../../src/database/mongo/Like");
 const Report = require("../../src/database/mongo/Report");
+const Subscription = require("../../src/database/mongo/Subscription");
 const _ = require("lodash");
 /**
  * Create use data mimicing a signup
@@ -230,6 +232,26 @@ const makeFakeReport = async (reportType, subject, details, reporter) => {
   await fakeReport.save();
   return fakeReport;
 };
+
+const seedLike = async (userId, type, subject) => {
+  const fakeLike = new Like({
+    like_type: type,
+    subject,
+    user: userId,
+  });
+  await fakeLike.save();
+  return fakeLike;
+};
+
+const seedSubscription = async (userId, type, subject) => {
+  const fakeSubscription = new Subscription({
+    subscriber: userId,
+    subscribed_object: subject,
+    subscription_type: type,
+  });
+  await fakeSubscription.save();
+  return fakeSubscription;
+};
 module.exports = {
   createTestUsers,
   fakeUserSignupData,
@@ -246,4 +268,6 @@ module.exports = {
   seedSerials,
   fakeSerialPartUpdateData,
   makeFakeReport,
+  seedLike,
+  seedSubscription,
 };
