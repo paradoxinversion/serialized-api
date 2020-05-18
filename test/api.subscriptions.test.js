@@ -27,11 +27,11 @@ describe("Subscription DB Actions", function () {
       const testUserTwo = await dataHelper.seedUser();
       const serial = await dataHelper.seedSerial(testUser.id, testGenre);
 
-      const subscription = await subscriptionActions.createSubscription(
-        testUserTwo.id,
-        "serial",
-        serial.id
-      );
+      const subscription = await subscriptionActions.createSubscription({
+        user: testUserTwo.id,
+        type: "serial",
+        subject: serial.id,
+      });
 
       expect(subscription.subscribed_object.toString()).to.equal(serial.id);
     });
@@ -52,9 +52,9 @@ describe("Subscription DB Actions", function () {
         "serial",
         serial.id
       );
-      const subscriptionRemoval = await subscriptionActions.removeSubscription(
-        subscription.id
-      );
+      const subscriptionRemoval = await subscriptionActions.removeSubscription({
+        subscriptionId: subscription.id,
+      });
 
       expect(subscriptionRemoval.subscribed_object.toString()).to.equal(
         serial.id

@@ -6,9 +6,9 @@ const authController = require("../controllers/auth");
 const likesController = require("../controllers/likes");
 const genreController = require("../controllers/genre");
 const moderationController = require("../controllers/moderation");
+const subscriptionController = require("../controllers/subscription");
 const userIsAdministrator = require("../middleware/userIsAdministrator");
 const verifyUser = require("../middleware/verifyUser");
-const ensureLoggedIn = require("connect-ensure-login").ensureLoggedIn;
 
 const router = express.Router();
 router.route("/test").get((req, res) => {
@@ -20,21 +20,6 @@ router
   .post(userController.postUser) // Post New
   .patch(verifyUser, userController.updateUser) // Update User
   .delete(verifyUser, userIsAdministrator, userController.deleteUser); // Delete User
-
-// ! These route might be useless with jwts ---
-router
-  .route("/users/register/check")
-  .get(authController.checkUserRegistrationData);
-
-router
-  .route("/users/auth")
-  .post(
-    authController.tryAuthenticateLocal,
-    userController.attemptUserAuthentication
-  ) //Authenticate User
-  .get(authController.checkAuthentication);
-router.route("/users/auth/logout").get(userController.logOut);
-// ! End of possibly useless routes ---
 
 router.route("/users/:username").get(userController.getUser);
 
@@ -58,16 +43,9 @@ router
   .patch(verifyUser, serialPartController.updateSerialPartNumber);
 
 router
-  .route("/serial-subscriptions/")
-  .get(verifyUser, serialController.getUserSerialSubscriptions);
-
-router
   .route("/serial-subscriptions/:serialId/")
-  .get(verifyUser, serialController.toggleSerialSubscription);
-
-router
-  .route("/serial-subscriptions/:serialId/check")
-  .get(serialController.checkForUserSubscription);
+  .post(verifyUser, subscriptionController.createSubscription)
+  .delete(verifyUser, subscriptionController.removeSubscription);
 
 router
   .route("/like")

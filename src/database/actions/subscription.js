@@ -6,7 +6,7 @@ const Subscription = require("../mongo/Subscription");
  * @param {*} type - the type of resource being subbed to
  * @param {*} subject - the item being subbed to (at this point, should be a serial)
  */
-const createSubscription = async (user, type, subject) => {
+const createSubscription = async ({ user, type, subject }) => {
   try {
     const subscription = await new Subscription({
       subscriber: user,
@@ -19,9 +19,10 @@ const createSubscription = async (user, type, subject) => {
   }
 };
 
-const removeSubscription = async (subscriptionId) => {
+const removeSubscription = async ({ subscriptionId }) => {
   try {
     const removalResult = await Subscription.findByIdAndRemove(subscriptionId);
+    debugger;
     return removalResult;
   } catch (e) {
     throw e;
