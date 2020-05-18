@@ -1,7 +1,6 @@
 const moderationActions = require("../database/actions/moderation");
 
 const createReport = async (req, res) => {
-  debugger;
   try {
     const {
       report_type,
@@ -15,7 +14,6 @@ const createReport = async (req, res) => {
       extra_details: req.body.extra_details,
       reporting_user: req.body.reporting_user,
     });
-    debugger;
     const response = {
       data: {
         id,

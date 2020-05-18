@@ -78,7 +78,6 @@ describe("Moderation DB Actions", function () {
   });
 
   describe("readReports", function () {
-    before(function () {});
     it("Reads reports", async function () {
       // reporting a user...
       const userOne = await dataHelper.seedUser();
@@ -91,6 +90,7 @@ describe("Moderation DB Actions", function () {
       );
 
       const reportResults = await getReports();
+      debugger;
       expect(reportResults[0].reported_item._id.toString()).to.eql(userTwo.id); // it should resolve to an id...?
       expect(reportResults[0].reporting_user._id.toString()).to.eql(userOne.id);
       expect(reportResults[0].extra_details).to.equal("Actually, just a test");

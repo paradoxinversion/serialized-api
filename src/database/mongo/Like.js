@@ -1,11 +1,9 @@
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 
-/**
- * Defines likes related to serials
- */
 const LikeSchema = new Schema({
-  serialPart: { type: Schema.Types.ObjectId, ref: "SerialPart" },
+  like_type: String,
+  subject: { type: Schema.Types.ObjectId },
   user: { type: Schema.Types.ObjectId, ref: "User" },
 });
 

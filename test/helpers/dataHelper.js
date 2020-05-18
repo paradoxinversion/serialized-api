@@ -122,12 +122,16 @@ const seedSerial = async (authoringUser, genre) => {
 };
 
 const seedSerials = async (authoringUser, genre, amt) => {
-  const serials = [];
-  for (let x = 0; x < amt; x++) {
-    const serial = await seedSerial(authoringUser, genre);
-    serials.push(serial);
+  try {
+    const serials = [];
+    for (let x = 0; x < amt; x++) {
+      const serial = await seedSerial(authoringUser, genre);
+      serials.push(serial);
+    }
+    return serials;
+  } catch (e) {
+    throw e;
   }
-  return serials;
 };
 
 /**
@@ -166,10 +170,14 @@ const fakeSerialPartUpdateData = (partId) => {
  * @param {Object} serial - A serial object from the db
  */
 const seedSerialPart = async (serial, part_number) => {
-  const serialPartData = fakeSerialPartData(serial);
-  const serialPart = new SerialPart({ ...serialPartData, part_number });
-  await serialPart.save();
-  return serialPart;
+  try {
+    const serialPartData = fakeSerialPartData(serial);
+    const serialPart = new SerialPart({ ...serialPartData, part_number });
+    await serialPart.save();
+    return serialPart;
+  } catch (e) {
+    throw e;
+  }
 };
 
 const seedGenre = async (name, description) => {
