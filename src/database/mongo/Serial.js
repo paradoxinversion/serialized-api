@@ -37,14 +37,8 @@ const SerialSchema = new Schema({
   },
   slug: {
     type: String,
+    required: true,
   },
-  serialParts: [
-    {
-      type: Schema.Types.ObjectId,
-      ref: "SerialPart",
-      required: false,
-    },
-  ],
 });
 
 module.exports = mongoose.model("Serial", SerialSchema);
