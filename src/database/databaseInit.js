@@ -10,7 +10,7 @@ const databaseInit = async () => {
     const adminUser = await userActions.addNewUser({
       username: Config.security.adminUsername,
       password: Config.security.adminPassword,
-      birthdate: Config.security.adminBirthdate,
+      birth_date: Config.security.adminBirthdate,
       role: 2,
     });
     return await adminUser.save();

@@ -36,7 +36,7 @@ describe("User DB Actions", function () {
       const updateData = dataHelper.fakeUserUpdateRequest(testUser.id, true);
       const updatedUser = await userActions.updateUser(updateData);
       expect(updatedUser.biography).to.equal(updateData.biography);
-      expect(updatedUser.viewNSFW).to.equal(true);
+      expect(updatedUser.view_nsfw).to.equal(true);
     });
   });
 

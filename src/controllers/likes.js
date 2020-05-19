@@ -1,6 +1,7 @@
 const likeActions = require("../database/actions/likes");
 
 const createLike = async (req, res) => {
+  debugger;
   try {
     const result = await likeActions.createLike(
       req.authenticatedUser.id,

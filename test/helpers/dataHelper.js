@@ -14,8 +14,8 @@ const fakeUserSignupData = (role = 0) => {
   const userData = {
     username: faker.internet.userName(),
     password: faker.internet.password(),
-    birthdate: faker.date.between("01/01/1996", "01/01/1900"),
-    joinDate: Date.now(),
+    birth_date: faker.date.between("01/01/1996", "01/01/1900"),
+    join_date: Date.now(),
     role: 0,
   };
 
@@ -32,8 +32,8 @@ const createTestUsers = (amt) => {
     const testUser = {
       username: faker.internet.userName,
       password: faker.internet.password,
-      birthdate: faker.date.between("01/01/1950", "01/01/2000"),
-      joinDate: Date.now(),
+      birth_date: faker.date.between("01/01/1950", "01/01/2000"),
+      join_date: Date.now(),
     };
     testUsers.push(testUser);
   }
@@ -65,8 +65,8 @@ const seedUsers = async (amt) => {
     const testUser = new User({
       username: testUserData.username,
       password: testUserData.password,
-      birthdate: testUserData.birthdate,
-      joinDate: Date.now(),
+      birth_date: testUserData.birth_date,
+      join_date: Date.now(),
       role: 0,
     });
     await testUser.save();

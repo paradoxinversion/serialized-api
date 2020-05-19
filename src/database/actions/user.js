@@ -71,10 +71,10 @@ const getUser = async (userName) => {
  * @param {Object} requestBody - The request from the client with all information for a new user
  * @param {string} username - The user's username
  * @param {string} password - The plaintext password the user intends to use
- * @param {Date} birthdate the user's birthdate
+ * @param {Date} birth_date the user's birth_date
  * @returns {Object} an object containing the user searched for (or null)
  */
-const addNewUser = async ({ username, password, birthdate, role }) => {
+const addNewUser = async ({ username, password, birth_date, role }) => {
   try {
     if (!username) {
       const error = new MissingArgumentError("Username is missing");
@@ -84,7 +84,7 @@ const addNewUser = async ({ username, password, birthdate, role }) => {
       const error = new MissingArgumentError("Password is missing");
       throw error;
     }
-    if (!birthdate) {
+    if (!birth_date) {
       const error = new MissingArgumentError("Username is missing");
       throw error;
     }
@@ -108,8 +108,8 @@ const addNewUser = async ({ username, password, birthdate, role }) => {
     const newUser = new User({
       username,
       password: hashedPassword,
-      birthdate,
-      joinDate: Date.now(),
+      birth_date: birth_date,
+      join_date: Date.now(),
       role: role,
     });
 
@@ -139,7 +139,7 @@ const updateUser = async ({ biography, viewNSFW, userId }) => {
       userId,
       {
         biography,
-        viewNSFW,
+        view_nsfw: viewNSFW,
       },
       updateOptions
     );

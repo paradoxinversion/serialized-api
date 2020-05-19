@@ -4,6 +4,7 @@ const {
   UserUnauthorizedError,
 } = require("../utilities/errorGenerator");
 module.exports = async (req, res, next) => {
+  debugger;
   try {
     if (!req.headers.authorization) {
       const error = new NoAuthenticationError("No credentials provided");
@@ -16,7 +17,7 @@ module.exports = async (req, res, next) => {
     // We're only guaranteed that our user can be serialized to something
     // We still need to check their validity (account status, etc)
     const user = await User.findById(verifiedToken.sub);
-    if (user.accountStatus === 0) {
+    if (user.account_status === 0) {
       req.authenticatedUser = user;
       next();
     } else {

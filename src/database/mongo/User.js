@@ -10,11 +10,11 @@ const UserSchema = new Schema({
     type: String,
     required: true,
   },
-  birthdate: {
+  birth_date: {
     type: Date,
     required: true,
   },
-  joinDate: {
+  join_date: {
     type: Date,
     required: true,
   },
@@ -30,11 +30,11 @@ const UserSchema = new Schema({
     type: Schema.Types.ObjectId,
     ref: "Like",
   },
-  viewNSFW: {
+  view_nsfw: {
     type: Boolean,
     default: false,
   },
-  accountStatus: {
+  account_status: {
     type: Number,
     default: 0,
   },
