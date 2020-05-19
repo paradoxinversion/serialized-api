@@ -16,14 +16,14 @@ chai.use(chaiAsPromised);
 const app = require("../src/app");
 
 describe("User API calls", function () {
-  beforeEach(async function () {
-    this.testDb = await dbHelpers.prepareTestDB();
-  });
-  afterEach(async function () {
-    this.testDb.connection.dropDatabase();
-  });
   describe("/users", function () {
     context("POST /users", function () {
+      beforeEach(async function () {
+        this.testDb = await dbHelpers.prepareTestDB();
+      });
+      afterEach(async function () {
+        this.testDb.connection.dropDatabase();
+      });
       it("Succeeds with code 201 if all information is properly included", async function () {
         const userSignup = dataHelper.fakeUserSignupData();
         return chai
@@ -58,6 +58,12 @@ describe("User API calls", function () {
     });
 
     context("GET /users", function () {
+      beforeEach(async function () {
+        this.testDb = await dbHelpers.prepareTestDB();
+      });
+      afterEach(async function () {
+        this.testDb.connection.dropDatabase();
+      });
       it("Returns an array of users", async function () {
         await User.deleteMany({});
         await databaseInit();
@@ -76,15 +82,19 @@ describe("User API calls", function () {
     });
 
     context("PUT /users", function () {
-      before(async function () {
+      beforeEach(async function () {
+        this.testDb = await dbHelpers.prepareTestDB();
+      });
+      afterEach(async function () {
+        this.testDb.connection.dropDatabase();
+      });
+
+      it("Updates a user", async function () {
         this.user = await dataHelper.seedUser();
         this.token = dataHelper.signFakeToken(
           app.locals.tokenManager,
           this.user
         );
-      });
-
-      it("Updates a user", async function () {
         return chai
           .request(app)
           .patch("/api/v1/users")
@@ -102,6 +112,11 @@ describe("User API calls", function () {
       });
 
       it("Returns an error (403) if credentials aren't passed", async function () {
+        this.user = await dataHelper.seedUser();
+        this.token = dataHelper.signFakeToken(
+          app.locals.tokenManager,
+          this.user
+        );
         return chai
           .request(app)
           .patch("/api/v1/users")
@@ -119,6 +134,12 @@ describe("User API calls", function () {
     });
 
     context("DELETE /users", function () {
+      beforeEach(async function () {
+        this.testDb = await dbHelpers.prepareTestDB();
+      });
+      afterEach(async function () {
+        this.testDb.connection.dropDatabase();
+      });
       beforeEach(async function () {
         this.admin = await databaseInit();
         this.testUser = await dataHelper.seedUser();
@@ -164,6 +185,12 @@ describe("User API calls", function () {
 
   describe("/user", function () {
     context("GET", function () {
+      beforeEach(async function () {
+        this.testDb = await dbHelpers.prepareTestDB();
+      });
+      afterEach(async function () {
+        this.testDb.connection.dropDatabase();
+      });
       beforeEach(async function () {
         this.testUser = await dataHelper.seedUser();
       });
