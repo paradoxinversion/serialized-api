@@ -122,7 +122,7 @@ const updateSerialPartNumber = async ({ serialPartId, moveUp, userId }) => {
       parent_serial: serialPartToUpdate.parent_serial,
     });
     let update;
-    debugger;
+
     if (allParts < 2) throw new Error("Only one part!");
     if (moveUp) {
       if (serialPartToUpdate.part_number === allParts.length) {

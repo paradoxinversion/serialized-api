@@ -1,7 +1,6 @@
 const likeActions = require("../database/actions/likes");
 
 const createLike = async (req, res) => {
-  debugger;
   try {
     const result = await likeActions.createLike(
       req.authenticatedUser.id,
@@ -40,7 +39,6 @@ const createLike = async (req, res) => {
 
 const getLikes = async (req, res) => {
   try {
-    debugger;
     const result = await likeActions.getItemLikes(
       req.query.like_type,
       req.query.itemId

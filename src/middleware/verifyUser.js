@@ -4,7 +4,6 @@ const {
   UserUnauthorizedError,
 } = require("../utilities/errorGenerator");
 module.exports = async (req, res, next) => {
-  debugger;
   try {
     if (!req.headers.authorization) {
       const error = new NoAuthenticationError("No credentials provided");

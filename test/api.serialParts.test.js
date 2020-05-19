@@ -68,7 +68,7 @@ describe("Serial Parts DB functions", function () {
       await dataHelper.seedSerialPart(this.testSerial, 1);
       const part = await dataHelper.seedSerialPart(this.testSerial, 2);
       const serialPart = await getSingleSerialPart(part.id);
-      debugger;
+
       expect(serialPart.title).to.eql(part.title);
       expect(serialPart.author.username).to.eql(this.testUser.username);
     });
@@ -80,7 +80,7 @@ describe("Serial Parts DB functions", function () {
       const part = await dataHelper.seedSerialPart(this.testSerial, 2);
       const partUpdateData = dataHelper.fakeSerialPartUpdateData(part.id);
       const serialPart = await updateSerialPart(partUpdateData);
-      debugger;
+
       expect(serialPart.title).to.eql(partUpdateData.title);
       expect(serialPart.content).to.eql(partUpdateData.content);
     });

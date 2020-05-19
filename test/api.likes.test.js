@@ -106,7 +106,7 @@ describe("Like DB Actions", function () {
         serialTwo.id
       );
       const likes = await likeActions.getItemLikes("serial", serial.id);
-      debugger;
+
       expect(likes).to.be.an.instanceOf(Array);
       expect(likes[0].subject.toString()).to.equal(serial.id);
     });

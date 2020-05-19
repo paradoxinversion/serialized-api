@@ -44,7 +44,6 @@ describe("HTTP /serials/:serialId", function () {
         .request(app)
         .get(`/api/v1/serials/${this.testSerial.id}`)
         .then(function (res) {
-          debugger;
           expect(res).to.have.status(200);
           expect(res.type).to.eql("application/vnd.api+json");
           expect(res.body).to.have.all.keys("data", "relationships");

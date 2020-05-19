@@ -64,7 +64,6 @@ describe("Moderation DB Actions", function () {
           reporting_user: this.userOne.id,
         })
         .then(function (res) {
-          debugger;
           expect(res).to.have.status(201);
           expect(res.type).to.eql("application/vnd.api+json");
         });

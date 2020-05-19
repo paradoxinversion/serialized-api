@@ -80,7 +80,6 @@ describe("HTTP /serials/:serialId/:partId", function () {
         .delete(`/api/v1/serials/${this.testSerial.id}/${serialPart.id}`)
         .set({ Authorization: "Bearer " + token })
         .then(function (res) {
-          debugger;
           expect(res).to.have.status(200);
           expect(res.type).to.eql("application/vnd.api+json");
           expect(res.body.data.type).to.eql("serialPart");
@@ -118,7 +117,6 @@ describe("HTTP /serials/:serialId/:partId", function () {
         .send({ serialPartId: serialPartOne.id, moveUp: true })
         .set({ Authorization: "Bearer " + token })
         .then(function (res) {
-          debugger;
           expect(res).to.have.status(200);
           expect(res.type).to.eql("application/vnd.api+json");
           expect(res.body.data.type).to.eql("serialPart");

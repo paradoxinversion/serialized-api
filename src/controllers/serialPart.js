@@ -26,7 +26,6 @@ const getSerialParts = async (req, res) => {
           slug,
           part_number,
         } = serialPart;
-        debugger;
         return {
           type: "serialPart",
           id: serialPart.id,
@@ -144,7 +143,6 @@ const deleteSerialPart = async (req, res) => {
       req.params.partId,
       req.authenticatedUser.id
     );
-    debugger;
     const response = {
       data: {
         id: deletionResult.id,
@@ -197,7 +195,6 @@ const editSerialPart = async (req, res) => {
         },
       },
     };
-    debugger;
     res.status(200).type("application/vnd.api+json").json(response);
   } catch (error) {
     return res

@@ -91,7 +91,6 @@ describe("Likes API Calls", function () {
         .get(`/api/v1/like`)
         .query({ itemId: serial.id, like_type: "serial" })
         .then(function (res) {
-          debugger;
           expect(res).to.have.status(201);
           expect(res.type).to.eql("application/vnd.api+json");
           expect(res.body).to.have.key("data");

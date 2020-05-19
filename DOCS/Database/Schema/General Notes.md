@@ -1,0 +1,1 @@
+Database fields should be snake_cased.

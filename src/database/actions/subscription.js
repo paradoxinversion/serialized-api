@@ -22,7 +22,7 @@ const createSubscription = async ({ user, type, subject }) => {
 const removeSubscription = async ({ subscriptionId }) => {
   try {
     const removalResult = await Subscription.findByIdAndRemove(subscriptionId);
-    debugger;
+
     return removalResult;
   } catch (e) {
     throw e;

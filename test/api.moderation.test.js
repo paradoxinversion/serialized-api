@@ -69,7 +69,7 @@ describe("Moderation DB Actions", function () {
       });
 
       const subject = await Serial.findById(report.reported_item);
-      debugger;
+
       expect(report.reported_item._id.toString()).to.eql(this.serial.id); // it should resolve to an id...?
       expect(report.reporting_user._id.toString()).to.eql(this.userTwo.id);
       expect(report.extra_details).to.equal("It's a weird serial");
@@ -90,7 +90,7 @@ describe("Moderation DB Actions", function () {
       );
 
       const reportResults = await getReports();
-      debugger;
+
       expect(reportResults[0].reported_item._id.toString()).to.eql(userTwo.id); // it should resolve to an id...?
       expect(reportResults[0].reporting_user._id.toString()).to.eql(userOne.id);
       expect(reportResults[0].extra_details).to.equal("Actually, just a test");
