@@ -1,5 +1,5 @@
 const Like = require("../mongo/Like");
-
+const Serial = require("../mongo/Serial");
 /**
  * Creates a new like
  * @param {*} userId - the id of the user liking the subject
@@ -47,8 +47,18 @@ const getUserLikes = async (userId) => {
   }
 };
 
+const getItemLikes = async (itemType, itemId) => {
+  try {
+    const likes = await Like.find({ subject: itemId });
+    return likes;
+  } catch (e) {
+    throw e;
+  }
+};
+
 module.exports = {
   createLike,
   removeLike,
   getUserLikes,
+  getItemLikes,
 };

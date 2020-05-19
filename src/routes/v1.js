@@ -50,7 +50,7 @@ router
 router
   .route("/like")
   .get(likesController.getLikes)
-  .post(verifyUser, likesController.toggleLike);
+  .post(verifyUser, likesController.createLike);
 
 router
   .route("/genre")
