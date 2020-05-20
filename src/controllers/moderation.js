@@ -48,6 +48,7 @@ const createReport = async (req, res) => {
 };
 
 const getReports = async (req, res) => {
+  debugger;
   try {
     const reports = await moderationActions.getReports();
     res.status(200).type("application/vnd.api+json").json({

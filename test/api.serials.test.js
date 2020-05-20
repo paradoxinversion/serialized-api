@@ -94,7 +94,24 @@ describe("Serial Actions", function () {
           serialId: this.testSerial.id,
           userId: this.testUser.id,
         });
-        expect(deleted.serialId).to.eql(this.testSerial.id);
+        debugger;
+        expect(deleted.deletedSerial.id).to.eql(this.testSerial.id);
+      });
+      it("Deletes a serial, with multiple parts", async function () {
+        const newSerial = await dataHelper.seedSerial(
+          this.testUser.id,
+          this.testGenre
+        );
+        const serialPartOne = await dataHelper.seedSerialPart(newSerial, 1);
+        const serialPartTwo = await dataHelper.seedSerialPart(newSerial, 2);
+        const serialPartThree = await dataHelper.seedSerialPart(newSerial, 3);
+        const deleted = await serialActions.deleteSerial({
+          serialId: newSerial.id,
+          userId: this.testUser.id,
+        });
+
+        expect(deleted.deletedParts.n).to.eql(3);
+        expect(deleted.deletedSerial.id).to.eql(newSerial.id);
       });
 
       it("Fails if the user is not the owner or an admin", async function () {

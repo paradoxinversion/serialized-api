@@ -74,7 +74,7 @@ describe("Moderation DB Actions", function () {
     beforeEach(async function () {
       // reporting a user...
       this.testGenre = await dataHelper.seedGenre("Test", "A test genre");
-      this.admin = await dataHelper.seedUser(2);
+      this.admin = await dataHelper.seedUser(1);
       this.userOne = await dataHelper.seedUser();
       this.userTwo = await dataHelper.seedUser();
       this.serial = await dataHelper.seedSerial(
@@ -96,7 +96,7 @@ describe("Moderation DB Actions", function () {
       // Drop the database after each test
       await this.dbConnection.connection.db.dropDatabase();
     });
-    // before(function () {});
+
     it("Reads reports", async function () {
       // reporting a user...
       // const userOne = await dataHelper.seedUser();

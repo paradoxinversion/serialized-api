@@ -98,9 +98,11 @@ const editSerial = async ({
  * called when a serial is deleted for proper cleanup
  * @param {Object} serial - the serial who's parts to delete
  */
-const deleteSerialParts = async (serial) => {
+const deleteSerialParts = async (serialId) => {
   try {
-    const removalResult = await SerialPart.remove({ serial_id: serial._id });
+    const removalResult = await SerialPart.deleteMany({
+      parent_serial: serialId,
+    });
     return removalResult;
   } catch (error) {
     throw error;
@@ -112,7 +114,7 @@ const deleteSerialParts = async (serial) => {
  * @param {string} serialIdQueryString - the serial id to delete
  * @param {string} userId - the id of the requesting user
  */
-const deleteSerial = async ({ serialId, userId }) => {
+const deleteSerial = async ({ serialId }) => {
   try {
     if (!serialId) {
       const noIdError = new Error(
@@ -121,19 +123,14 @@ const deleteSerial = async ({ serialId, userId }) => {
       throw noIdError;
     }
     const serial = await Serial.findById(serialId);
-    if (userId != serial.author) {
-      const wrongOwnerError = new Error(
-        "User ID does not match Author ID, aborting delete."
-      );
-      throw wrongOwnerError;
+    if (serial) {
+      const deletedParts = await deleteSerialParts(serial);
+      const deletedSerial = await Serial.findByIdAndDelete(serialId);
+      return {
+        deletedSerial,
+        deletedParts,
+      };
     }
-    await deleteSerialParts(serial);
-    await Serial.findByIdAndDelete(serialId);
-    return {
-      result: 1,
-      message: `Serial ${serialId} deleted`,
-      serialId,
-    };
   } catch (e) {
     throw e;
   }

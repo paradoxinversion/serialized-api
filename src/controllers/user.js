@@ -123,7 +123,7 @@ const attemptUserAuthentication = async function attemptUserAuthentication(
 
 const deleteUser = async function deleteUser(req, res) {
   try {
-    if (req.authenticatedUser.role === 2) {
+    if (req.authenticatedUser.role === 1) {
       const deletionResult = await userActions.deleteUser(
         req.body.userToDelete
       );

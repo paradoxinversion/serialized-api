@@ -6,25 +6,8 @@ const {
 /**
  * Checks whether the client (if authorized/authenticated) is an admin
  */
-// const userIsAdministrator = async (req, res, next) => {
-//   if (req.session.passport && req.session.passport.user) {
-//     const user = await User.findOne({
-//       _id: req.session.passport.user,
-//     }).populate("role");
-//     if (user.role.accessLevel === 2) {
-//       next();
-//     } else {
-//       res.json({
-//         error: "Not Authorized",
-//       });
-//     }
-//   } else {
-//     res.json({
-//       error: "Not Authorized",
-//     });
-//   }
-// };
 const userIsAdministrator = async (req, res, next) => {
+  debugger;
   // middleware should be used after a user is authorized (error if one isn't present)
   try {
     if (!req.authenticatedUser) {
@@ -32,7 +15,7 @@ const userIsAdministrator = async (req, res, next) => {
       throw error;
     }
 
-    if (req.authenticatedUser.role !== 2) {
+    if (req.authenticatedUser.role !== 1) {
       const error = new UserUnauthorizedError("User is not an administrator");
       throw error;
     } else {

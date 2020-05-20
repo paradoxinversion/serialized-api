@@ -5,10 +5,9 @@ const {
   ValidationError,
 } = require("../../utilities/errorGenerator");
 /**
- * Changes the User's role
- * 0: Reader; 1: Writer; 2: Admin
- * @param {string} userId The id of the user who's role to get
- * @returns {boolean} true if successful, false if something went wrong
+ *
+ * @param {String} userId - The id of the user to modify
+ * @param {Number} newAccessLevel - The new acces level for the specified user
  */
 const changeUserRole = async function (userId, newAccessLevel) {
   try {
@@ -33,6 +32,7 @@ const changeUserRole = async function (userId, newAccessLevel) {
 /**
  * This function returns users from the database. Rename to remove 'all'
  * @param {Number} start - the amount of users to skip when gettign users (for paging)
+ * @param {Number} usersToGet - the amount of users to include in the query
  * @returns {Array} an array of users
  */
 const getAllUsers = async (start = 0, usersToGet = 25) => {
@@ -40,9 +40,7 @@ const getAllUsers = async (start = 0, usersToGet = 25) => {
     .select("username biography")
     .skip(start)
     .limit(usersToGet);
-  // const cursor = await User.findById(
-  //   userList[userList.length - 1]._id
-  // ).cursor();
+
   return {
     users: userList,
     start,
@@ -71,7 +69,8 @@ const getUser = async (userName) => {
  * @param {Object} requestBody - The request from the client with all information for a new user
  * @param {string} username - The user's username
  * @param {string} password - The plaintext password the user intends to use
- * @param {Date} birth_date the user's birth_date
+ * @param {Date} birth_date - the user's birth_date
+ * @param {Date} birth_date - the user's birth_date
  * @returns {Object} an object containing the user searched for (or null)
  */
 const addNewUser = async ({ username, password, birth_date, role }) => {

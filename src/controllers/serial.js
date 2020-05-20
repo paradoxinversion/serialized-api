@@ -124,19 +124,25 @@ const getSerialsByAuthorId = async (req, res) => {
  */
 const deleteSerial = async (req, res) => {
   try {
-    const deletionResult = await serialActions.deleteSerial(
-      req.query.serialId,
-      req.session.passport.user
-    );
-    res.json(deletionResult);
-  } catch (error) {
-    return res.json({
-      status: "400",
-      error: {
-        name: error.name,
-        message: error.message,
-      },
+    const deletionResult = await serialActions.deleteSerial({
+      serialId: req.query.serialId,
+      userId: req.authenticatedUser.id,
     });
+
+    const response = {
+      data: {
+        id: deletionResult.deletedSerial.id,
+        type: "serial",
+      },
+    };
+    res.status(200).type("application/vnd.api+json").json(response);
+  } catch (error) {
+    return res
+      .status(400)
+      .type("application/vnd.api+json")
+      .json({
+        error: [error],
+      });
   }
 };
 

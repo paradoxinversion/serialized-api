@@ -2,7 +2,6 @@ const express = require("express");
 const userController = require("../controllers/user");
 const serialController = require("../controllers/serial");
 const serialPartController = require("../controllers/serialPart");
-const authController = require("../controllers/auth");
 const likesController = require("../controllers/likes");
 const genreController = require("../controllers/genre");
 const moderationController = require("../controllers/moderation");
@@ -11,9 +10,7 @@ const userIsAdministrator = require("../middleware/userIsAdministrator");
 const verifyUser = require("../middleware/verifyUser");
 
 const router = express.Router();
-router.route("/test").get((req, res) => {
-  return res.status(200).send("OK");
-});
+
 router
   .route("/users")
   .get(userController.getUsers) //Get all
