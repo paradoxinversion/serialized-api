@@ -2,16 +2,17 @@ const _ = require("lodash");
 const Serial = require("../mongo/Serial");
 const SerialPart = require("../mongo/SerialPart");
 const Subscription = require("../mongo/Subscription");
+
 /**
  * This function gets all serials in the database
  * @returns {Array} - all serials in the database
  */
-const getSerials = async (includeNSFW) => {
+const getSerials = async (start = 0, get = 25, includeNSFW = false) => {
   let serials;
   if (includeNSFW) {
-    serials = await Serial.find();
+    serials = await Serial.find().limit(get).skip(start);
   } else {
-    serials = await Serial.find({ nsfw: false });
+    serials = await Serial.find({ nsfw: false }).limit(get).skip(start);
   }
   return serials;
 };

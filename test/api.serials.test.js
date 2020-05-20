@@ -43,7 +43,7 @@ describe("Serial Actions", function () {
       });
     });
 
-    describe("read serial", function () {
+    describe("getSerials", function () {
       before(async function () {
         this.serials = await dataHelper.seedSerials(
           this.testUser.id,
@@ -53,7 +53,7 @@ describe("Serial Actions", function () {
       });
 
       it("reads all serial data", async function () {
-        const serials = await serialActions.getSerials();
+        const serials = await serialActions.getSerials(0, 99, true);
         expect(serials).to.have.length(99);
       });
     });

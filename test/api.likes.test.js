@@ -42,7 +42,7 @@ describe("Like DB Actions", function () {
       await this.testDb.connection.dropDatabase();
     });
 
-    it("Saves a new like to the DB", async function () {
+    it("Removes a like from a DB", async function () {
       const testGenre = await dataHelper.seedGenre("Test", "A test genre");
       const testUser = await dataHelper.seedUser();
       const testUserTwo = await dataHelper.seedUser();
@@ -62,7 +62,7 @@ describe("Like DB Actions", function () {
       await this.testDb.connection.dropDatabase();
     });
 
-    it("Saves a new like to the DB", async function () {
+    it("Retrives likes from the db", async function () {
       const testGenre = await dataHelper.seedGenre("Test", "A test genre");
       const testUser = await dataHelper.seedUser();
       const testUserTwo = await dataHelper.seedUser();
@@ -105,7 +105,7 @@ describe("Like DB Actions", function () {
         "serial",
         serialTwo.id
       );
-      const likes = await likeActions.getItemLikes("serial", serial.id);
+      const likes = await likeActions.getItemLikes(serial.id);
 
       expect(likes).to.be.an.instanceOf(Array);
       expect(likes[0].subject.toString()).to.equal(serial.id);

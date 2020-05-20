@@ -38,11 +38,9 @@ const createLike = async (req, res) => {
 };
 
 const getLikes = async (req, res) => {
+  debugger;
   try {
-    const result = await likeActions.getItemLikes(
-      req.query.like_type,
-      req.query.itemId
-    );
+    const result = await likeActions.getItemLikes(req.query.itemId);
     const response = {
       data: result.map((like) => {
         return {

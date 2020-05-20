@@ -1,10 +1,12 @@
 const Report = require("../mongo/Report");
 
 /**
- *
- * @param {*} user
- * @param {*} serial
- * @param {*} serialPart
+ * Create a new report by a user
+ * @param {*} param0
+ * @param {*} param0.report_type - the type of report
+ * @param {*} param0.reported_item - the id of the item being reported
+ * @param {*} param0.reporteing_user - the id of the user filing the report
+ * @param {*} param0.extra_details - extra details about the report
  */
 const createReport = async ({
   report_type,
@@ -30,6 +32,9 @@ const createReport = async ({
   }
 };
 
+/**
+ * Retrives all user generated content reports in the db
+ */
 const getReports = async () => {
   const reports = await Report.find()
     .populate("user")

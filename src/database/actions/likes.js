@@ -47,8 +47,13 @@ const getUserLikes = async (userId) => {
   }
 };
 
-const getItemLikes = async (itemType, itemId) => {
+/**
+ * Get likes related to an item
+ * @param {*} itemId - the id of the item who's likes toget
+ */
+const getItemLikes = async (itemId) => {
   try {
+    debugger;
     const likes = await Like.find({ subject: itemId });
     return likes;
   } catch (e) {
