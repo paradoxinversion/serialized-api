@@ -2,11 +2,8 @@ const Config = require("./config/config").getConfig();
 const express = require("express");
 const morgan = require("morgan");
 const bodyParser = require("body-parser");
-const passport = require("passport");
 const cookieParser = require("cookie-parser");
 const mongoClient = require("./database/client");
-const session = require("express-session");
-const MongoStore = require("connect-mongo")(session);
 const TokenManager = require("./tokens/jwt");
 const api = require("./routes/v1");
 
@@ -20,10 +17,8 @@ app.use(morgan("dev"));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.text());
-app.use(cookieParser(Config.security.sessionSecret));
+app.use(cookieParser());
 mongoClient();
-
-app.use(passport.initialize());
 
 app.use(function (req, res, next) {
   res.header("Access-Control-Allow-Origin", "http://localhost:3000");

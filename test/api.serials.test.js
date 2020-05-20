@@ -113,15 +113,6 @@ describe("Serial Actions", function () {
         expect(deleted.deletedParts.n).to.eql(3);
         expect(deleted.deletedSerial.id).to.eql(newSerial.id);
       });
-
-      it("Fails if the user is not the owner or an admin", async function () {
-        expect(
-          serialActions.deleteSerial({
-            serialId: this.testSerial.id,
-            userId: this.testUserTwo.id,
-          })
-        ).to.eventually.be.rejected;
-      });
     });
   });
 });
