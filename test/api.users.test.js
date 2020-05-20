@@ -41,12 +41,26 @@ describe("User DB Actions", function () {
   });
 
   describe("deleteUser", async function () {
-    it("Deletes a user from thhe databse", async function () {
+    it("Deletes a user from the database", async function () {
       const testUser = await dataHelper.seedUser();
-      const deletedUser = await userActions.deleteUser(testUser.id);
-      expect(deletedUser.result).to.equal(1);
+      const deletionResult = await userActions.deleteUser(testUser.id);
+      expect(deletionResult.userDeletion.id).to.equal(testUser.id);
     });
 
+    it("Deletes a user and their content from the database", async function () {
+      const testUser = await dataHelper.seedUser();
+      const testGenre = await dataHelper.seedGenre("Test", "A test genre");
+      const testSerial = await dataHelper.seedSerial(testUser.id, testGenre);
+      const testPart = await dataHelper.seedSerialPart(testSerial, 1);
+      const deletionResult = await userActions.deleteUser(testUser.id);
+      debugger;
+      expect(deletionResult.userDeletion.id).to.equal(testUser.id);
+      expect(deletionResult.contentDeletion).to.have.length(1);
+      expect(deletionResult.contentDeletion[0].deletedParts.n).to.eql(1);
+      expect(deletionResult.contentDeletion[0].deletedSerial.id).to.eql(
+        testSerial.id
+      );
+    });
     it("Throws a error when a user cannot be deleted", async function () {
       await dataHelper.seedUser();
       expect(userActions.deleteUser(undefined)).to.be.rejected;

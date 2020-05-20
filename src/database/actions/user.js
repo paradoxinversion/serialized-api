@@ -1,9 +1,11 @@
 const User = require("../mongo/User");
 const bcrypt = require("bcrypt");
+const Serial = require("../mongo/Serial");
 const {
   MissingArgumentError,
   ValidationError,
 } = require("../../utilities/errorGenerator");
+const serialActions = require("../actions/serial");
 /**
  *
  * @param {String} userId - The id of the user to modify
@@ -166,11 +168,23 @@ const deleteUser = async (userId) => {
       throw error;
     }
     const deletion = await User.findByIdAndDelete(userId);
+
     if (deletion) {
+      // delete serials by the user
+
+      const userSerials = await Serial.find({ author: userId });
+      const serialDeletionResults = [];
+
+      for (let x = 0; x < userSerials.length; x++) {
+        const serial = userSerials[x];
+        serialDeletionResults.push(
+          await serialActions.deleteSerial({ serialId: serial.id })
+        );
+      }
+
       return {
-        result: 1,
-        message: `User ${userId} deleted`,
-        userId,
+        userDeletion: deletion,
+        contentDeletion: serialDeletionResults,
       };
     } else {
       return {

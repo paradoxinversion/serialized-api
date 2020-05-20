@@ -126,7 +126,6 @@ const deleteSerial = async (req, res) => {
   try {
     const deletionResult = await serialActions.deleteSerial({
       serialId: req.query.serialId,
-      userId: req.authenticatedUser.id,
     });
 
     const response = {
