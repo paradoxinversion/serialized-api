@@ -3,12 +3,12 @@ const express = require("express");
 const morgan = require("morgan");
 const bodyParser = require("body-parser");
 const cookieParser = require("cookie-parser");
+const api = require("./routes/v1");
 const mongoClient = require("./database/client");
 const TokenManager = require("./tokens/jwt");
-const api = require("./routes/v1");
+const User = require("./database/mongo/User");
 
 const app = express();
-require("./middleware/userLoggedIn");
 
 const tokenManager = new TokenManager("test", "test", { expiresIn: "14 days" });
 app.locals.tokenManager = tokenManager;
@@ -18,8 +18,11 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.text());
 app.use(cookieParser());
-mongoClient();
-
+// Handle initial db setup
+const dbClient = mongoClient();
+// if (process.env.NODE_ENV === "development"){
+//   dbClient.then(dbConnection =>)
+// }
 app.use(function (req, res, next) {
   res.header("Access-Control-Allow-Origin", "http://localhost:3000");
   res.header(

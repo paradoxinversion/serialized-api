@@ -6,10 +6,13 @@ const likesController = require("../controllers/likes");
 const genreController = require("../controllers/genre");
 const moderationController = require("../controllers/moderation");
 const subscriptionController = require("../controllers/subscription");
+const authorizationController = require("../controllers/authorization");
 const userIsAdministrator = require("../middleware/userIsAdministrator");
 const verifyUser = require("../middleware/verifyUser");
 
 const router = express.Router();
+
+router.route("/log-in").post(authorizationController.logIn);
 
 router
   .route("/users")

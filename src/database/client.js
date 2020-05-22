@@ -3,7 +3,7 @@ const User = require("./mongo/User");
 const databaseInit = require("./databaseInit");
 const startClient = async () => {
   try {
-    await mongoose.connect(
+    return await mongoose.connect(
       process.env.MONGODB_URI || "mongodb://localhost:27017/serialized_api_dev",
       {
         useNewUrlParser: true,
@@ -12,10 +12,10 @@ const startClient = async () => {
       }
     );
 
-    const user = await User.findOne({ role: 2 });
-    if (!user) {
-      await databaseInit();
-    }
+    // const user = await User.findOne({ role: 2 });
+    // if (!user) {
+    //   await databaseInit();
+    // }
   } catch (error) {
     throw error;
   }
