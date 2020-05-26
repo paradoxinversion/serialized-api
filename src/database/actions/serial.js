@@ -10,11 +10,27 @@ const Subscription = require("../mongo/Subscription");
 const getSerials = async (start = 0, get = 25, includeNSFW = false) => {
   let serials;
   if (includeNSFW) {
-    serials = await Serial.find().limit(get).skip(start);
+    serials = await Serial.find().limit(get).skip(start).populate("author");
   } else {
-    serials = await Serial.find({ nsfw: false }).limit(get).skip(start);
+    serials = await Serial.find({ nsfw: false })
+      .limit(get)
+      .skip(start)
+      .populate("author");
   }
   return serials;
+};
+
+const getSerial = async (authorId, serialSlug) => {
+  try {
+    const serial = await Serial.findOne({
+      author: authorId,
+      slug: serialSlug,
+    }).populate("author");
+
+    return serial;
+  } catch (e) {
+    throw e;
+  }
 };
 
 /**
@@ -213,4 +229,5 @@ module.exports = {
   getUserSerialSubscriptions,
   createSerial,
   subscribeToSerial,
+  getSerial,
 };

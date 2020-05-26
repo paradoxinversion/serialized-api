@@ -60,9 +60,7 @@ const getAllUsers = async (start = 0, usersToGet = 25) => {
  * @returns {Object} an object containing the user searched for (or null)
  */
 const getUser = async (userName) => {
-  const user = await User.findOne({ username: userName }).select(
-    "username biography"
-  );
+  const user = await User.findOne({ username: userName });
   return user;
 };
 

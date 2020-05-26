@@ -1,6 +1,11 @@
 const mongoose = require("mongoose");
 const User = require("./mongo/User");
 const databaseInit = require("./databaseInit");
+
+/**
+ * Creates a mongoose database connection
+ * @returns The mongoose db connection
+ */
 const startClient = async () => {
   try {
     return await mongoose.connect(

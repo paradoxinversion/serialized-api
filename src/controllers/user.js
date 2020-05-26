@@ -1,5 +1,6 @@
 const userActions = require("../database/actions/user");
-
+const Serial = require("../database/mongo/Serial");
+const { createUserResponse } = require("../utilities/responseHandler");
 /**
  * Returns all users
  * @param {*} req
@@ -25,19 +26,45 @@ const getUsers = async function getUsers(req, res) {
   res.type("application/vnd.api+json").status(200).json(response);
 };
 
+/**
+ * Handles retrieving a single user from the API
+ * @param {*} req
+ * @param {*} res
+ */
 const getUser = async function getUser(req, res) {
+  console.log("Q", req.query);
+
   const queryResult = await userActions.getUser(req.params.username);
 
-  let response = {
-    data: {
-      type: "user",
-      id: queryResult.id,
-      attributes: {
-        username: queryResult.username,
-        biography: queryResult.biography,
-      },
-    },
-  };
+  const fields = req.query.fields;
+
+  let response = await createUserResponse(
+    queryResult.id,
+    fields.user.split(",") || null
+  );
+
+  if (req.query.include) {
+    const serials = await Serial.find({ author: queryResult.id });
+    const included = serials.map((serial) => {
+      return {
+        id: serial.id,
+        type: "serial",
+        attributes: {
+          title: serial.title,
+          synopsis: serial.synopsis,
+          slug: serial.slug,
+        },
+        relationships: {
+          author: {
+            id: queryResult.id,
+            type: "user",
+          },
+        },
+      };
+    });
+
+    response.includes = included;
+  }
   res.status(200).type("application/vnd.api+json").json(response);
 };
 

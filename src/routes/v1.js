@@ -21,7 +21,10 @@ router
   .patch(verifyUser, userController.updateUser) // Update User
   .delete(verifyUser, userIsAdministrator, userController.deleteUser); // Delete User
 
-router.route("/users/:username").get(userController.getUser);
+router.route("/user/:username").get(userController.getUser);
+router
+  .route("/serial/:authorUsername/:serialSlug")
+  .get(serialController.getSerial);
 
 router
   .route("/serials")

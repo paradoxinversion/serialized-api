@@ -1,9 +1,105 @@
 const serialActions = require("../database/actions/serial");
 const User = require("../database/mongo/User");
+const SerialPart = require("../database/mongo/SerialPart");
+const { createSerialResponse } = require("../utilities/responseHandler");
+const getSerial = async (req, res) => {
+  try {
+    const author = await User.findOne({ username: req.params.authorUsername });
+    const serial = await serialActions.getSerial(
+      author.id,
+      req.params.serialSlug
+    );
+
+    const includeResources = req.query.include.split(",");
+    console.log(includeResources);
+    // we'll want to check what the 'include' actually is
+    // for now, we'll assume author
+    let include = includeResources.includes("author")
+      ? [
+          {
+            id: author.id,
+            type: "user",
+            attributes: {
+              username: author.username,
+            },
+          },
+        ]
+      : null;
+    // debugger;
+    if (includeResources.includes("serialParts")) {
+      const parts = await SerialPart.find({ parent_serial: serial.id });
+      const entries = parts.map((part) => {
+        return {
+          type: "serialPart",
+          id: part.id,
+          attributes: {
+            title: part.title,
+            synopsis: part.synopsis,
+            slug: part.slug,
+            content: part.content,
+          },
+          relationships: {
+            author: {
+              type: "user",
+              id: author.id,
+            },
+          },
+        };
+      });
+      if (!include) {
+        include = entries;
+      } else {
+        include = include.concat(entries);
+      }
+    }
+
+    if (serial) {
+      const response = {
+        data: {
+          id: serial.id,
+          type: "serial",
+          attributes: {
+            title: serial.title,
+            synopsis: serial.synopsis,
+            slug: serial.slug,
+            nsfw: serial.nsfw,
+            creation_date: serial.creation_date,
+            last_modified: serial.last_modified,
+          },
+          relationships: {
+            author: {
+              id: serial.author.id,
+              type: "user",
+            },
+          },
+        },
+      };
+
+      if (req.query.include) {
+        response.included = include;
+      }
+      return res.status(200).type("application/vnd.api+json").json(response);
+    } else {
+      throw new Error("No serial found");
+    }
+  } catch (error) {
+    return res.json({
+      status: "400",
+      error: {
+        name: error.name,
+        message: error.message,
+      },
+    });
+  }
+};
+
 /**
  * Get a list of serials. If there is a userId query, gets only serials by that user.
  */
 const getSerials = async (req, res) => {
+  console.log(req.query);
+  debugger;
+  // console.log(await createSerialResponse());
   try {
     let serials;
     if (req.query.userId) {
@@ -21,8 +117,28 @@ const getSerials = async (req, res) => {
       }
     }
 
+    const include = [];
+
     const response = {
       data: serials.map((serial) => {
+        if (req.query.include === "author") {
+          // see if there is an author entry in the include array
+          if (
+            !include.find((user) => user.id === serial.author._id.toString())
+          ) {
+            include.push({
+              id: serial.author._id.toString(),
+              type: "user",
+              attributes: {
+                username: serial.author.username,
+              },
+              // ? do I /really/ need this?
+              links: {
+                self: `/users/${serial.author._id}`,
+              },
+            });
+          }
+        }
         return {
           type: "serial",
           id: serial.id,
@@ -34,9 +150,20 @@ const getSerials = async (req, res) => {
             creation_date: serial.creation_date,
             last_modified: serial.last_modified,
           },
+          relationships: {
+            author: {
+              id: serial.author._id,
+              type: "user",
+            },
+          },
         };
       }),
     };
+    if (req.query.include === "author") {
+      // add author 'include' information
+      response.included = include;
+    }
+
     res.status(200).type("application/vnd.api+json").json(response);
   } catch (error) {
     return res.json({
@@ -260,4 +387,5 @@ module.exports = {
   getUserSerialSubscriptions,
   postSerial,
   toggleSerialSubscription,
+  getSerial,
 };

@@ -38,6 +38,10 @@ PATCH [U]- Update information on a specific serial
 
 DELETE [U]- Delete a serial from the platform immediately
 
+### /serial
+
+get - Retrive a serial from the database, according to query criteria
+
 ### /serials/:serialId
 
 *Various Operations related to Parts/Episodes/Chapters/Etc of Serial Stories*
