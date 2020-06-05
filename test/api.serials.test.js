@@ -94,7 +94,7 @@ describe("Serial Actions", function () {
           serialId: this.testSerial.id,
           userId: this.testUser.id,
         });
-        debugger;
+
         expect(deleted.deletedSerial.id).to.eql(this.testSerial.id);
       });
       it("Deletes a serial, with multiple parts", async function () {

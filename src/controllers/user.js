@@ -32,8 +32,6 @@ const getUsers = async function getUsers(req, res) {
  * @param {*} res
  */
 const getUser = async function getUser(req, res) {
-  console.log("Q", req.query);
-
   const queryResult = await userActions.getUser(req.params.username);
 
   const fields = req.query.fields;

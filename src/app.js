@@ -10,7 +10,6 @@ const User = require("./database/mongo/User");
 const seedDb = require("./database/testUtilities/seedDb");
 const doApp = async () => {
   try {
-    debugger;
     const app = express();
 
     const tokenManager = new TokenManager("test", "test", {

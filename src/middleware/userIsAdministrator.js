@@ -7,7 +7,6 @@ const {
  * Checks whether the client (if authorized/authenticated) is an admin
  */
 const userIsAdministrator = async (req, res, next) => {
-  debugger;
   // middleware should be used after a user is authorized (error if one isn't present)
   try {
     if (!req.authenticatedUser) {

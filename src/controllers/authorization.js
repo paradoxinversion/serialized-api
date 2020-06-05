@@ -11,7 +11,6 @@ const logIn = async (req, res) => {
       );
       throw error;
     }
-    debugger;
     if (await user.validatePassword(req.body.password)) {
       const signingOptions = {
         jwtid: uuidv4(),

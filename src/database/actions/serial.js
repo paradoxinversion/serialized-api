@@ -131,7 +131,6 @@ const deleteSerialParts = async (serialId) => {
  * @param {string} userId - the id of the requesting user
  */
 const deleteSerial = async ({ serialId }) => {
-  debugger;
   try {
     if (!serialId) {
       const noIdError = new Error(

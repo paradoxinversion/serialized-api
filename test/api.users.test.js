@@ -53,7 +53,7 @@ describe("User DB Actions", function () {
       const testSerial = await dataHelper.seedSerial(testUser.id, testGenre);
       const testPart = await dataHelper.seedSerialPart(testSerial, 1);
       const deletionResult = await userActions.deleteUser(testUser.id);
-      debugger;
+
       expect(deletionResult.userDeletion.id).to.equal(testUser.id);
       expect(deletionResult.contentDeletion).to.have.length(1);
       expect(deletionResult.contentDeletion[0].deletedParts.n).to.eql(1);

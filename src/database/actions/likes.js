@@ -53,7 +53,6 @@ const getUserLikes = async (userId) => {
  */
 const getItemLikes = async (itemId) => {
   try {
-    debugger;
     const likes = await Like.find({ subject: itemId });
     return likes;
   } catch (e) {

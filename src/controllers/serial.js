@@ -1,7 +1,12 @@
 const serialActions = require("../database/actions/serial");
 const User = require("../database/mongo/User");
+const Serial = require("../database/mongo/Serial");
 const SerialPart = require("../database/mongo/SerialPart");
-const { createSerialResponse } = require("../utilities/responseHandler");
+const {
+  createSerialResponse,
+  createSerialsResponse,
+  createApiResponse,
+} = require("../utilities/responseHandler");
 const getSerial = async (req, res) => {
   try {
     const author = await User.findOne({ username: req.params.authorUsername });
@@ -25,7 +30,6 @@ const getSerial = async (req, res) => {
           },
         ]
       : null;
-    // debugger;
     if (includeResources.includes("serialParts")) {
       const parts = await SerialPart.find({ parent_serial: serial.id });
       const entries = parts.map((part) => {
@@ -97,10 +101,14 @@ const getSerial = async (req, res) => {
  * Get a list of serials. If there is a userId query, gets only serials by that user.
  */
 const getSerials = async (req, res) => {
-  console.log(req.query);
-  debugger;
-  // console.log(await createSerialResponse());
   try {
+    const includes = req.query.include.split(",");
+    const selectFields = req.query.fields
+      ? Object.keys(req.query.fields).reduce((object, currentKey) => {
+          object[currentKey] = req.query.fields[currentKey].split(",");
+          return object;
+        }, {})
+      : null;
     let serials;
     if (req.query.userId) {
       serials = await serialActions.getAuthorSerials(req.query.userId);
@@ -117,52 +125,12 @@ const getSerials = async (req, res) => {
       }
     }
 
-    const include = [];
-
-    const response = {
-      data: serials.map((serial) => {
-        if (req.query.include === "author") {
-          // see if there is an author entry in the include array
-          if (
-            !include.find((user) => user.id === serial.author._id.toString())
-          ) {
-            include.push({
-              id: serial.author._id.toString(),
-              type: "user",
-              attributes: {
-                username: serial.author.username,
-              },
-              // ? do I /really/ need this?
-              links: {
-                self: `/users/${serial.author._id}`,
-              },
-            });
-          }
-        }
-        return {
-          type: "serial",
-          id: serial.id,
-          attributes: {
-            title: serial.title,
-            synopsis: serial.synopsis,
-            slug: serial.slug,
-            nsfw: serial.nsfw,
-            creation_date: serial.creation_date,
-            last_modified: serial.last_modified,
-          },
-          relationships: {
-            author: {
-              id: serial.author._id,
-              type: "user",
-            },
-          },
-        };
-      }),
-    };
-    if (req.query.include === "author") {
-      // add author 'include' information
-      response.included = include;
-    }
+    const response = await createApiResponse(
+      Serial,
+      serials,
+      selectFields,
+      includes
+    );
 
     res.status(200).type("application/vnd.api+json").json(response);
   } catch (error) {
