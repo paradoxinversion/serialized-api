@@ -39,7 +39,8 @@ const getSerial = async (authorId, serialSlug) => {
  * @returns {Object} - the new serial entry
  */
 const getAuthorSerials = async (authorId) => {
-  return await Serial.find({ author_id: authorId });
+  console.log(authorId);
+  return await Serial.find({ author: authorId }).populate("author");
 };
 
 /**

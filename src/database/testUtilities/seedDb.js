@@ -7,6 +7,7 @@ const {
   Report,
   Subscription,
 } = require("../mongo/index");
+const bcrypt = require("bcrypt");
 const faker = require("faker");
 const _ = require("lodash");
 /**
@@ -18,8 +19,8 @@ const seedDB = async () => {
 
     // make sure the admin is the first user
     const admin = {
-      username: faker.internet.userName(),
-      password: faker.internet.password(),
+      username: "admin",
+      password: await bcrypt.hash("admin", 10),
       birth_date: faker.date.between("01/01/1996", "01/01/1900"),
       join_date: Date.now(),
       biography: faker.lorem.paragraph(),

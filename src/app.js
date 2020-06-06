@@ -1,4 +1,6 @@
 const Config = require("./config/config").getConfig();
+const { ApolloServer } = require("apollo-server-express");
+console.log(process.env.NODE_ENV);
 const express = require("express");
 const morgan = require("morgan");
 const bodyParser = require("body-parser");
@@ -8,6 +10,7 @@ const mongoClient = require("./database/client");
 const TokenManager = require("./tokens/jwt");
 const User = require("./database/mongo/User");
 const seedDb = require("./database/testUtilities/seedDb");
+const { typeDefs, resolvers } = require("./apollo/index");
 const doApp = async () => {
   try {
     const app = express();
@@ -58,10 +61,32 @@ const doApp = async () => {
       next(error);
     });
 
-    app.listen(Config.server.port, () => {
-      console.log("Server started", Config.server.port);
+    const server = new ApolloServer({
+      typeDefs,
+      resolvers,
+      context: async ({ req }) => {
+        const token = req.headers.authorization || "";
+        if (token) {
+          const verifiedToken = app.locals.tokenManager.verify(token, "test");
+          const user = await User.findById(verifiedToken.sub);
+          return { user, tokenManager: app.locals.tokenManager };
+        } else {
+          return { user: null, tokenManager: app.locals.tokenManager };
+        }
+      },
     });
 
+    server.applyMiddleware({ app });
+
+    // server.listen().then(({ url }) => {
+    //   console.log(`Server ready at ${url}`);
+    // });
+
+    app.listen(Config.server.port, () => {
+      console.log(
+        `Server started at ${Config.server.port}. GraphQL endpoint is ${server.graphqlPath}`
+      );
+    });
     return app;
   } catch (e) {
     throw e;

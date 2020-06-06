@@ -43,15 +43,7 @@ const getAllUsers = async (start = 0, usersToGet = 25) => {
     .skip(start)
     .limit(usersToGet);
 
-  return {
-    users: userList,
-    start,
-    links: {
-      next: start + usersToGet,
-      prev:
-        start === 0 ? null : start - usersToGet > 0 ? start - usersToGet : 0,
-    },
-  };
+  return userList;
 };
 
 /**
