@@ -58,9 +58,8 @@ const createSerialPart = async ({ title, content, author, parentSerial }) => {
 /**
  * This function deletes a single part of a serial
  * @param {Object} partId The id of the part to delete
- * @param {ObjectId} userId The requesting user's ID
  */
-const deleteSerialPart = async (partId, userId) => {
+const deleteSerialPart = async (partId) => {
   try {
     if (!partId) {
       const noIdError = new Error(

@@ -24,9 +24,7 @@ const changeUserRole = async function (userId, newAccessLevel) {
       throw userNotFoundError;
     }
     await user.save();
-    return {
-      success: true,
-    };
+    return user;
   } catch (e) {
     throw e;
   }
@@ -38,12 +36,15 @@ const changeUserRole = async function (userId, newAccessLevel) {
  * @returns {Array} an array of users
  */
 const getAllUsers = async (start = 0, usersToGet = 25) => {
-  const userList = await User.find()
-    .select("username biography")
-    .skip(start)
-    .limit(usersToGet);
-
-  return userList;
+  try {
+    const userList = await User.find()
+      .select("username biography")
+      .skip(start)
+      .limit(usersToGet);
+    return userList;
+  } catch (e) {
+    throw e;
+  }
 };
 
 /**
@@ -52,8 +53,12 @@ const getAllUsers = async (start = 0, usersToGet = 25) => {
  * @returns {Object} an object containing the user searched for (or null)
  */
 const getUser = async (userName) => {
-  const user = await User.findOne({ username: userName });
-  return user;
+  try {
+    const user = await User.findOne({ username: userName });
+    return user;
+  } catch (e) {
+    throw e;
+  }
 };
 
 /**

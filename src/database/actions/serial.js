@@ -20,6 +20,13 @@ const getSerials = async (start = 0, get = 25, includeNSFW = false) => {
   return serials;
 };
 
+/**
+ * Finds a serial according to a combination of author and ID--
+ *
+ * Note that different authors can have serials with same slugs
+ * @param {string} authorId - the ID of the author
+ * @param {string} serialSlug - The slug of the serial
+ */
 const getSerial = async (authorId, serialSlug) => {
   try {
     const serial = await Serial.findOne({
@@ -39,8 +46,11 @@ const getSerial = async (authorId, serialSlug) => {
  * @returns {Object} - the new serial entry
  */
 const getAuthorSerials = async (authorId) => {
-  console.log(authorId);
-  return await Serial.find({ author: authorId }).populate("author");
+  try {
+    return await Serial.find({ author: authorId }).populate("author");
+  } catch (e) {
+    throw e;
+  }
 };
 
 /**
